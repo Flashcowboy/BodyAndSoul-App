@@ -1,0 +1,21 @@
+{
+  "name": "BODY & SOUL - Autogenes Training",
+  "short_name": "BODY & SOUL",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#5a7d9a",
+  "icons": [
+    {
+      "src": "./assets/images/icons/Body&Soul_logo__bg192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/images/icons/Body&Soul_logo__bg512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitleCategories">Kategorien</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="manifest" href="../manifest.json">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        main {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .category-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 150px;
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.2);
+            color: rgb(242, 237, 237);
+            font-size: 12px;
+            font-weight: regular;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 data-i18n="Settings_Header">Einstellungen</h1>
+    </header>
+
+    <main>
+        <!--
+        <div class="category-card" id="Cat_card1Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
+            <div class="card-text">
+                <h2 data-i18n="card1Title">Was ist Autogenes Training?</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card2Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <div class="card-text">
+                <h2 data-i18n="card2Title">Grundübungen</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card3Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <div class="card-text">
+                <h2 data-i18n="card3Title">Fortgeschrittene Übungen</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card4Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
+            <div class="card-text">
+                <h2 data-i18n="card4Title">Was ist Autogenes Training?</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card5Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <div class="card-text">
+                <h2 data-i18n="card5Title">Grundübungen</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card6Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <div class="card-text">
+                <h2 data-i18n="card6Title">Fortgeschrittene Übungen</h2>
+            </div>
+        </div>
+        <div class="category-card" id="Cat_card7Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
+            <div class="card-text">
+                <h2 data-i18n="card7Title">Was ist Autogenes Training?</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card8Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <div class="card-text">
+                <h2 data-i18n="card2Title">Grundübungen</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card9Title" onclick="window.location.href = 'subcategories/subcat_basics.html';">
+            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <div class="card-text">
+                <h2 data-i18n="card8Title">Fortgeschrittene Übungen</h2>
+            </div>
+        </div>
+        -->
+    </main>
+
+
+
+    <footer>
+        <!-- Navigations-Icons sind nicht übersetzbar, daher kein data-i18n -->
+        <div class="nav-item">
+            <img src="../assets/images/icons/home.png" alt="Home" onclick="location.href='categories.html'">
+        </div>
+        <div class="nav-item">
+            <img src="../assets/images//icons/yoga.png" alt="yoga pose style" onclick="location.href='profile.html'">
+        </div>
+        <div class="nav-item">
+            <img src="../assets/images//icons/gear.png" alt="Settings" onclick="location.href='settings.html'">
+        </div>
+
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../main.js"></script>
+
+</body>
+</html>

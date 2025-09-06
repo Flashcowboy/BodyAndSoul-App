@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitleSubCategories">Grundübungen</title>
+    <link rel="stylesheet" href="../../styles.css">
+   <!-- <link rel="manifest" href="../manifest.json"> -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        main {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 25px 50px;
+        }
+
+        .subcategory-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 150px;
+        }
+
+        .subcategory-card{
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .subcategory-card:hover{
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        /* when clicked*/
+        .subcategory-card:active {
+        transform: translateY(1px) translateX(1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subcategory-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.2);
+            color: rgb(242, 237, 237);
+            font-size: 12px;
+            font-weight: regular;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 1rem 0;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+        }
+
+        footer .nav-item img {
+            width: 30px;
+            height: auto;
+        }
+        
+    </style>
+</head>
+<body>
+
+
+    <header>
+        <h1 data-i18n="subcat03_Header">Für einen besseren Schlaf</h1>
+    </header>
+<p>id=subcat02_01</p>
+
+    <main>
+        <div class="subcategory-card" id="subcat03_01" data-audio-base-name="sample_audio1">
+            <img src="../../assets/images/subcategories/subcat_02/subcat_01.png" alt="Schwereübung">
+            <div class="card-text">
+                <h2 data-i18n="SubCat03_module1Title">Übung zum Einschlafen</h2>
+            </div>
+        </div>
+
+        <div class="subcategory-card" id="subcat03_02" data-audio-base-name="sample_audio2">
+            <img src="../../assets/images/subcategories/subcat_02/subcat_02.png" alt="Wärmeübung">
+            <div class="card-text">
+                <h2 data-i18n="SubCat03_module2Title">Übung mit Ausleitung</h2>
+            </div>
+        </div>
+        
+<!--
+        <div class="subcategory-card" id="subcat04_03" data-audio-base-name="sample_audio3">
+            <img src="../../assets/images/subcategories/subcat_02/subcat_03.png" alt="Herzübung">
+            <div class="card-text">
+                <h2 data-i18n="SubCat04_module3Title">Herzübung</h2>
+            </div>
+        </div>
+
+        <div class="subcategory-card" id="subcat02_04" data-audio-base-name="sample_audio4">
+            <img src="../../assets/images/subcategories/subcat_02/subcat_04.png" alt="Atemübung">
+            <div class="card-text">
+                <h2 data-i18n="SubCat02_module4Title">Atemübung</h2>
+            </div>
+        </div>
+
+        <div class="subcategory-card" id="subcat02_05" data-audio-base-name="sample_audio5">
+            <img src="../../assets/images/subcategories/subcat_02/subcat_05.png" alt="Sonnengeflecht">
+            <div class="card-text">
+                <h2 data-i18n="SubCat02_module5Title">Sonnengeflecht</h2>
+            </div>
+        </div>
+
+        <div class="subcategory-card" id="subcat02_06" data-audio-base-name="sample_audio6">
+            <img src="../../assets/images/subcategories/subcat_02/subcat_06.png" alt="Visualsierung">
+            <div class="card-text">
+                <h2 data-i18n="SubCat02_module6Title">Visualsierung</h2>
+            </div>
+        </div>-->
+    </main>
+
+   <footer>
+        <!-- Navigations-Icons sind nicht übersetzbar, daher kein data-i18n -->
+        <div class="nav-item">
+            <img src="../../assets/images/icons/home.png" alt="Home" onclick="location.href='../../structure/categories.html'">
+        </div>
+        <div class="nav-item">
+            <img src="../../assets/images/icons/yoga.png" alt="yoga pose style" onclick="location.href='../../structure/profile.html'">
+        </div>
+        <div class="nav-item">
+            <img src="../../assets/images/icons/gear.png" alt="Settings" onclick="location.href='../../structure/settings.html'">
+        </div>
+
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../../main.js"></script>
+</body>
+</html>

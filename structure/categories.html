@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitleCategories">Kategorien</title>
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+         body {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            background-color: #f8f9fb;
+            /* Hintergrundbild direkt auf den Body anwenden */
+            background-image: url('../assets/images/backgrounds/bg_mountains_blue.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+                header {
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        main {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 25px 10px;
+        }
+
+        .category-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 150px;
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.2);
+            color: rgb(242, 237, 237);
+            font-size: 12px;
+            font-weight: regular;
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <header>
+        <h3 data-i18n="Cat_Header">Herzlich Willkommen<br>Dein Autogenes Training</h3>
+    </header>
+
+    <main>
+         <div class="category-card" id="Cat_card1Title" onclick="window.location.href = 'subcategories/subcat01_whatisat.html';">
+            <img src="../assets/images/categories/cat_01.png" alt="Allgemeine Entspannung">
+            <div class="card-text">
+                <h2 data-i18n="card1Title">Allgemeine Entspannung</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card2Title" onclick="window.location.href = 'subcategories/subcat02_basics.html';">
+            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <div class="card-text">
+                <h2 data-i18n="card2Title">Grundübungen</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card3Title" onclick="window.location.href = 'subcategories/subcat03_sleep.html';">
+            <img src="../assets/images/categories/cat_03.png" alt="Erholsamer Schlaf">
+            <div class="card-text">
+                <h2 data-i18n="card3Title">Für einen erholsamen Schlaf</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card4Title" onclick="window.location.href = 'subcategories/subcat04_success.html';">
+            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
+            <div class="card-text">
+                <h2 data-i18n="card4Title">Erfolg</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card5Title" onclick="window.location.href = 'subcategories/subcat05_weightloss.html';">
+            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <div class="card-text">
+                <h2 data-i18n="card5Title">Abnehmen</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card6Title" onclick="window.location.href = 'subcategories/subcat06_emotions.html';">
+            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <div class="card-text">
+                <h2 data-i18n="card6Title">Emotionale Stabilität</h2>
+            </div>
+        </div>
+        <div class="category-card" id="Cat_card7Title" onclick="window.location.href = 'subcategories/subcat07_health.html';">
+            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
+            <div class="card-text">
+                <h2 data-i18n="card7Title">Für ein gesundes Leben</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card8Title" onclick="window.location.href = 'subcategories/subcat08_relaxed.html';">
+            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <div class="card-text">
+                <h2 data-i18n="card8Title">Entspannt und ausgeglichen</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card9Title" onclick="window.location.href = 'subcategories/subcat09_habits.html';">
+            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <div class="card-text">
+                <h2 data-i18n="card9Title">Gewohnheiten ändern</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card10Title" onclick="window.location.href = 'subcategories/subcat10_smokeless.html';">
+            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <div class="card-text">
+                <h2 data-i18n="card10Title">Nichtraucher werden</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card11Title" onclick="window.location.href = 'subcategories/subcat10_smokeless.html';">
+            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <div class="card-text">
+                <h2 data-i18n="card11Title">Selbstvertrauen</h2>
+            </div>
+        </div>
+    </main>
+
+    <!-- Hier wird die Logik der App eingefügt -->
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+<script src="../main.js"></script>
+
+    <footer>
+        <!-- Navigations-Icons sind nicht übersetzbar, daher kein data-i18n -->
+        <div class="nav-item">
+            <img src="../assets/images/icons/home.png" alt="Home" onclick="location.href='categories.html'">
+        </div>
+        <div class="nav-item">
+            <img src="../assets/images//icons/yoga.png" alt="yoga pose style" onclick="location.href='profile.html'">
+        </div>
+        <div class="nav-item">
+            <img src="../assets/images//icons/gear.png" alt="Settings" onclick="location.href='settings.html'">
+        </div>
+
+    </footer>
+    
+
+
+</body>
+</html>
