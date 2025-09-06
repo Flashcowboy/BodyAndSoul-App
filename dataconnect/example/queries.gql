@@ -1,0 +1,24 @@
+mutation CreateUser @auth(level: USER) {
+  user_insert(data: {displayName: "New User", createdAt_expr: "request.time"})
+}
+
+query ListCourses @auth(level: PUBLIC) {
+  courses {
+    id
+    title
+    description
+  }
+}
+
+mutation UpdateCourse($id: UUID!, $title: String) @auth(level: USER) {
+  course_update(key: {id: $id}, data: {title: $title})
+}
+
+query ListSessionsForCourse($courseId: UUID!) @auth(level: USER) {
+  sessions(where: {courseId: {eq: $courseId}}) {
+    id
+    title
+    description
+    durationSeconds
+  }
+}
