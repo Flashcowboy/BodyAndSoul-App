@@ -54,27 +54,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script>
-        let auth, db;
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDc2mHF6MqDtWOa_1Fp8D85Zgs6XCjOxB4",
-                authDomain: "body-and-soul-app.firebaseapp.com",
-                projectId: "body-and-soul-app",
-                storageBucket: "body-and-soul-app.firebasestorage.app",
-                messagingSenderId: "741338763637",
-                appId: "1:741338763637:web:4ac82aa3857ec5d7a1c33c"
-            };
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            auth = firebase.auth();
-            db = firebase.firestore();
-            console.log("DEBUG: Firebase auf register.html initialisiert.");
-        } catch (e) {
-            console.error("DEBUG: Firebase Init fehlgeschlagen", e);
-        }
+    <script src="firebase-config.js"></script>
+    <script src="main.js"></script>
 
+    <script>
         function handleRegistration() {
             console.log("DEBUG: handleRegistration() wurde aufgerufen.");
             const passwordInput = document.getElementById('password');

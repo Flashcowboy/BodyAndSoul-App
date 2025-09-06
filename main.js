@@ -1,28 +1,4 @@
-// ==========================================================================
-// --- 1. FIREBASE INITIALISIERUNG (Global Scope) ---
-// ==========================================================================
-let auth, db, storage;
-try {
-    const firebaseConfig = {
-        apiKey: "AIzaSyDc2mHF6MqDtWOa_1Fp8D85Zgs6XCjOxB4",
-        authDomain: "body-and-soul-app.firebaseapp.com",
-        projectId: "body-and-soul-app",
-        storageBucket: "body-and-soul-app.firebasestorage.app",
-        messagingSenderId: "741338763637",
-        appId: "1:741338763637:web:4ac82aa3857ec5d7a1c33c",
-        measurementId: "G-J90NCMS05C"
-    };
-    // Initialize Firebase only once
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    auth = firebase.auth();
-    db = firebase.firestore();
-    storage = firebase.storage(); // Storage initialisieren
-    console.log("Firebase Initialized.");
-} catch (e) {
-    console.error("Firebase Init Failed", e);
-}
+
 
 // ==========================================================================
 // --- 2. AUTH GUARD (Global Scope) ---

@@ -11,14 +11,24 @@
             display: flex;
             flex-direction: column;
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             height: 100vh;
-            background-color: #f4f4f9;
+            background-color: #f8f9fb;
+            /* Hintergrundbild direkt auf den Body anwenden */
+            background-image: url('../../assets/images/backgrounds/bg_mountains_blue.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         header {
             text-align: center;
             padding: 5px 0;
+        }
+
+        .header-txt {
+            text-align: justify;
+            padding: 0 40px;
         }
 
         main {
@@ -97,7 +107,10 @@
 
 
     <header>
-        <h1 data-i18n="subcat02_Header">Grundübungen</h1>
+        <h2 data-i18n="SubCat02_Header"></h2>
+        <div class="header-txt">
+            <p data-i18n="SubCat02_Instruction"></p>
+        </div>
     </header>
 
     <main>
@@ -162,6 +175,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../../firebase-config.js"></script>
     <script src="../../main.js"></script>
 </body>
 </html>
