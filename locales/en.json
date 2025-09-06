@@ -59,6 +59,18 @@
   "Profil_Header": "YOUR PROFILE",
 
   "audioPlayerTitle": "AUDIO PLAYER",
+  "read_aloud": "Read Aloud",
+  "download_audio": "Download Audio",
+  "favorite": "Favorite",
+  "unfavorite": "Unfavorite",
+  "play": "Play",
+  "pause": "Pause",
+  "stop": "Stop",
+  "rewind": "Rewind",
+  "forward": "Forward",
+  "volume": "Volume",
+  "mute": "Mute",
+  "unmute": "Unmute",
 
   "loginTitle": "Login",
   "login_forgotten_password": "Forgot Password?",
