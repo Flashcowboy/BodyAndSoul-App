@@ -7,15 +7,10 @@
     <link rel="stylesheet" href="../styles.css">
     <style>
          body {
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: rgb(8, 43, 86);
-            height: 100vh;
-            background-color: #2c3e64;
+        
+            background-color: #f2f4f7;
             /* Hintergrundbild direkt auf den Body anwenden */
-            background-image: url('../assets/images/bg_mountains_blue.png');
+            background-image: url('../assets/images/backgrounds/bg_trees.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -55,13 +50,13 @@
             max-width: 500px;
             background-color: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             /* Hintergrundbild direkt auf den Body anwenden */
-            background-image: url('../assets/images/backgrounds/bg_teal.png');
+            background-image: url('../assets/images/backgrounds/bg_audioplayer.png');
         }
 
         .controls {
@@ -87,7 +82,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: #76c7c0;
+            background-color: rgb(17, 188, 83);
             padding: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -96,7 +91,7 @@
         .progress-container {
             width: 100%;
             height: 8px;
-            background-color: #e0e0e0;
+            background-color: #001405;
             border-radius: 4px;
             cursor: pointer;
             margin-top: 20px;
@@ -104,7 +99,7 @@
 
         .progress-bar {
             height: 100%;
-            background-color: #76c7c0;
+            background-color: rgb(17, 188, 83);
             width: 0%;
             border-radius: 4px;
             transition: width 0.1s linear; /* sanfter Übergang */
@@ -121,6 +116,24 @@
 
         #track-title {
             text-align: center;
+            font-family: Arial, sans-serif;
+            color: rgb(17, 188, 83);
+        }
+
+        .app-logo {
+            display: flex;
+            justify-content: center;
+        
+            width: 100%;
+        }
+
+        .app-logo img {
+            max-width: 220px;
+            height: auto;
+        }
+        .app-logo img {
+            max-width: 220px;
+            height: auto;
         }
 
         
@@ -129,11 +142,16 @@
 <body>
 
     <header>
-        <h1 data-i18n="audioPlayerTitle">...</h1>
+        <h1 data-i18n="audioPlayerTitle"></h1><!-- Titel des Audio Players -->
     </header>
    <main>
+
+        <div class="app-logo">
+            <img src="../assets/images/logo_512.png" alt="Logo">
+        </div>
+
         <div class="player-container">
-            <h3 id="track-title">Schwereübung</h3>
+            <h3 id="track-title"></h3> <!-- Tracktitel -->
             <audio id="audio-player"></audio>
             
             <div class="progress-container" id="progress-container">
@@ -146,13 +164,19 @@
             </div>
 
             <div class="controls">
-                <img src="../assets/images/icons/rewind15_icon_black.png" alt="15 Sekunden zurückspulen" id="rewind-btn">
-                <img src="../assets/images/icons/play_Icon_black.png" alt="Abspielen" id="play-pause-btn" class="play-pause-btn">
-                <img src="../assets/images/icons/forward15_icon_black.png" alt="15 Sekunden vorspulen" id="forward-btn">
+                <img src="../assets/images/icons/rewind15_icon_white.png" alt="15 Sekunden zurückspulen" id="rewind-btn">
+                <img src="../assets/images/icons/play_icon_black.png" alt="Abspielen" id="play-pause-btn" class="play-pause-btn">
+                <img src="../assets/images/icons/forward15_icon_white.png" alt="15 Sekunden vorspulen" id="forward-btn">
             </div>
         </div>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../main.js"></script>
     <footer>
         <div class="nav-item">
             <img src="../assets/images/icons/home.png" alt="Home" onclick="location.href='categories.html'">
@@ -165,11 +189,6 @@
         </div>
     </footer>
     
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script src="../main.js"></script>
+    
 </body>
 </html>

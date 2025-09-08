@@ -205,9 +205,13 @@
                     <span class="label" data-i18n="profile_settings_change_password"></span> <!--Passwort ändern-->
                     <span class="action">></span>
                 </div>
-                <div class="setting-item">
+                <div id="language-switcher" class="setting-item" style="cursor: pointer;">
                     <span class="label" data-i18n="profile_settings_language"></span> <!--Sprache-->
-                    <span class="action">Deutsch ></span>
+                    <div class="action" style="display: flex; align-items: center;">
+                        <img id="language-icon" src="" alt="" style="width: 24px; margin-right: 8px;">
+                        <span id="language-name"></span>
+                        <span>&nbsp;></span>
+                    </div>
                 </div>
                  <div class="setting-item">
                     <span class="label" data-i18n="profile_settings_reminders"></span> <!--Erinnerungen-->

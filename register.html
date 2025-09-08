@@ -6,7 +6,7 @@
     <title>Registrieren</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; color: #fff; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; color: rgba(20, 53, 87, 0.8); }
         .splash-container { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; }
         .splashscreen-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('./assets/images/splash_screen_bg.png'); background-size: cover; background-position: center; }
         .login-container { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; box-sizing: border-box; text-align: center; }
@@ -14,8 +14,8 @@
         .input-group input { width: 100%; padding: 5px; border: none; background: transparent; color: rgb(37, 62, 137); font-size: 14px; outline: none; text-align: left; box-sizing: border-box; }
         .input-group input::placeholder { color: rgba(18, 37, 92, 0.7); }
         .login-button { width: 100%; max-width: 300px; padding: 15px; border: none; background-color: #5a7d9a; color: white; border-radius: 20px; font-size: 18px; cursor: pointer; margin-top: 10px; }
-        .register-link { margin-top: 20px; font-size: 14px; color: rgba(255, 255, 255, 0.8); }
-        .register-link a { color: white; text-decoration: underline; }
+        .register-link { margin-top: 20px; font-size: 16px; color: rgba(20, 53, 87, 0.8); }
+        .register-link a { color: rgba(20, 53, 87, 0.8); text-decoration: underline; }
         .form-row { display: flex; gap: 10px; width: 100%; max-width: 500px; margin-bottom: 5px; }
     </style>
 </head>
@@ -23,29 +23,31 @@
     <div class="splash-container">
         <div class="splashscreen-image"></div>
         <div class="login-container">
-            <h1>Registrierung</h1>
-            <form id="register-form" onsubmit="handleRegistration(); return false;">
+            <h1 data-i18n="registerTitle">Registrierung</h1>
+            <form id="register-form">
                 <div class="form-row">
-                    <div class="input-group"><input type="text" id="firstName" placeholder="Vorname" required></div>
-                    <div class="input-group"><input type="text" id="lastName" placeholder="Nachname" required></div>
+                    <div class="input-group"><input type="text" id="firstName" placeholder="Vorname" data-i18n-placeholder="reg-firstname" required></div>
+                    <div class="input-group"><input type="text" id="lastName" placeholder="Nachname" data-i18n-placeholder="reg-lastname" required></div>
                 </div>
-                <div class="form-row"><div class="input-group"><input type="email" id="email" placeholder="E-Mail" required></div></div>
+                <div class="form-row"><div class="input-group"><input type="email" id="email" placeholder="E-Mail" data-i18n-placeholder="reg-email" required></div></div>
                 <div class="form-row">
-                    <div class="input-group"><input type="password" id="password" placeholder="Passwort" required></div>
-                    <div class="input-group"><input type="password" id="password-confirm" placeholder="Passwort bestätigen" required></div>
+                    <div class="input-group"><input type="password" id="password" placeholder="Passwort" data-i18n-placeholder="reg-password" required></div>
+                    <div class="input-group"><input type="password" id="password-confirm" placeholder="Passwort bestätigen" data-i18n-placeholder="reg-password-confirm" required></div>
                 </div>
-                <div id="password-error-message" style="display: none; color: red; margin-bottom: 10px;">Passwörter stimmen nicht überein.</div>
-                <div class="form-row"><div class="input-group"><input type="text" id="street" placeholder="Straße und Hausnummer" required></div></div>
+                <div id="password-error-message" style="display: none; color: red; margin-bottom: 10px;" data-i18n="reg-password-error">Passwörter stimmen nicht überein.</div>
+                <div class="form-row"><div class="input-group"><input type="text" id="street" placeholder="Straße und Hausnummer" data-i18n-placeholder="reg-street" required></div></div>
                 <div class="form-row">
-                    <div class="input-group"><input type="text" id="zipCode" placeholder="Postleitzahl" required></div>
-                    <div class="input-group"><input type="text" id="city" placeholder="Ort" required></div>
+                    <div class="input-group"><input type="text" id="zipCode" placeholder="Postleitzahl" data-i18n-placeholder="reg-zipcode" required></div>
+                    <div class="input-group"><input type="text" id="city" placeholder="Ort" data-i18n-placeholder="reg-city" required></div>
                 </div>
-                <div class="form-row"><div class="input-group"><input type="text" id="country" placeholder="Land" required></div></div>
+                <div class="form-row"><div class="input-group"><input type="text" id="country" placeholder="Land" data-i18n-placeholder="reg-country" required></div></div>
+
+                 <div class="form-row"><p>Optional</p></div>
                 <div class="form-row">
-                    <div class="input-group"><input type="date" id="birthdate"></div>
-                    <div class="input-group"><input type="tel" id="mobile" placeholder="Mobilnummer (optional)"></div>
+                    <div class="input-group"><input type="date" id="birthdate" placeholder="Geburtsdatum(optional)" data-i18n-placeholder="reg-birthdate"></div>
+                    <div class="input-group"><input type="tel" id="mobile" placeholder="Mobilnummer" data-i18n-placeholder="reg-mobile"></div>
                 </div>
-                <button type="submit" class="login-button">Registrieren</button>
+                <button type="submit" class="login-button" data-i18n="registerButton">Registrieren</button>
             </form>
             <div class="register-link">Schon ein Konto? <a href="login.html">Hier einloggen.</a></div>
         </div>
@@ -55,57 +57,94 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="main.js"></script>
-
     <script>
-        function handleRegistration() {
-            console.log("DEBUG: handleRegistration() wurde aufgerufen.");
-            const passwordInput = document.getElementById('password');
-            const passwordConfirmInput = document.getElementById('password-confirm');
-            const passwordErrorMessage = document.getElementById('password-error-message');
-
-            if (passwordInput.value !== passwordConfirmInput.value) {
-                passwordErrorMessage.style.display = 'block';
-                return;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Translations ---
+            async function loadTranslations(lang) {
+                try {
+                    const response = await fetch(`./locales/${lang}.json`);
+                    if (!response.ok) throw new Error('Language file not found');
+                    const translations = await response.json();
+                    document.querySelectorAll('[data-i18n], [data-i18n-placeholder]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        const placeholderKey = element.getAttribute('data-i18n-placeholder');
+                        if (key && translations[key]) element.innerHTML = translations[key];
+                        if (placeholderKey && translations[placeholderKey]) element.placeholder = translations[placeholderKey];
+                    });
+                } catch (error) {
+                    console.error('Translation Error:', error);
+                }
             }
-            passwordErrorMessage.style.display = 'none';
 
-            const email = document.getElementById('email').value;
-            const password = passwordInput.value;
-
-            if (!email || !password || password.length < 6) {
-                alert('Bitte E-Mail und ein Passwort mit mind. 6 Zeichen eingeben.');
-                return;
+            function initializeLanguage() {
+                const lang = localStorage.getItem('lang') || 'de';
+                loadTranslations(lang);
             }
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .then(cred => {
-                    console.log("DEBUG: Auth-Benutzer erstellt:", cred.user.uid);
-                    const userProfileData = {
-                        uid: cred.user.uid,
-                        email: cred.user.email,
-                        firstName: document.getElementById('firstName').value,
-                        lastName: document.getElementById('lastName').value,
-                        street: document.getElementById('street').value,
-                        zipCode: document.getElementById('zipCode').value,
-                        city: document.getElementById('city').value,
-                        country: document.getElementById('country').value,
-                        birthdate: document.getElementById('birthdate').value,
-                        mobile: document.getElementById('mobile').value,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    console.log("DEBUG: Schreibe in Firestore:", userProfileData);
-                    return db.collection('User_Profiles').doc(cred.user.uid).set(userProfileData);
-                })
-                .then(() => {
-                    console.log("DEBUG: Firestore-Schreiben erfolgreich.");
-                    window.location.href = './registration_success.html';
-                })
-                .catch((err) => {
-                    console.error("DEBUG: FEHLER:", err);
-                    alert("Fehler: " + err.message);
+            initializeLanguage();
+
+            // --- Register Page Logic ---
+            const registerForm = document.getElementById('register-form');
+            if (registerForm) {
+                registerForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const passwordInput = document.getElementById('password');
+                    const passwordConfirmInput = document.getElementById('password-confirm');
+                    const passwordErrorMessage = document.getElementById('password-error-message');
+
+                    if (passwordInput.value !== passwordConfirmInput.value) {
+                        passwordErrorMessage.style.display = 'block';
+                        return;
+                    }
+                    passwordErrorMessage.style.display = 'none';
+
+                    const email = document.getElementById('email').value;
+                    const password = passwordInput.value;
+
+                    if (!email || !password || password.length < 6) {
+                        alert('Bitte E-Mail und ein Passwort mit mind. 6 Zeichen eingeben.');
+                        return;
+                    }
+
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .then(cred => {
+                            console.log("DEBUG: User created in Auth. UID:", cred.user.uid);
+                            const userProfileData = {
+                                uid: cred.user.uid,
+                                email: cred.user.email,
+                                firstName: document.getElementById('firstName').value,
+                                lastName: document.getElementById('lastName').value,
+                                street: document.getElementById('street').value,
+                                zipCode: document.getElementById('zipCode').value,
+                                city: document.getElementById('city').value,
+                                country: document.getElementById('country').value,
+                                birthdate: document.getElementById('birthdate').value,
+                                mobile: document.getElementById('mobile').value,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                listeningTime: 0,
+                                sessions: 0,
+                                streak: 0
+                            };
+                            console.log("DEBUG: Attempting to write to Firestore with this data:", userProfileData);
+                            return db.collection('User_Profiles').doc(cred.user.uid).set(userProfileData);
+                        })
+                        .then(() => {
+                            console.log("DEBUG: Firestore write SUCCEEDED. Redirecting to success page.");
+                            window.location.href = `./registration_success.html`;
+                        })
+                        .catch((err) => {
+                            console.error("--- REGISTRATION ERROR CATCH BLOCK ---");
+                            console.error("Full error object:", err);
+                            console.error("Error code:", err.code);
+                            console.error("Error message:", err.message);
+                            alert("Ein Fehler ist aufgetreten. Bitte die Entwicklerkonsole prüfen.");
+                            window.location.href = `./registration_error.html`;
+                        });
                 });
-        }
+            }
+        });
     </script>
+
 </body>
 </html>

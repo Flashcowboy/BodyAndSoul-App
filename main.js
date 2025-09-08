@@ -183,9 +183,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // --- 5. Firebase-dependent Logic ---
+    // --- 6. Register Page Logic (Publicly Accessible) ---
     // ==========================================================================
-    if (auth && db && storage) { // Add storage to the check
+    /*
+    if (path.endsWith('register.html')) {
+        const registerForm = document.getElementById('register-form');
+        if (registerForm) {
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const passwordInput = document.getElementById('password');
+                const passwordConfirmInput = document.getElementById('password-confirm');
+                const passwordErrorMessage = document.getElementById('password-error-message');
+
+                if (passwordInput.value !== passwordConfirmInput.value) {
+                    passwordErrorMessage.style.display = 'block';
+                    return;
+                }
+                passwordErrorMessage.style.display = 'none';
+
+                const email = document.getElementById('email').value;
+                const password = passwordInput.value;
+
+                if (!email || !password || password.length < 6) {
+                    alert('Bitte E-Mail und ein Passwort mit mind. 6 Zeichen eingeben.');
+                    return;
+                }
+
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(cred => {
+                        console.log("DEBUG: User created in Auth. UID:", cred.user.uid);
+                        const userProfileData = {
+                            uid: cred.user.uid,
+                            email: cred.user.email,
+                            firstName: document.getElementById('firstName').value,
+                            lastName: document.getElementById('lastName').value,
+                            street: document.getElementById('street').value,
+                            zipCode: document.getElementById('zipCode').value,
+                            city: document.getElementById('city').value,
+                            country: document.getElementById('country').value,
+                            birthdate: document.getElementById('birthdate').value,
+                            mobile: document.getElementById('mobile').value,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            listeningTime: 0,
+                            sessions: 0,
+                            streak: 0
+                        };
+                        console.log("DEBUG: Attempting to write to Firestore with this data:", userProfileData);
+                        return db.collection('User_Profiles').doc(cred.user.uid).set(userProfileData);
+                    })
+                    .then(() => {
+                        console.log("DEBUG: Firestore write SUCCEEDED. Redirecting to success page.");
+                        window.location.href = `${pathToRoot}registration_success.html`;
+                    })
+                    .catch((err) => {
+                        // --- TEMPORARY DEBUGGING BLOCK ---
+                        console.error("--- REGISTRATION ERROR CATCH BLOCK ---");
+                        console.error("Full error object:", err);
+                        console.error("Error code:", err.code);
+                        console.error("Error message:", err.message);
+                        alert("Ein Fehler ist aufgetreten. Bitte die Entwicklerkonsole prüfen.");
+                        // Temporarily disabled redirect to see the console logs.
+                        window.location.href = `${pathToRoot}registration_error.html`; 
+                    });
+            });
+        }
+    }
+        */
+
+    // ==========================================================================
+    // --- 7. Firebase-dependent Logic (User must be authenticated) ---
+    // ==========================================================================
+    if (auth && db && storage) {
         // Login Page
         if (path.endsWith('login.html')) {
             const loginBtn = document.getElementById('login-btn');
@@ -196,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const password = document.getElementById('password').value;
                     if (!email || !password) return alert('Bitte E-Mail und Passwort eingeben.');
                     auth.signInWithEmailAndPassword(email, password)
-                        .then(() => { window.location.href = `${pathToRoot}structure/categories.html`; }) // Corrected redirect
+                        .then(() => { window.location.href = `${pathToRoot}structure/categories.html`; })
                         .catch(() => { window.location.href = `${pathToRoot}login_error.html`; });
                 });
             }
@@ -223,87 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Register Page
-        if (path.endsWith('register.html')) {
-            const registerForm = document.getElementById('register-form');
-            const passwordInput = document.getElementById('password');
-            const passwordConfirmInput = document.getElementById('password-confirm');
-            const passwordErrorMessage = document.getElementById('password-error-message');
-
-            const validatePasswords = () => {
-                const pass1 = passwordInput.value;
-                const pass2 = passwordConfirmInput.value;
-                const pass1Group = passwordInput.parentElement;
-                const pass2Group = passwordConfirmInput.parentElement;
-
-                if (pass2.length > 0) {
-                    if (pass1 !== pass2) {
-                        pass1Group.classList.add('input-error');
-                        pass2Group.classList.add('input-error');
-                        return false;
-                    }
-                }
-                pass1Group.classList.remove('input-error');
-                pass2Group.classList.remove('input-error');
-                return true;
-            };
-
-            passwordInput.addEventListener('input', validatePasswords);
-            passwordConfirmInput.addEventListener('input', validatePasswords);
-
-            if (registerForm) {
-                registerForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-
-                    const passwordsMatch = (passwordInput.value === passwordConfirmInput.value);
-
-                    if (!passwordsMatch) {
-                        passwordErrorMessage.style.display = 'block';
-                        passwordInput.parentElement.classList.add('input-error');
-                        passwordConfirmInput.parentElement.classList.add('input-error');
-                        return;
-                    }
-
-                    const email = document.getElementById('email').value;
-                    const password = passwordInput.value;
-
-                    if (!email || !password || password.length < 6) {
-                        alert('Bitte E-Mail und ein Passwort mit mind. 6 Zeichen eingeben.');
-                        return;
-                    }
-
-                    auth.createUserWithEmailAndPassword(email, password)
-                        .then(cred => {
-                            const userProfileData = {
-                                uid: cred.user.uid,
-                                email: cred.user.email,
-                                firstName: document.getElementById('firstName').value,
-                                lastName: document.getElementById('lastName').value,
-                                street: document.getElementById('street').value,
-                                zipCode: document.getElementById('zipCode').value,
-                                city: document.getElementById('city').value,
-                                country: document.getElementById('country').value,
-                                birthdate: document.getElementById('birthdate').value,
-                                mobile: document.getElementById('mobile').value,
-                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                listeningTime: 0,
-                                sessions: 0,
-                                streak: 0
-                            };
-                            return db.collection('User_Profiles').doc(cred.user.uid).set(userProfileData);
-                        })
-                        .then(() => {
-                            window.location.href = `${pathToRoot}registration_success.html`;
-                        })
-                        .catch((err) => {
-                            console.error("Registration Error:", err);
-                            alert(err.message);
-                            window.location.href = `${pathToRoot}registration_error.html`;
-                        });
-                });
-            }
-        }
-
         // Password Reset Page
         if (path.endsWith('password_reset.html')) {
             const resetBtn = document.getElementById('reset-password-btn');
@@ -322,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Profile Page Logout
+        // Profile Page Logic
         if (path.endsWith('profile.html')) {
             const logoutButton = document.getElementById('logout-btn');
             if (logoutButton) {
@@ -335,6 +322,33 @@ document.addEventListener('DOMContentLoaded', () => {
                             alert("Fehler beim Ausloggen.");
                         });
                     }
+                });
+            }
+
+            // Language Switcher Logic
+            const languageSwitcher = document.getElementById('language-switcher');
+            if (languageSwitcher) {
+                const langIcon = document.getElementById('language-icon');
+                const langName = document.getElementById('language-name');
+                const currentLang = localStorage.getItem('lang') || 'de';
+
+                const updateLangDisplay = (lang) => {
+                    if (lang === 'de') {
+                        langIcon.src = '../assets/images/icons/english.png';
+                        langName.textContent = 'English';
+                    } else {
+                        langIcon.src = '../assets/images/icons/german.png';
+                        langName.textContent = 'Deutsch';
+                    }
+                };
+
+                updateLangDisplay(currentLang);
+
+                languageSwitcher.addEventListener('click', () => {
+                    const newLang = (localStorage.getItem('lang') || 'de') === 'de' ? 'en' : 'de';
+                    localStorage.setItem('lang', newLang);
+                    updateLangDisplay(newLang);
+                    loadTranslations(newLang);
                 });
             }
 
@@ -444,6 +458,72 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             });
+
+            
         }
+        // --- Logic for the "For You" Section on categories.html ---
+            if (path.endsWith('categories.html')) {
+                const forYouResultsContainer = document.getElementById('for-you-results');
+                const moodButtons = document.querySelectorAll('.mood-button');
+
+                // Function to render the category cards
+                function renderForYouCards(tracks) {
+                    let html = '';
+                    if (tracks.length === 0) {
+                        html = `<p data-i18n="noResults">Keine passenden Übungen gefunden.</p>`;
+                    } else {
+                        tracks.forEach(track => {
+                            const lang = localStorage.getItem('lang') || 'de';
+                            const titleKey = `title_${lang}`;
+                            const title = track[titleKey] || track.title_de; // Fallback to German
+                            const imagePath = track.image_path ? `${pathToRoot}${track.image_path}` : `${pathToRoot}assets/images/categories/cat_01.png`; // Fallback image
+                            const audioPath = track.path;
+                            const docId = track.id; // Assuming you pass the document ID
+
+                            html += `
+                                <div class="category-card" onclick="window.location.href = '${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioPath)}&title=${encodeURIComponent(title)}';">
+                                    <img src="${imagePath}" alt="${title}">
+                                    <div class="card-text">
+                                        <h2>${title}</h2>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    forYouResultsContainer.innerHTML = html;
+                    loadTranslations(localStorage.getItem('lang') || 'de'); // Reload translations for new elements
+                }
+
+                moodButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const selectedTag = button.getAttribute('data-tag');
+                        
+                        // Highlight the selected button
+                        moodButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        // Clear previous results
+                        forYouResultsContainer.innerHTML = `<p data-i18n="loading">Lädt...</p>`;
+
+                        // Fetch data from Firestore
+                        db.collection('audio_tracks') // Adjust collection name if different
+                            .where('tags', 'array-contains', selectedTag)
+                            .limit(3) // Suggest only 3 tracks for a clean UI
+                            .get()
+                            .then(snapshot => {
+                                const tracks = [];
+                                snapshot.forEach(doc => {
+                                    tracks.push({ id: doc.id, ...doc.data() });
+                                });
+                                renderForYouCards(tracks);
+                            })
+                            .catch(error => {
+                                console.error("Error fetching tracks:", error);
+                                forYouResultsContainer.innerHTML = `<p data-i18n="error">Fehler beim Laden der Übungen.</p>`;
+                                loadTranslations(localStorage.getItem('lang') || 'de');
+                            });
+                    });
+                });
+            }
     }
 });

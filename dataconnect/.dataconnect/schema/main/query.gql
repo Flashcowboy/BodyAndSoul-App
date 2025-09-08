@@ -1,0 +1,257 @@
+extend type Query {
+  """
+  ✨ Look up a single `Course` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  course(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Course_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Course_FirstRow
+  ): Course @fdc_generated(from: "Course", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Session` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  session(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Session_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Session_FirstRow
+  ): Session @fdc_generated(from: "Session", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `User` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  user(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+  ): User @fdc_generated(from: "User", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `UserCourseProgress` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  userCourseProgress(
+    """
+    The key used to identify the object.
+    """
+    key: UserCourseProgress_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserCourseProgress_FirstRow
+  ): UserCourseProgress @fdc_generated(from: "UserCourseProgress", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `UserSessionCompletion` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  userSessionCompletion(
+    """
+    The key used to identify the object.
+    """
+    key: UserSessionCompletion_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSessionCompletion_FirstRow
+  ): UserSessionCompletion @fdc_generated(from: "UserSessionCompletion", purpose: QUERY_SINGLE)
+  """
+  ✨ List `Course` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  courses(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Course_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Course_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Course_Having
+  ): [Course!]! @fdc_generated(from: "Course", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Session` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  sessions(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Session_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Session_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Session_Having
+  ): [Session!]! @fdc_generated(from: "Session", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `User` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  users(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: User_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [User_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: User_Having
+  ): [User!]! @fdc_generated(from: "User", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `UserCourseProgress` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  userCourseProgresses(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserCourseProgress_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserCourseProgress_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserCourseProgress_Having
+  ): [UserCourseProgress!]! @fdc_generated(from: "UserCourseProgress", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `UserSessionCompletion` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  userSessionCompletions(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserSessionCompletion_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserSessionCompletion_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserSessionCompletion_Having
+  ): [UserSessionCompletion!]! @fdc_generated(from: "UserSessionCompletion", purpose: QUERY_MULTIPLE)
+}

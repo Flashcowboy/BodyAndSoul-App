@@ -74,10 +74,28 @@
 
   "loginTitle": "Login",
   "login_forgotten_password": "Forgot Password?",
+  "loginButton": "Login",
+
 
   "registerTitle": "Register",
-  "loginButton": "Login",
   "registerButton": "Register",
+  "reg-firstname": "First Name",
+  "reg-lastname": "Last Name",
+  "reg-email": "Email",
+  "reg-password": "Password",
+  "reg-password-confirm": "Confirm Password",
+  "reg-password-error": "Passwords do not match.",
+  "reg-street": "Street and House Number",
+  "reg-zipcode": "Zip Code",
+  "reg-city": "City",
+  "reg-country": "Country",
+  "reg-birthdate": "Birthdate (optional)",
+  "reg-mobile": "Mobile Number (optional)",
+  "reg-gender": "Gender (optional)",  
+
+
+
+
   "email_placeholder": "Email",
   "password_placeholder": "Password",
   "password_placeholder_register": "Password (min. 6 characters)",

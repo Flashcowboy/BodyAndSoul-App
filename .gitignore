@@ -10,7 +10,6 @@ structure/.DS_Store
 structure/subcategories/.DS_Store
 assets/audio/Subcategories/de/.DS_Store
 assets/audio/Subcategories/en/.DS_Store
-favicon.ico
 test.html
-/assets/audio
+
 firebase-config.js

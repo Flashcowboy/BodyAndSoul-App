@@ -72,10 +72,25 @@
 
   "loginTitle": "Login",
   "login_forgotten_password": "Passwort vergessen?",
+  "loginButton": "Login",
+
 
   "registerTitle": "Registrieren",
-  "loginButton": "Login",
   "registerButton": "Registrieren",
+  "reg-firstname": "Vorname",
+  "reg-lastname": "Nachname",
+  "reg-email": "E-Mail",
+  "reg-password": "Passwort",
+  "reg-password-confirm": "Passwort bestätigen",
+  "reg-password-error": "Passwörter stimmen nicht überein.",
+  "reg-street": "Straße und Hausnummer",
+  "reg-zipcode": "Postleitzahl",
+  "reg-city": "Ort",
+  "reg-country": "Land",
+  "reg-birthdate": "Geburtsdatum (optional)",
+  "reg-mobile": "Mobilnummer (optional)",
+  "reg-gender": "Geschlecht (optional)",  
+
   "email_placeholder": "E-Mail",
   "password_placeholder": "Passwort",
   "password_placeholder_register": "Passwort (mind. 6 Zeichen)",
