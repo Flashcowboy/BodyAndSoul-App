@@ -11,5 +11,19 @@ structure/subcategories/.DS_Store
 assets/audio/Subcategories/de/.DS_Store
 assets/audio/Subcategories/en/.DS_Store
 test.html
+dataconnect/
+dataconnect/.DS_Store
+dataconnect/.dataconnect/.DS_Store
+dataconnect/.dataconnect/schema/.DS_Store
+dataconnect/.dataconnect/schema/main/.DS_Store
+dataconnect/.dataconnect/schema/prelude/.DS_Store
+doku/.DS_Store
+functions/.DS_Store
+functions/.dataconnect/.DS_Store
+functions/.dataconnect/schema/.DS_Store
+functions/.dataconnect/schema/main/.DS_Store
+functions/.dataconnect/schema/prelude/.DS_Store
+functions/
+
 
 firebase-config.js
