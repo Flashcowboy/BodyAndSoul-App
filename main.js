@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (path.includes('/structure/')) return '../';
         return './';
     }
-
+    // --- Funktion für die Ermittlung der Abspielposition im Player ---
     function formatTime(seconds) {
         if (isNaN(seconds)) return "0:00";
         const minutes = Math.floor(seconds / 60);
