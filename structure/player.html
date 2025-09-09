@@ -165,6 +165,16 @@
                 <img src="../assets/images/icons/forward15_icon_white.png" alt="15 Sekunden vorspulen" id="forward-btn">
             </div>
         </div>
+
+        <!-- Session Completion Screen (Initially Hidden) -->
+        <div id="session-complete-screen" class="player-container" style="display: none; text-align: center; justify-content: center;">
+            <h2 data-i18n="sessionCompleteTitle" style="color: white;">Gut gemacht!</h2>
+            <p data-i18n="sessionCompleteMsg" style="color: white;">Dein Fortschritt wurde gespeichert.</p>
+            <div id="completion-stats" style="color: white; margin: 20px 0;">
+                <!-- Stats will be populated by JavaScript -->
+            </div>
+            <button id="back-to-overview-btn" class="lang-button">Zurück zur Übersicht</button>
+        </div>
     </main>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

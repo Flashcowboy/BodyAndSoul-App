@@ -106,6 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
    
     const audioPlayer = document.getElementById('audio-player');
     if (audioPlayer) {
+        // --- Get DOM Elements ---
+        const playerContainer = document.querySelector('.player-container');
+        const completionScreen = document.getElementById('session-complete-screen');
+        const completionStats = document.getElementById('completion-stats');
+        const backToOverviewBtn = document.getElementById('back-to-overview-btn');
+        
         const playPauseBtn = document.getElementById('play-pause-btn');
         const rewindBtn = document.getElementById('rewind-btn');
         const forwardBtn = document.getElementById('forward-btn');
@@ -121,6 +127,78 @@ document.addEventListener('DOMContentLoaded', () => {
         if (audioSrc) audioPlayer.src = audioSrc;
         if (trackTitle && trackTitleElement) trackTitleElement.textContent = trackTitle;
 
+        // --- State ---
+        let sessionMarkedAsComplete = false;
+
+        // --- Helper Functions for Streak Logic ---
+        const isSameDay = (date1, date2) => {
+            if (!date1 || !date2) return false;
+            return date1.getFullYear() === date2.getFullYear() &&
+                   date1.getMonth() === date2.getMonth() &&
+                   date1.getDate() === date2.getDate();
+        };
+
+        const isYesterday = (date) => {
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+            return isSameDay(date, yesterday);
+        };
+
+        // --- Core Function to Update Stats ---
+        async function markSessionComplete() {
+            const user = auth.currentUser;
+            if (!user || !db) return;
+
+            // Show completion screen
+            if(playerContainer) playerContainer.style.display = 'none';
+            if(completionScreen) completionScreen.style.display = 'flex';
+
+            const userDocRef = db.collection('User_Profiles').doc(user.uid);
+
+            try {
+                await db.runTransaction(async (transaction) => {
+                    const userDoc = await transaction.get(userDocRef);
+                    if (!userDoc.exists) return;
+
+                    const userData = userDoc.data();
+                    
+                    const currentSessions = userData.sessions || 0;
+                    const currentStreak = userData.streak || 0;
+                    const lastSessionDate = userData.lastSessionDate ? userData.lastSessionDate.toDate() : null;
+                    
+                    let newStreak = currentStreak;
+                    if (lastSessionDate && isSameDay(lastSessionDate, new Date())) {
+                        newStreak = currentStreak;
+                    } else if (lastSessionDate && isYesterday(lastSessionDate)) {
+                        newStreak = currentStreak + 1;
+                    } else {
+                        newStreak = 1;
+                    }
+
+                    const newSessions = currentSessions + 1;
+                    const newLastSessionDate = new Date();
+
+                    transaction.update(userDocRef, {
+                        sessions: newSessions,
+                        streak: newStreak,
+                        lastSessionDate: newLastSessionDate
+                    });
+
+                    if(completionStats) {
+                        completionStats.innerHTML = `
+                            <p>Sessions: ${newSessions}</p>
+                            <p>Streak: ${newStreak} Tage</p>
+                        `;
+                    }
+                });
+            } catch (error) {
+                console.error("Transaction failed: ", error);
+                if(completionStats) completionStats.innerHTML = "<p>Fehler beim Speichern.</p>";
+            }
+        }
+
+        // --- Event Listeners ---
         if(playPauseBtn) {
             playPauseBtn.addEventListener('click', () => {
                 if (audioPlayer.paused) {
@@ -136,48 +214,50 @@ document.addEventListener('DOMContentLoaded', () => {
         if(forwardBtn) forwardBtn.addEventListener('click', () => { audioPlayer.currentTime += 15; });
         
         audioPlayer.addEventListener('timeupdate', () => {
-            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-            if(progressBar) progressBar.style.width = `${progress}%`;
-            if(currentTimeSpan) currentTimeSpan.textContent = formatTime(audioPlayer.currentTime);
+            if (audioPlayer.duration) {
+                const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                if(progressBar) progressBar.style.width = `${progress}%`;
+                if(currentTimeSpan) currentTimeSpan.textContent = formatTime(audioPlayer.currentTime);
+
+                if (progress >= 95 && !sessionMarkedAsComplete) {
+                    sessionMarkedAsComplete = true;
+                    markSessionComplete();
+                }
+            }
         });
+
         audioPlayer.addEventListener('loadedmetadata', () => {
             if(durationSpan) durationSpan.textContent = formatTime(audioPlayer.duration);
         });
+
+        if (backToOverviewBtn) {
+            backToOverviewBtn.addEventListener('click', () => {
+                window.location.href = 'categories.html';
+            });
+        }
         
         let isDragging = false;
-
-        const handleDragStart = (e) => {
-            isDragging = true;
-            handleDragMove(e);
-        };
-
-        const handleDragEnd = () => {
-            isDragging = false;
-        };
-
+        const handleDragStart = (e) => { isDragging = true; handleDragMove(e); };
+        const handleDragEnd = () => { isDragging = false; };
         const handleDragMove = (e) => {
             if (!isDragging) return;
             e.preventDefault();
             const totalWidth = progressContainer.clientWidth;
             const rect = progressContainer.getBoundingClientRect();
             const clickX = (e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX) - rect.left;
-
             const boundedClickX = Math.max(0, Math.min(clickX, totalWidth));
             const progress = boundedClickX / totalWidth;
             const newTime = progress * audioPlayer.duration;
-
             if (!isNaN(newTime) && isFinite(newTime)) {
                 if (progressBar) progressBar.style.width = `${progress * 100}%`;
                 if (currentTimeSpan) currentTimeSpan.textContent = formatTime(newTime);
                 audioPlayer.currentTime = newTime;
             }
         };
-
         if (progressContainer) {
             progressContainer.addEventListener('mousedown', handleDragStart);
             document.addEventListener('mouseup', handleDragEnd);
             document.addEventListener('mousemove', handleDragMove);
-
             progressContainer.addEventListener('touchstart', handleDragStart);
             document.addEventListener('touchend', handleDragEnd);
             document.addEventListener('touchmove', handleDragMove);
@@ -187,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // --- 6. Register Page Logic (Publicly Accessible) ---
     // ==========================================================================
-    /*
     if (path.endsWith('register.html')) {
         const registerForm = document.getElementById('register-form');
         if (registerForm) {
@@ -213,7 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 auth.createUserWithEmailAndPassword(email, password)
                     .then(cred => {
-                        console.log("DEBUG: User created in Auth. UID:", cred.user.uid);
                         const userProfileData = {
                             uid: cred.user.uid,
                             email: cred.user.email,
@@ -226,31 +304,29 @@ document.addEventListener('DOMContentLoaded', () => {
                             birthdate: document.getElementById('birthdate').value,
                             mobile: document.getElementById('mobile').value,
                             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            
+                            // Existing stats
                             listeningTime: 0,
                             sessions: 0,
-                            streak: 0
+                            
+                            // New fields for Gamification (Idea 2)
+                            streak: 0,
+                            lastSessionDate: null,
+                            unlockedBadges: []
                         };
-                        console.log("DEBUG: Attempting to write to Firestore with this data:", userProfileData);
                         return db.collection('User_Profiles').doc(cred.user.uid).set(userProfileData);
                     })
                     .then(() => {
-                        console.log("DEBUG: Firestore write SUCCEEDED. Redirecting to success page.");
                         window.location.href = `${pathToRoot}registration_success.html`;
                     })
                     .catch((err) => {
-                        // --- TEMPORARY DEBUGGING BLOCK ---
-                        console.error("--- REGISTRATION ERROR CATCH BLOCK ---");
-                        console.error("Full error object:", err);
-                        console.error("Error code:", err.code);
-                        console.error("Error message:", err.message);
-                        alert("Ein Fehler ist aufgetreten. Bitte die Entwicklerkonsole prüfen.");
-                        // Temporarily disabled redirect to see the console logs.
+                        console.error("Registration Error:", err);
+                        alert("Fehler bei der Registrierung: " + err.message);
                         window.location.href = `${pathToRoot}registration_error.html`; 
                     });
             });
         }
     }
-        */
 
     // ==========================================================================
     // --- 7. Firebase-dependent Logic (User must be authenticated) ---
@@ -363,12 +439,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     userDocRef.get().then((doc) => {
                         if (doc.exists) {
                             const userData = doc.data();
+                            
+                            // --- Populate Profile Header ---
                             const profileUsername = document.querySelector('.profile-info h2');
                             if (profileUsername) {
                                 const fullName = `${userData.firstName || ''} ${userData.lastName || ''}`.trim();
                                 profileUsername.textContent = fullName || 'Unbekannter Nutzer';
                             }
-                            document.querySelector('.profile-info p').textContent = userData.email;
+                            const profileEmail = document.querySelector('.profile-info p');
+                            if(profileEmail) profileEmail.textContent = userData.email;
                             
                             if (userData.profileImageUrl) {
                                 profileAvatarImg.src = userData.profileImageUrl;
@@ -376,12 +455,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 profileAvatarImg.src = '../assets/images/profile_img.jpg';
                             }
 
-                            const statsGrid = document.querySelector('.stats-grid');
-                            if (statsGrid) {
-                                statsGrid.querySelector('[data-i18n="profile_stats_sessions"]').previousElementSibling.textContent = userData.sessions || 0;
-                                statsGrid.querySelector('[data-i18n="profile_stats_listening_time"]').previousElementSibling.textContent = `${userData.listeningTime || 0}h`;
-                                statsGrid.querySelector('[data-i18n="profile_stats_streak"]').previousElementSibling.textContent = userData.streak || 0;
-                            }
+                            // --- Populate Stats Grid ---
+                            const statsSessions = document.getElementById('stats-sessions');
+                            const statsListeningTime = document.getElementById('stats-listening-time');
+                            const statsStreak = document.getElementById('stats-streak');
+
+                            if (statsSessions) statsSessions.textContent = userData.sessions || 0;
+                            if (statsListeningTime) statsListeningTime.textContent = `${userData.listeningTime || 0}h`;
+                            if (statsStreak) statsStreak.textContent = userData.streak || 0;
+                            
+                            // --- Settings Listeners ---
                             const editProfileButton = document.querySelector('[data-i18n="profile_settings_edit_profile"]');
                             if (editProfileButton) {
                                 editProfileButton.parentElement.addEventListener('click', () => {
@@ -396,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                             lastName: lastName
                                         })
                                             .then(() => {
-                                                profileUsername.textContent = newName.trim();
+                                                if(profileUsername) profileUsername.textContent = newName.trim();
                                                 alert("Name erfolgreich aktualisiert!");
                                             })
                                             .catch(err => alert("Fehler: " + err.message));
@@ -460,8 +543,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             });
-
-            
         }
 
         // ==========================================================================

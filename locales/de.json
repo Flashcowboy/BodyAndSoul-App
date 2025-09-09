@@ -91,7 +91,7 @@
   "reg-mobile": "Mobilnummer (optional)",
   "reg-gender": "Geschlecht (optional)",  
 
-  "forYouTitle": "<b>Herzlich Willkommen.</b><br><br>Teile mir mit wie du dich heute fühlst, dann kann ich dir geeignete Übungen vorschlagen oder du suchst dir einfach eine Übung aus der Liste aus.</p>",
+  "forYouTitle": "<h3>Herzlich Willkommen</h3><br>Teile mir mit wie du dich gerade fühlst, dann kann ich dir geeignete Übungen vorschlagen oder du suchst dir einfach eine Übung aus der Liste aus.</p>",
   "moodStress": "Gestresst",
   "moodFocus": "Fokussiert",
   "moodTired": "Müde",
@@ -107,7 +107,7 @@
   "moodEnergized": "Energiegeladen",
   "moodNeutral": "Neutral",
   "moodExcited": "Aufgeregt",
-  
+
 
 
   "email_placeholder": "E-Mail",

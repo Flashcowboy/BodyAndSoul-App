@@ -93,7 +93,7 @@
   "reg-mobile": "Mobile Number (optional)",
   "reg-gender": "Gender (optional)",  
 
-  "forYouTitle": "<b>Welcome.</b><br><br>Let me know how you're feeling today, so I can suggest suitable exercises, or you can simply choose an exercise from the list.</p>",
+  "forYouTitle": "<h3>Welcome</h3><br>Let me know how you're feeling just now, so I can suggest suitable exercises, or you can simply choose an exercise from the list.</p>",
   "moodStress": "stressed",
   "moodFocus": "focused",
   "moodTired": "tired",
