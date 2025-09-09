@@ -149,9 +149,64 @@ footer {
     border: 2px solid red;
     border-radius: 12px; /* Match parent */
 }
+.mood-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+}
+
+.mood-button {
+    background-color: rgba(8, 43, 86, 0.1); /* A light shade of the main text color */
+    border: 1px solid rgba(8, 43, 86, 0.3);
+    color: rgb(8, 43, 86);
+    padding: 8px 16px;
+    border-radius: 16px; /* Rounded corners */
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.mood-button:hover {
+    background-color: rgba(8, 43, 86, 0.2);
+    transform: scale(1.05);
+}
+
 .mood-button.active {
-    background-color: #007bff; /* Example blue color */
+    background-color: rgb(8, 43, 86); /* Use the main text color for active state */
     color: white;
     font-weight: bold;
-    border-color: #007bff;
+    border-color: rgb(8, 43, 86);
+}
+
+/* --- Styles for "For You" Result Cards --- */
+.result-card {
+    width: 100%;
+    height: 75px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+    background-color: #044a48; /* Dark Turquoise */
+    transition: background-color 0.3s ease;
+}
+
+.result-card:hover {
+    background-color: #002d2b; /* Darker on hover */
+}
+
+.result-card-title {
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.result-card-play-icon {
+    width: 35px;
+    height: 35px;
 }

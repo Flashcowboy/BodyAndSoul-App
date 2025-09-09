@@ -91,8 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const cardId = e.currentTarget.id;
             const lang = localStorage.getItem('lang') || 'de';
             const trackTitle = e.currentTarget.querySelector('h2').textContent;
+            
             if (cardId) {
-                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${lang}/${cardId}_${lang}.mp3`;
+                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${lang}/${cardId}_${lang}.m4a`;
+                
                 window.location.href = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(trackTitle)}`;
             }
         });
@@ -461,69 +463,108 @@ document.addEventListener('DOMContentLoaded', () => {
 
             
         }
+
+        // ==========================================================================
         // --- Logic for the "For You" Section on categories.html ---
-            if (path.endsWith('categories.html')) {
-                const forYouResultsContainer = document.getElementById('for-you-results');
-                const moodButtons = document.querySelectorAll('.mood-button');
+        // ==========================================================================
 
-                // Function to render the category cards
-                function renderForYouCards(tracks) {
-                    let html = '';
-                    if (tracks.length === 0) {
-                        html = `<p data-i18n="noResults">Keine passenden Übungen gefunden.</p>`;
-                    } else {
-                        tracks.forEach(track => {
-                            const lang = localStorage.getItem('lang') || 'de';
-                            const titleKey = `title_${lang}`;
-                            const title = track[titleKey] || track.title_de; // Fallback to German
-                            const imagePath = track.image_path ? `${pathToRoot}${track.image_path}` : `${pathToRoot}assets/images/categories/cat_01.png`; // Fallback image
-                            const audioPath = track.path;
-                            const docId = track.id; // Assuming you pass the document ID
+        if (path.endsWith('categories.html')) {
+            const forYouResultsContainer = document.getElementById('for-you-results');
+            const moodButtons = document.querySelectorAll('.mood-button');
 
-                            html += `
-                                <div class="category-card" onclick="window.location.href = '${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioPath)}&title=${encodeURIComponent(title)}';">
-                                    <img src="${imagePath}" alt="${title}">
-                                    <div class="card-text">
-                                        <h2>${title}</h2>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                    }
-                    forYouResultsContainer.innerHTML = html;
-                    loadTranslations(localStorage.getItem('lang') || 'de'); // Reload translations for new elements
-                }
+            // Attaches click listeners to the result cards
+            function addResultCardListeners() {
+                document.querySelectorAll('#for-you-results .result-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const audioPath = e.currentTarget.dataset.audioPath;
+                        const title = e.currentTarget.dataset.title;
 
-                moodButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const selectedTag = button.getAttribute('data-tag');
-                        
-                        // Highlight the selected button
-                        moodButtons.forEach(btn => btn.classList.remove('active'));
-                        button.classList.add('active');
-
-                        // Clear previous results
-                        forYouResultsContainer.innerHTML = `<p data-i18n="loading">Lädt...</p>`;
-
-                        // Fetch data from Firestore
-                        db.collection('audio_tracks') // Adjust collection name if different
-                            .where('tags', 'array-contains', selectedTag)
-                            .limit(3) // Suggest only 3 tracks for a clean UI
-                            .get()
-                            .then(snapshot => {
-                                const tracks = [];
-                                snapshot.forEach(doc => {
-                                    tracks.push({ id: doc.id, ...doc.data() });
-                                });
-                                renderForYouCards(tracks);
-                            })
-                            .catch(error => {
-                                console.error("Error fetching tracks:", error);
-                                forYouResultsContainer.innerHTML = `<p data-i18n="error">Fehler beim Laden der Übungen.</p>`;
-                                loadTranslations(localStorage.getItem('lang') || 'de');
-                            });
+                        if (audioPath && title) {
+                            const fullUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioPath)}&title=${encodeURIComponent(title)}`;
+                            window.location.href = fullUrl;
+                        }
                     });
                 });
             }
+
+            // Renders the fetched tracks inside a new, separate card
+            function renderForYouResults(tracks) {
+                if (tracks.length === 0) {
+                    forYouResultsContainer.innerHTML = '';
+                    return;
+                }
+
+                let html = '<div class="for-you-section">';
+                html += '<h4 data-i18n="forYouSuggestions">Deine Vorschläge</h4>';
+
+                tracks.forEach(track => {
+                    const lang = localStorage.getItem('lang') || 'de';
+                    const title = track[`title_${lang}`] || track.title_de || 'Unbenannter Track';
+                    
+                    // FINAL CORRECTED LOGIC: Use the 'path' field from DB and treat it as the base name.
+                    const filename_from_db = track.path; // e.g., "subcat02_01.m4a"
+                    let audioPath = '';
+                    if (filename_from_db) {
+                        // Remove extension to get the base name, e.g., "subcat02_01"
+                        const filename_base = filename_from_db.split('.')[0];
+                        audioPath = `${pathToRoot}assets/audio/subcategories/${lang}/${filename_base}_${lang}.m4a`;
+                    }
+
+                    if (audioPath) {
+                        html += `
+                            <div class="result-card" data-audio-path="${audioPath}" data-title="${title}">
+                                <span class="result-card-title">${title}</span>
+                                <img class="result-card-play-icon" src="${pathToRoot}assets/images/icons/play_icon_white.png" alt="Play">
+                            </div>
+                        `;
+                    }
+                });
+
+                html += '</div>';
+                forYouResultsContainer.innerHTML = html;
+                loadTranslations(localStorage.getItem('lang') || 'de');
+                addResultCardListeners(); // Add listeners after rendering
+            }
+
+            moodButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const selectedTag = button.getAttribute('data-tag');
+
+                    if (button.classList.contains('active')) {
+                        button.classList.remove('active');
+                        forYouResultsContainer.innerHTML = '';
+                        return;
+                    }
+
+                    moodButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    forYouResultsContainer.innerHTML = `<div class="for-you-section"><p data-i18n="loading">Lädt Vorschläge...</p></div>`;
+                    loadTranslations(localStorage.getItem('lang') || 'de');
+
+                    db.collection('audio_files')
+                        .where('tags', 'array-contains', selectedTag)
+                        .limit(3)
+                        .get()
+                        .then(snapshot => {
+                            const tracks = [];
+                            snapshot.forEach(doc => {
+                                tracks.push({ id: doc.id, ...doc.data() });
+                            });
+                            if (tracks.length === 0) {
+                                 forYouResultsContainer.innerHTML = `<div class="for-you-section"><p data-i18n="noResults">Keine passenden Übungen gefunden.</p></div>`;
+                                 loadTranslations(localStorage.getItem('lang') || 'de');
+                            } else {
+                                renderForYouResults(tracks);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error fetching 'For You' tracks:", error);
+                            forYouResultsContainer.innerHTML = `<div class="for-you-section"><p data-i18n="error">Fehler beim Laden der Übungen.</p></div>`;
+                            loadTranslations(localStorage.getItem('lang') || 'de');
+                        });
+                });
+            });
+        }
     }
 });

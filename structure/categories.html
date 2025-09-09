@@ -76,14 +76,22 @@
 
     <main>
         <div class="for-you-section">
-            <p data-i18n="forYouTitle"><b>Herzlich Willkommen.</b><br><br>Teile mir mit wie du dich heute fühlst, dann kann ich dir gezielt Übungen vorschlagen oder du suchst dir einfach eine Übung aus der Liste aus.</p>
+            <p data-i18n="forYouTitle">...</p> <!-- Willkommenstext -->
             <div class="mood-buttons">
                 <button class="mood-button" data-tag="stress" data-i18n="moodStress">Gestresst</button>
-                <button class="mood-button" data-tag="focus" data-i18n="moodFocus">Fokus</button>
-                <button class="mood-button" data-tag="sleep" data-i18n="moodTired">Müde</button>
+                <button class="mood-button" data-tag="fokussiert" data-i18n="moodFocus">Fokussiert</button>
+                <button class="mood-button" data-tag="müde" data-i18n="moodTired">Müde</button>
+                <button class="mood-button" data-tag="unruhe" data-i18n="moodStress">Unruhig</button>
+                <button class="mood-button" data-tag="überfordert" data-i18n="moodOverstrained">Überfordert</button>
+                <button class="mood-button" data-tag="traurigkeit" data-i18n="moodSad">Traurig</button>
+                <button class="mood-button" data-tag="aggressiv" data-i18n="moodAggressiv">Agressiv</button>
+                <button class="mood-button" data-tag="schmerzen" data-i18n="moodPain">Schmerz</button>
+                <button class="mood-button" data-tag="ängstlich" data-i18n="moodScared">Ängstlich</button>
             </div>
-            <div id="for-you-results"></div>
         </div>
+
+        <!-- Container for the results, which will be dynamically populated -->
+        <div id="for-you-results"></div>
 
          <div class="category-card" id="Cat_card1Title" onclick="window.location.href = 'subcategories/subcat01_whatisat.html';">
             <img src="../assets/images/categories/cat_01.png" alt="Allgemeine Entspannung">

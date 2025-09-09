@@ -1,0 +1,83 @@
+[
+  {
+    "description_de": "15 min geführte Übung zur allgemeinen Entspannung",
+    "description_en": "A 15-minute session for common relaxation.",
+    "path": "assets/audio/subcategories/de/subcat02_01_de.m4a",
+    "tags": ["stress", "nervös", "unsicher", "müde", "relaxation", "ängstlich", "überfordert", "depressiv", "traurigkeit", "unruhe", "klarheit", "aggressiv"],
+    "title_de": "Allgemeine Entspannung",
+    "title_en": "Letting go of Stress"
+  },
+  {
+    "description_de": "Geführte Übung für einen erholsamen Schlaf",
+    "description_en": "Guided Exercise for a Restful Sleep",
+    "path": "assets/audio/subcategories/de/subcat03_01_en.m4a",
+    "tags": ["müde", "relaxation", "ängstlich", "überfordert", "depressiv", "traurigkeit", "unruhe", "klarheit"],
+    "title_de": "Für einen erholsamen Schlaf",
+    "title_en": "For a Restful Sleep"
+  },
+  {
+    "description_de": "15 min geführte Übung zur allgemeinen Entspannung",
+    "description_en": "A 15-minute session for common relaxation.",
+    "path": "assets/audio/subcategories/de/subcat04_01_de.m4a",
+    "tags": ["stress", "müde", "entspannung"],
+    "title_de": "Für mehr Erfolg im Alltag",
+    "title_en": "For more success in everyday life"
+  },
+
+  {
+    "description_de": "15 min geführte Übung zum Abnehmen",
+    "description_en": "A 15-minute session for losing weight.",
+    "path": "assets/audio/subcategories/de/subcat05_01_de.m4a",
+    "tags": [ "angespannt", "schmerzen", "relaxation"],
+    "title_de": "Zum Abnehmen",
+    "title_en": "Losing Weight"
+  },
+  {
+    "description_de": "15 min geführte Übung für emotionale Stabilität",
+    "description_en": "Guided Exercise for Emotional Stability",
+    "path": "assets/audio/subcategories/de/subcat06_01_de.m4a",
+    "tags": ["müde", "entspannt", "angespannt", "schmerzen", "traurigkeit", "aggressiv", "ängstlich"],
+    "title_de": "Emotionale Stabilität",
+    "title_en": "Emotional Stability"
+  },
+  {
+    "description_de": "15 min geführte Übung für einen gesünderen Lifestyle",
+    "description_en": "A 15-minute session for a healthier lifestyle.",
+    "path": "assets/audio/subcategories/de/subcat07_01_de.m4a",
+    "tags": ["stress", "müde", "entspannt"],
+    "title_de": "Für einen gesünderen Lifestyle",
+    "title_en": "For a healthier lifestyle"
+  },
+  {
+    "description_de": "15 min geführte Übung für Entspannung und innere Balance",
+    "description_en": "A 15-minute session for relaxation and inner balance.",
+    "path": "assets/audio/subcategories/de/subcat08_01_de.m4a",
+    "tags": ["sleep", "entspannt", "ungeduldig", "unruhe", "aggressiv"],
+    "title_de": "Für Entspannung und Balance",
+    "title_en": "For Relaxation and Balance"
+  },
+  {
+    "description_de": "15 min geführte Übung zum Ändern von Gewohnheiten",
+    "description_en": "A 15-minute session for changing habits.",
+    "path": "assets/audio/subcategories/de/subcat09_01_de.m4a",
+    "tags": ["angespannt", "ängstlich", "unruhe", "ungeduldig"],
+    "title_de": "Gewohnheiten ändern",
+    "title_en": "Changing Habits"
+  },
+  {
+    "description_de": "15 min geführte Übung zur allgemeinen Entspannung",
+    "description_en": "A 15-minute session for common relaxation.",
+    "path": "assets/audio/subcategories/de/subcat10_01_de.m4a",
+    "tags": ["stress", "fatigue", "relaxation", "überfordert", "depressiv", "aggressiv"],
+    "title_de": "Werde zum Nichtraucher",
+    "title_en": "Become a Non-Smoker"
+  },
+  {
+    "description_de": "15 min geführte Übung für mehr Selbstvertrauen",
+    "description_en": "A 15-minute session for boosting self-confidence.",
+    "path": "assets/audio/subcategories/de/subcat11_01_de.m4a",
+    "tags": ["depressiv", "unsicher", "angespannt", "nervös", "ängstlich"],
+    "title_de": "Für mehr Selbstvertrauen",
+    "title_en": "For more Self-Confidence"
+  }
+]

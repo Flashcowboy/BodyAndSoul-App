@@ -93,7 +93,22 @@
   "reg-mobile": "Mobile Number (optional)",
   "reg-gender": "Gender (optional)",  
 
-
+  "forYouTitle": "<b>Welcome.</b><br><br>Let me know how you're feeling today, so I can suggest suitable exercises, or you can simply choose an exercise from the list.</p>",
+  "moodStress": "stressed",
+  "moodFocus": "focused",
+  "moodTired": "tired",
+  "moodOverstrained": "overstrained",
+  "moodSad": "sad",
+  "moodHappy": "happy",
+  "moodRelaxed": "relaxed",
+  "moodAggressiv": "aggressive",
+  "moodPain": "pain",
+  "moodBored": "bored",
+  "moodAnxious": "anxious",
+  "moodConfused": "confused",
+  "moodEnergized": "energized",
+  "moodNeutral": "neutral",
+  "moodExcited": "excited",
 
 
   "email_placeholder": "Email",
