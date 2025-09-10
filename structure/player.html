@@ -177,23 +177,21 @@
         </div>
     </main>
 
+ <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../firebase-config.js"></script>
     <script src="../main.js"></script>
-    <footer>
-        <div class="nav-item">
-            <img src="../assets/images/icons/home.png" alt="Home" onclick="location.href='categories.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../assets/images/icons/yoga.png" alt="yoga pose style" onclick="location.href='profile.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../assets/images/icons/gear.png" alt="Settings" onclick="location.href='settings.html'">
-        </div>
-    </footer>
+
     
     
 </body>

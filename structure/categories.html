@@ -61,6 +61,8 @@
         .for-you-section {
             background-color: #fff;
             border-radius: 12px;
+            background-image: url('../assets/images/backgrounds/bg_grassleaves_blue.png');
+            background-size: cover;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             margin-bottom: 20px;
             padding: 15px;
@@ -114,61 +116,69 @@
             </div>
         </div>
 
-        <div class="category-card" id="Cat_card4Title" onclick="window.location.href = 'subcategories/subcat04_success.html';">
-            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
+        <div class="category-card" id="Cat_card4Title" onclick="window.location.href = 'subcategories/subcat04_goals.html';">
+            <img src="../assets/images/categories/cat_04.png" alt="Ziele erreichen">
             <div class="card-text">
-                <h2 data-i18n="card4Title">Erfolg</h2>
+                <h2 data-i18n="card4Title">Ziele erreichen</h2>
             </div>
         </div>
 
         <div class="category-card" id="Cat_card5Title" onclick="window.location.href = 'subcategories/subcat05_weightloss.html';">
-            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <img src="../assets/images/categories/cat_05.png" alt="Abnehmen">
             <div class="card-text">
                 <h2 data-i18n="card5Title">Abnehmen</h2>
             </div>
         </div>
 
         <div class="category-card" id="Cat_card6Title" onclick="window.location.href = 'subcategories/subcat06_emotions.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <img src="../assets/images/categories/cat_06.png" alt="Emotionale Stabilität">
             <div class="card-text">
                 <h2 data-i18n="card6Title">Emotionale Stabilität</h2>
             </div>
         </div>
         <div class="category-card" id="Cat_card7Title" onclick="window.location.href = 'subcategories/subcat07_health.html';">
-            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
+            <img src="../assets/images/categories/cat_07.png" alt="Für ein gesundes Leben">
             <div class="card-text">
                 <h2 data-i18n="card7Title">Für ein gesundes Leben</h2>
             </div>
         </div>
 
         <div class="category-card" id="Cat_card8Title" onclick="window.location.href = 'subcategories/subcat08_relaxed.html';">
-            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <img src="../assets/images/categories/cat_08.png" alt="Grundübungen">
             <div class="card-text">
                 <h2 data-i18n="card8Title">Entspannt und ausgeglichen</h2>
             </div>
         </div>
 
         <div class="category-card" id="Cat_card9Title" onclick="window.location.href = 'subcategories/subcat09_habits.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <img src="../assets/images/categories/cat_09.png" alt="Gewohnheiten ändern">
             <div class="card-text">
                 <h2 data-i18n="card9Title">Gewohnheiten ändern</h2>
             </div>
         </div>
 
         <div class="category-card" id="Cat_card10Title" onclick="window.location.href = 'subcategories/subcat10_smokeless.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+            <img src="../assets/images/categories/cat_10.png" alt="Nichtraucher werden">
             <div class="card-text">
                 <h2 data-i18n="card10Title">Nichtraucher werden</h2>
             </div>
         </div>
 
-        <div class="category-card" id="Cat_card11Title" onclick="window.location.href = 'subcategories/subcat10_smokeless.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
+        <div class="category-card" id="Cat_card11Title" onclick="window.location.href = 'subcategories/subcat11_selfconfidence.html';">
+            <img src="../assets/images/categories/cat_11.png" alt="Mehr Selbstvertrauen">
             <div class="card-text">
                 <h2 data-i18n="card11Title">Selbstvertrauen</h2>
             </div>
         </div>
     </main>
+
+     <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
 
     <!-- Hier wird die Logik der App eingefügt -->
 <!-- Firebase SDKs -->
@@ -179,19 +189,6 @@
 <script src="../firebase-config.js"></script>
     <script src="../main.js"></script>
 
-    <footer>
-        <!-- Navigations-Icons sind nicht übersetzbar, daher kein data-i18n -->
-        <div class="nav-item">
-            <img src="../assets/images/icons/home.png" alt="Home" onclick="location.href='categories.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../assets/images//icons/yoga.png" alt="yoga pose style" onclick="location.href='profile.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../assets/images//icons/gear.png" alt="Settings" onclick="location.href='settings.html'">
-        </div>
-
-    </footer>
     
 
 

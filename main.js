@@ -1,5 +1,12 @@
 
 
+function getPathToRoot() {
+    const path = window.location.pathname;
+    if (path.includes('/structure/subcategories/')) return '../../';
+    if (path.includes('/structure/')) return '../';
+    return './';
+}
+
 // ==========================================================================
 // --- 2. AUTH GUARD (Global Scope) ---
 // ==========================================================================
@@ -9,11 +16,7 @@ if (auth) {
         const isProtectedPage = path.includes('/structure/');
         const isAuthPage = path.endsWith('login.html') || path.endsWith('register.html');
 
-        const pathToRoot = (() => {
-            if (path.includes('/structure/subcategories/')) return '../../';
-            if (path.includes('/structure/')) return '../';
-            return './';
-        })();
+        const pathToRoot = getPathToRoot();
 
         if (isProtectedPage && !user) {
             return window.location.replace(`${pathToRoot}login.html`);
@@ -29,19 +32,44 @@ if (auth) {
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Helper Functions ---
-    function getPathToRoot() {
-        const path = window.location.pathname;
-        if (path.includes('/structure/subcategories/')) return '../../';
-        if (path.includes('/structure/')) return '../';
-        return './';
-    }
+    
     // --- Funktion für die Ermittlung der Abspielposition im Player ---
     function formatTime(seconds) {
         if (isNaN(seconds)) return "0:00";
         const minutes = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // --- SVG Plant Graphics Data (Declared Once) ---
+    const plantStages = [
+        // Stage 0: Seed (0 sessions)
+        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C40 80, 40 70, 50 60 C60 70, 60 80, 50 90 Z" fill="#8B4513"/></svg>`,
+        // Stage 1: Sprout (1-4 sessions)
+        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C40 80, 40 70, 50 60 C60 70, 60 80, 50 90 Z" fill="#8B4513"/><path d="M50 60 Q50 40 55 30" stroke="#228B22" stroke-width="3" fill="none"/><path d="M50 60 Q50 40 45 30" stroke="#228B22" stroke-width="3" fill="none"/></svg>`,
+        // Stage 2: Small Plant (5-9 sessions)
+        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 V70" stroke="#8B4513" stroke-width="2"/><path d="M50 70 C 40 70, 40 50, 50 50 C 60 50, 60 70, 50 70 Z" fill="#6B8E23"/><path d="M50 50 V 30" stroke="#228B22" stroke-width="4"/><path d="M50 40 C40 45, 35 55, 45 55" fill="#228B22"/><path d="M50 40 C60 45, 65 55, 55 55" fill="#228B22"/></svg>`,
+        // Stage 3: Bigger Plant (10-19 sessions)
+        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 V60" stroke="#8B4513" stroke-width="3"/><path d="M50 60 C 30 60, 30 30, 50 30 C 70 30, 70 60, 50 60 Z" fill="#556B2F"/><path d="M50 30 V 10" stroke="#228B22" stroke-width="5"/><path d="M40 40 C20 40, 25 60, 40 55" fill="#556B2F"/><path d="M60 40 C80 40, 75 60, 60 55" fill="#556B2F"/><path d="M45 25 C35 20, 30 35, 45 35" fill="#556B2F"/><path d="M55 25 C65 20, 70 35, 55 35" fill="#556B2F"/></svg>`,
+        // Stage 4: Small Tree (20+ sessions)
+        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M52 90 V 50 H 48 V 90 Z" fill="#8B4513"/><path d="M50 60 C 20 60, 20 20, 50 20 C 80 20, 80 60, 50 60 Z" fill="#228B22"/><path d="M35 45 C 15 45, 15 25, 35 35 Z" fill="#2E8B57"/><path d="M65 45 C 85 45, 85 25, 65 35 Z" fill="#2E8B57"/><path d="M50 25 C 40 5, 60 5, 50 25 Z" fill="#3CB371"/></svg>`
+    ];
+
+    function displayPlant(sessions) {
+        const plantContainer = document.getElementById('plant-container');
+        if (!plantContainer) return;
+
+        let stage = 0;
+        if (sessions >= 20) {
+            stage = 4;
+        } else if (sessions >= 10) {
+            stage = 3;
+        } else if (sessions >= 5) {
+            stage = 2;
+        } else if (sessions >= 1) {
+            stage = 1;
+        }
+        plantContainer.innerHTML = plantStages[stage];
     }
 
     const pathToRoot = getPathToRoot();
@@ -63,12 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function initializeLanguage() {
-        const lang = localStorage.getItem('lang') || 'de';
-        loadTranslations(lang);
-    }
-
-    initializeLanguage();
+    const lang = localStorage.getItem('lang') || 'de';
+    loadTranslations(lang);
 
     // --- Page-specific Logic ---
     const path = window.location.pathname;
@@ -389,6 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Profile Page Logic
         if (path.endsWith('profile.html')) {
+
             const logoutButton = document.getElementById('logout-btn');
             if (logoutButton) {
                 logoutButton.addEventListener('click', () => {
@@ -463,6 +488,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (statsSessions) statsSessions.textContent = userData.sessions || 0;
                             if (statsListeningTime) statsListeningTime.textContent = `${userData.listeningTime || 0}h`;
                             if (statsStreak) statsStreak.textContent = userData.streak || 0;
+
+                            // --- Display Plant ---
+                            displayPlant(userData.sessions || 0);
                             
                             // --- Settings Listeners ---
                             const editProfileButton = document.querySelector('[data-i18n="profile_settings_edit_profile"]');

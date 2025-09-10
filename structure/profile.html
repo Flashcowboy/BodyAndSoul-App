@@ -48,9 +48,10 @@
             align-items: center;
             margin-bottom: 30px;
             background: #fff;
+            background-image: url('../assets/images/backgrounds/bg_grassleaves_blue.png');
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
         }
 
         .profile-avatar {
@@ -75,14 +76,14 @@
 
         .profile-info p {
             margin: 5px 0 0;
-        
             font-size: 14px;
         }
 
         .section {
             background-color: #fff;
+            background-image: url('../assets/images/backgrounds/bg_grassleaves_blue.png');
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
             margin-bottom: 20px;
             padding: 20px;
         }
@@ -163,18 +164,24 @@
 
         <div class="section">
             <h3 class="section-title" data-i18n="profile_stats_title"></h3><!--Meine Statistiken-->
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="value" id="stats-sessions">0</div>
-                    <div class="label" data-i18n="profile_stats_sessions"></div><!-- Sessions -->
+            <div class="stats-container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="value" id="stats-sessions">0</div>
+                        <div class="label" data-i18n="profile_stats_sessions"></div><!-- Sessions -->
+                    </div>
+                    <div class="stat-item">
+                        <div class="value" id="stats-listening-time">0h</div>
+                        <div class="label" data-i18n="profile_stats_listening_time"></div><!-- Hörzeit -->
+                    </div>
+                    <div class="stat-item">
+                        <div class="value" id="stats-streak">0</div>
+                        <div class="label" data-i18n="profile_stats_streak"></div><!-- Tage in Folge -->
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="value" id="stats-listening-time">0h</div>
-                    <div class="label" data-i18n="profile_stats_listening_time"></div><!-- Hörzeit -->
-                </div>
-                <div class="stat-item">
-                    <div class="value" id="stats-streak">0</div>
-                    <div class="label" data-i18n="profile_stats_streak"></div><!-- Tage in Folge -->
+                <div class="visual-progress">
+                    <div id="plant-container"></div>
+                    <p class="progress-label" data-i18n="profile_plant_label">Deine Pflanze wächst mit jeder Session</p>
                 </div>
             </div>
         </div>
@@ -226,17 +233,13 @@
     
     </main>
 
-    <footer>
-        <div class="nav-item">
-            <img src="../assets/images/icons/home.png" alt="Home" onclick="location.href='categories.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../assets/images/icons/yoga.png" alt="Profile" onclick="location.href='profile.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../assets/images/icons/gear.png" alt="Settings" onclick="location.href='settings.html'">
-        </div>
-    </footer>
+ <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

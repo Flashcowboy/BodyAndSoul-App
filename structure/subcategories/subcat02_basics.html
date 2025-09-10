@@ -34,24 +34,21 @@
         .subcategory-card {
             background-color: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
             margin-bottom: 20px;
             overflow: hidden;
             position: relative;
             width: 100%;
             height: 150px;
-        }
-
-        .subcategory-card{
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             cursor: pointer;
         }
-
+/*
         .subcategory-card:hover{
             transform: translateY(-3px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
-        /* when clicked*/
+         when clicked*/
         .subcategory-card:active {
         transform: translateY(1px) translateX(1px);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -88,47 +85,47 @@
     <header>
         <h2 data-i18n="SubCat02_Header"></h2>
         <div class="header-txt">
-            <p data-i18n="SubCat02_Instruction"></p>
+            <p data-i18n="SubCat02_Instruction"><!-- Text aus Sprachdatei --></p>
         </div>
     </header>
 
     <main>
-        <div class="subcategory-card" id="subcat02_01" data-audio-base-name="sample_audio1">
+        <div class="subcategory-card" id="subcat02_01" data-audio-base-name="subcat02_01">
             <img src="../../assets/images/subcategories/subcat_02/subcat_01.png" alt="Schwereübung">
             <div class="card-text">
                 <h2 data-i18n="SubCat02_module1Title">Schwereübung</h2>
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat02_02" data-audio-base-name="sample_audio2">
+        <div class="subcategory-card" id="subcat02_02" data-audio-base-name="subcat02_02">
             <img src="../../assets/images/subcategories/subcat_02/subcat_02.png" alt="Wärmeübung">
             <div class="card-text">
                 <h2 data-i18n="SubCat02_module2Title">Wärmeübung</h2>
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat02_03" data-audio-base-name="sample_audio3">
+        <div class="subcategory-card" id="subcat02_03" data-audio-base-name="subcat02_03">
             <img src="../../assets/images/subcategories/subcat_02/subcat_03.png" alt="Herzübung">
             <div class="card-text">
                 <h2 data-i18n="SubCat02_module3Title">Herzübung</h2>
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat02_04" data-audio-base-name="sample_audio4">
+        <div class="subcategory-card" id="subcat02_04" data-audio-base-name="subcat02_04">
             <img src="../../assets/images/subcategories/subcat_02/subcat_04.png" alt="Atemübung">
             <div class="card-text">
                 <h2 data-i18n="SubCat02_module4Title">Atemübung</h2>
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat02_05" data-audio-base-name="sample_audio5">
+        <div class="subcategory-card" id="subcat02_05" data-audio-base-name="subcat02_05">
             <img src="../../assets/images/subcategories/subcat_02/subcat_05.png" alt="Sonnengeflecht">
             <div class="card-text">
                 <h2 data-i18n="SubCat02_module5Title">Sonnengeflecht</h2>
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat02_06" data-audio-base-name="sample_audio6">
+        <div class="subcategory-card" id="subcat02_06" data-audio-base-name="subcat02_06">
             <img src="../../assets/images/subcategories/subcat_02/subcat_06.png" alt="Visualsierung">
             <div class="card-text">
                 <h2 data-i18n="SubCat02_module6Title">Visualsierung</h2>
@@ -136,19 +133,13 @@
         </div>
     </main>
 
-   <footer>
-        <!-- Navigations-Icons sind nicht übersetzbar, daher kein data-i18n -->
-        <div class="nav-item">
-            <img src="../../assets/images/icons/home.png" alt="Home" onclick="location.href='../../structure/categories.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../../assets/images/icons/yoga.png" alt="yoga pose style" onclick="location.href='../../structure/profile.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../../assets/images/icons/gear.png" alt="Settings" onclick="location.href='../../structure/settings.html'">
-        </div>
-
-    </footer>
+   <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
