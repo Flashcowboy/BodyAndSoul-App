@@ -1,5 +1,3 @@
-
-
 function getPathToRoot() {
     const path = window.location.pathname;
     if (path.includes('/structure/basics/')) return '../../';
@@ -82,30 +80,63 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // --- 4. Subcategory Cards ---
     // ==========================================================================
-    document.querySelectorAll('.subcategory-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            const cardElement = e.currentTarget;
-            const href = cardElement.dataset.href;
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
+    document.querySelectorAll('.subcategory-card').forEach(card => {
+        const audioBaseName = card.dataset.audioBaseName;
+        const cardId = card.id;
+        const baseName = audioBaseName || cardId;
+        const icon = card.querySelector('.favorite-icon');
+
+        if (!baseName) return;
+
+        // Define common variables
+        const cardTextElement = card.querySelector('.card-text');
+        const trackTitle = cardTextElement ? cardTextElement.textContent.trim() : '';
+        const lang = localStorage.getItem('lang') || 'de';
+        const currentPagePath = window.location.pathname;
+        const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
+        const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
+
+        // Set initial favorite state
+        if (icon) {
+            const isFavorite = favorites.some(fav => fav.id === baseName);
+            icon.src = isFavorite 
+                ? `${pathToRoot}assets/images/icons/heart_active.png`
+                : `${pathToRoot}assets/images/icons/heart_inactive.png`;
+        }
+
+        card.addEventListener('click', (e) => {
+            // --- Handle Favorite Click ---
+            if (icon && icon.contains(e.target)) {
+                let currentFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                const isFavorite = currentFavorites.some(fav => fav.id === baseName);
+
+                if (isFavorite) {
+                    currentFavorites = currentFavorites.filter(fav => fav.id !== baseName);
+                    icon.src = `${pathToRoot}assets/images/icons/heart_inactive.png`;
+                } else {
+                    // Re-fetch title right before adding to handle async translations
+                    const freshCardTextElement = card.querySelector('.card-text');
+                    const freshTrackTitle = freshCardTextElement ? freshCardTextElement.textContent.trim() : '';
+                    currentFavorites.push({ id: baseName, title: freshTrackTitle, audioSrc: audioFilePath });
+                    icon.src = `${pathToRoot}assets/images/icons/heart_active.png`;
+                }
+                localStorage.setItem('favorites', JSON.stringify(currentFavorites));
+                return; // Prevent navigation
+            }
+
+            // --- Handle Navigation Click ---
+            const href = card.dataset.href;
             if (href) {
                 window.location.href = href;
                 return;
             }
-
-            const audioBaseName = cardElement.dataset.audioBaseName;
-            const cardId = cardElement.id;
-            const lang = localStorage.getItem('lang') || 'de';
-            const trackTitle = cardElement.querySelector('h2').textContent;
             
-            const baseName = audioBaseName || cardId;
-
-            if (baseName) {
-                const currentPagePath = window.location.pathname;
-                const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
-                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
-                
-                window.location.href = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(trackTitle)}`;
-            }
+            // Re-fetch title for navigation to get latest translated value
+            const freshCardTextElement = card.querySelector('.card-text');
+            const freshTrackTitle = freshCardTextElement ? freshCardTextElement.textContent.trim() : '';
+            window.location.href = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}`;
         });
     });
 
