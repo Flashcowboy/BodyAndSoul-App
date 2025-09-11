@@ -42,7 +42,7 @@
         }
 
 
-        .subcategory-card img {
+        .subcategory-card img:not(.favorite-icon) {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -64,6 +64,16 @@
             font-size: 14px;
             font-weight: regular;
         }
+
+        .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1;
+        }
    
         
     </style>
@@ -78,15 +88,17 @@
         <div class="subcategory-card" id="subcat03_01" data-audio-base-name="subcat03_01">
             <img src="../../assets/images/subcategories/subcat_03/subcat03_01.png" alt="Besserer Schlaf">
             <div class="card-text">
-                <h2 data-i18n="SubCat03_module1Title">Übung mit Ausleitung</h2>
+                <h2 data-i18n="SubCat03_module1Title">Für einen besseren Schlaf - Übung mit Ausleitung</h2>
             </div>
+            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
         </div>
 
         <div class="subcategory-card" id="subcat03_02" data-audio-base-name="subcat03_02">
             <img src="../../assets/images/subcategories/subcat_03/subcat03_02.png" alt="Besserer Schlaf">
             <div class="card-text">
-                <h2 data-i18n="SubCat03_module2Title">Übung zum Einschlafen</h2>
+                <h2 data-i18n="SubCat03_module2Title">Für einen besseren Schlaf - Übung zum Einschlafen</h2>
             </div>
+            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
         </div>
         
 <!--
@@ -133,5 +145,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../../firebase-config.js"></script>
     <script src="../../main.js"></script>
+    <script src="/favorites.js"></script>
 </body>
 </html>
