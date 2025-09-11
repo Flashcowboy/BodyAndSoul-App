@@ -40,19 +40,8 @@
             position: relative;
             width: 100%;
             height: 150px;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            cursor: pointer;
         }
-/*
-        .subcategory-card:hover{
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-         when clicked*/
-        .subcategory-card:active {
-        transform: translateY(1px) translateX(1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+
 
         .subcategory-card img:not(.favorite-icon) {
             width: 100%;
@@ -62,17 +51,18 @@
             top: 0;
             left: 0;
         }
-
+        
         .card-text {
             position: absolute;
             bottom: 0;
             left: 0;
+            top: 60px; 
             width: 100%;
             padding: 15px;
             box-sizing: border-box;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
             color: rgb(242, 237, 237);
-            font-size: 12px;
+            font-size: 16px;
             font-weight: regular;
         }
         
@@ -98,52 +88,56 @@
     </header>
 
     <main>
-        <div class="subcategory-card" id="subcat02_01" data-audio-base-name="subcat02_01">
-            <img src="../../assets/images/subcategories/subcat_02/subcat_01.png" alt="Schwereübung">
+        <div class="subcategory-card" id="subcat02_01" data-href="../basics/basics_common.html" style="background-color: #01346a;">
+            <!--<img src="../../assets/images/subcategories/subcat_02/subcat_01.png" alt="Allgemeine Entspannung">-->
             <div class="card-text">
-                <h2 data-i18n="SubCat02_module1Title">Schwereübung</h2>
+                <h2 data-i18n="SubCat02_module1Title">Allgemeine Entspannung</h2>
             </div>
-            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+            <!--<img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">-->
+        </div>
+        <div class="subcategory-card" id="subcat02_02" data-href="../basics/basics_heaviness.html" style="background-color: #01346a;">
+            <!--<img src="../../assets/images/subcategories/subcat_02/subcat_02.png" alt="Schwereübung">-->
+            <div class="card-text">
+                <h2 data-i18n="SubCat02_module2Title">Schwereübung</h2>
+            </div>
+           
         </div>
 
-        <div class="subcategory-card" id="subcat02_02" data-audio-base-name="subcat02_02">
-            <img src="../../assets/images/subcategories/subcat_02/subcat_02.png" alt="Wärmeübung">
+        <div class="subcategory-card" id="subcat02_03" data-href="../basics/basics_warmth.html" style="background-color: #01346a;">
+            <!--<img src="../../assets/images/subcategories/subcat_02/subcat_03.png" alt="Wärmeübung">-->
             <div class="card-text">
-                <h2 data-i18n="SubCat02_module2Title">Wärmeübung</h2>
+                <h2 data-i18n="SubCat02_module3Title">Wärmeübung</h2>
             </div>
-            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
         </div>
 
-        <div class="subcategory-card" id="subcat02_03" data-audio-base-name="subcat02_03">
-            <img src="../../assets/images/subcategories/subcat_02/subcat_03.png" alt="Herzübung">
+        <div class="subcategory-card" id="subcat02_04" data-href="../basics/basics_heart.html" style="background-color: #01346a;">
+            <!--<img src="../../assets/images/subcategories/subcat_02/subcat_04.png" alt="Herzübung">-->
             <div class="card-text">
-                <h2 data-i18n="SubCat02_module3Title">Herzübung</h2>
+                <h2 data-i18n="SubCat02_module4Title">Herzübung</h2>
             </div>
-            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
         </div>
 
-        <div class="subcategory-card" id="subcat02_04" data-audio-base-name="subcat02_04">
-            <img src="../../assets/images/subcategories/subcat_02/subcat_04.png" alt="Atemübung">
+        <div class="subcategory-card" id="subcat02_05" data-href="../basics/basics_breathing.html" style="background-color: #01346a;">
+            <!--<img src="../../assets/images/subcategories/subcat_02/subcat_05.png" alt="Atemübung">-->
             <div class="card-text">
-                <h2 data-i18n="SubCat02_module4Title">Atemübung</h2>
+                <h2 data-i18n="SubCat02_module5Title">Atemübung</h2>
             </div>
-            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+            
+
+        <div class="subcategory-card" id="subcat02_06" data-href="../basics/basics_solarplexus.html" style="background-color: #01346a;">
+            <!--<img src="../../assets/images/subcategories/subcat_02/subcat_06.png" alt="Sonnengeflecht">-->
+            <div class="card-text">
+                <h2 data-i18n="SubCat02_module6Title">Sonnengeflecht</h2>
+            </div>
+            
         </div>
 
-        <div class="subcategory-card" id="subcat02_05" data-audio-base-name="subcat02_05">
-            <img src="../../assets/images/subcategories/subcat_02/subcat_05.png" alt="Sonnengeflecht">
+        <div class="subcategory-card" id="subcat02_07" data-href="../basics/basics_visualization.html" style="background-color: #01346a;"> 
+            <!--<img src="../../assets/images/subcategories/subcat_02/subcat_07.png" alt="Visualsierung">-->
             <div class="card-text">
-                <h2 data-i18n="SubCat02_module5Title">Sonnengeflecht</h2>
+                <h2 data-i18n="SubCat02_module7Title">Visualsierung</h2>
             </div>
-            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
-        </div>
-
-        <div class="subcategory-card" id="subcat02_06" data-audio-base-name="subcat02_06">
-            <img src="../../assets/images/subcategories/subcat_02/subcat_06.png" alt="Visualsierung">
-            <div class="card-text">
-                <h2 data-i18n="SubCat02_module6Title">Visualsierung</h2>
-            </div>
-            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+           
         </div>
     </main>
 

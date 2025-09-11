@@ -2,6 +2,7 @@
 
 function getPathToRoot() {
     const path = window.location.pathname;
+    if (path.includes('/structure/basics/')) return '../../';
     if (path.includes('/structure/subcategories/')) return '../../';
     if (path.includes('/structure/')) return '../';
     return './';
@@ -41,36 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
-    // --- SVG Plant Graphics Data (Declared Once) ---
-    const plantStages = [
-        // Stage 0: Seed (0 sessions)
-        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C40 80, 40 70, 50 60 C60 70, 60 80, 50 90 Z" fill="#8B4513"/></svg>`,
-        // Stage 1: Sprout (1-4 sessions)
-        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C40 80, 40 70, 50 60 C60 70, 60 80, 50 90 Z" fill="#8B4513"/><path d="M50 60 Q50 40 55 30" stroke="#228B22" stroke-width="3" fill="none"/><path d="M50 60 Q50 40 45 30" stroke="#228B22" stroke-width="3" fill="none"/></svg>`,
-        // Stage 2: Small Plant (5-9 sessions)
-        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 V70" stroke="#8B4513" stroke-width="2"/><path d="M50 70 C 40 70, 40 50, 50 50 C 60 50, 60 70, 50 70 Z" fill="#6B8E23"/><path d="M50 50 V 30" stroke="#228B22" stroke-width="4"/><path d="M50 40 C40 45, 35 55, 45 55" fill="#228B22"/><path d="M50 40 C60 45, 65 55, 55 55" fill="#228B22"/></svg>`,
-        // Stage 3: Bigger Plant (10-19 sessions)
-        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 V60" stroke="#8B4513" stroke-width="3"/><path d="M50 60 C 30 60, 30 30, 50 30 C 70 30, 70 60, 50 60 Z" fill="#556B2F"/><path d="M50 30 V 10" stroke="#228B22" stroke-width="5"/><path d="M40 40 C20 40, 25 60, 40 55" fill="#556B2F"/><path d="M60 40 C80 40, 75 60, 60 55" fill="#556B2F"/><path d="M45 25 C35 20, 30 35, 45 35" fill="#556B2F"/><path d="M55 25 C65 20, 70 35, 55 35" fill="#556B2F"/></svg>`,
-        // Stage 4: Small Tree (20+ sessions)
-        `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M52 90 V 50 H 48 V 90 Z" fill="#8B4513"/><path d="M50 60 C 20 60, 20 20, 50 20 C 80 20, 80 60, 50 60 Z" fill="#228B22"/><path d="M35 45 C 15 45, 15 25, 35 35 Z" fill="#2E8B57"/><path d="M65 45 C 85 45, 85 25, 65 35 Z" fill="#2E8B57"/><path d="M50 25 C 40 5, 60 5, 50 25 Z" fill="#3CB371"/></svg>`
-    ];
-
-    function displayPlant(sessions) {
-        const plantContainer = document.getElementById('plant-container');
-        if (!plantContainer) return;
-
-        let stage = 0;
-        if (sessions >= 20) {
-            stage = 4;
-        } else if (sessions >= 10) {
-            stage = 3;
-        } else if (sessions >= 5) {
-            stage = 2;
-        } else if (sessions >= 1) {
-            stage = 1;
-        }
-        plantContainer.innerHTML = plantStages[stage];
-    }
+    
 
     const pathToRoot = getPathToRoot();
 
@@ -112,12 +84,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     document.querySelectorAll('.subcategory-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            const cardId = e.currentTarget.id;
+            const cardElement = e.currentTarget;
+            const href = cardElement.dataset.href;
+
+            if (href) {
+                window.location.href = href;
+                return;
+            }
+
+            const audioBaseName = cardElement.dataset.audioBaseName;
+            const cardId = cardElement.id;
             const lang = localStorage.getItem('lang') || 'de';
-            const trackTitle = e.currentTarget.querySelector('h2').textContent;
+            const trackTitle = cardElement.querySelector('h2').textContent;
             
-            if (cardId) {
-                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${lang}/${cardId}_${lang}.m4a`;
+            const baseName = audioBaseName || cardId;
+
+            if (baseName) {
+                const currentPagePath = window.location.pathname;
+                const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
+                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
                 
                 window.location.href = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(trackTitle)}`;
             }
@@ -190,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const currentSessions = userData.sessions || 0;
                     const currentStreak = userData.streak || 0;
                     const lastSessionDate = userData.lastSessionDate ? userData.lastSessionDate.toDate() : null;
+                    const currentListeningTime = userData.listeningTime || 0; // in seconds
                     
                     let newStreak = currentStreak;
                     if (lastSessionDate && isSameDay(lastSessionDate, new Date())) {
@@ -202,11 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const newSessions = currentSessions + 1;
                     const newLastSessionDate = new Date();
+                    const newListeningTime = currentListeningTime + audioPlayer.duration; // add duration in seconds
 
                     transaction.update(userDocRef, {
                         sessions: newSessions,
                         streak: newStreak,
-                        lastSessionDate: newLastSessionDate
+                        lastSessionDate: newLastSessionDate,
+                        listeningTime: newListeningTime
                     });
 
                     if(completionStats) {
@@ -486,11 +474,15 @@ document.addEventListener('DOMContentLoaded', () => {
                             const statsStreak = document.getElementById('stats-streak');
 
                             if (statsSessions) statsSessions.textContent = userData.sessions || 0;
-                            if (statsListeningTime) statsListeningTime.textContent = `${userData.listeningTime || 0}h`;
+                                                        if (statsListeningTime) {
+                                const listeningTimeInSeconds = userData.listeningTime || 0;
+                                const hours = Math.floor(listeningTimeInSeconds / 3600);
+                                const minutes = Math.floor((listeningTimeInSeconds % 3600) / 60);
+                                statsListeningTime.textContent = `${hours}h ${minutes}m`;
+                            }
                             if (statsStreak) statsStreak.textContent = userData.streak || 0;
 
-                            // --- Display Plant ---
-                            displayPlant(userData.sessions || 0);
+                            
                             
                             // --- Settings Listeners ---
                             const editProfileButton = document.querySelector('[data-i18n="profile_settings_edit_profile"]');
@@ -534,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                     }
 
-                    // Handle file upload
+                    // Handle profile picture file upload
                     if (profileImageUpload) {
                         profileImageUpload.addEventListener('change', (e) => {
                             const file = e.target.files[0];
