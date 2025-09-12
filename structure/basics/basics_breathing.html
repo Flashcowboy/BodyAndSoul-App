@@ -8,7 +8,12 @@
    <!-- <link rel="manifest" href="../manifest.json"> -->
     <style>
         body {
-            /* Hintergrundbild direkt auf den Body anwenden */
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-color: #f4f4f9;
             background-image: url('../../assets/images/splash_screen_bg.png');
             background-size: cover;
             background-position: center;
@@ -20,14 +25,8 @@
             padding: 5px 0;
         }
 
-        .header-txt {
-            text-align: justify;
-            padding: 0 40px;
-        }
-
         main {
-            flex-grow: 1;
-            overflow-y: auto;
+            /* The global rule already has overflow-y, but this page has specific padding */
             padding: 25px 10px;
         }
 
@@ -65,7 +64,7 @@
             font-size: 16px;
             font-weight: regular;
         }
-        
+
         .favorite-icon {
             position: absolute;
             top: 10px;
@@ -75,68 +74,34 @@
             cursor: pointer;
             z-index: 1;
         }
+   
+        
     </style>
 </head>
 <body>
 
-
     <header>
-        <h3 data-i18n="SubCat02_Header"></h3>
-        <div class="header-txt">
-            <p data-i18n="SubCat02_Instruction"><!-- Text aus Sprachdatei --></p>
-        </div>
+        <h1 data-i18n="SubCat_basics04_Header"></h1>
     </header>
 
     <main>
-     
-        <div class="subcategory-card" id="subcat02_01" data-href="../basics/basics_common.html" style="background-color: #013061;">
-           
+        <div class="subcategory-card" id="subcat_basics_04_01" data-audio-base-name="subcat_basics_04_01" style="background-color: #015554;">
+            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
             <div class="card-text">
-                <span data-i18n="SubCat02_module1Title">Allgemeine Entspannung</span>
+                <span data-i18n="SubCat_Basics04_module1Title"><!-- Text aus Sprachdatei--></span>
             </div>
-          
-        </div>
-        <div class="subcategory-card" id="subcat02_02" data-href="../basics/basics_heaviness.html" style="background-color: #013771;">
             
-            <div class="card-text">
-                <span data-i18n="SubCat02_module2Title">Schwereübung</span>
-            </div>
         </div>
 
-        <div class="subcategory-card" id="subcat02_03" data-href="../basics/basics_warmth.html" style="background-color: #024184;">
-         
+        <div class="subcategory-card" id="subcat_basics_04_02" data-audio-base-name="subcat_basics_04_02" style="background-color: #03acaa;">
+           <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
             <div class="card-text">
-                <span data-i18n="SubCat02_module3Title">Wärmeübung</span>
+                <span data-i18n="SubCat_Basics04_module2Title"><!-- Text aus Sprachdatei--></span>
             </div>
-        </div>
-
-        <div class="subcategory-card" id="subcat02_04" data-href="../basics/basics_heart.html" style="background-color: #014a98;">
-           
-            <div class="card-text">
-                <span data-i18n="SubCat02_module4Title">Herzübung</span>
-            </div>
-        </div>
-
-        <div class="subcategory-card" id="subcat02_05" data-href="../basics/basics_breathing.html" style="background-color: #015bba;">
             
-            <div class="card-text">
-                <span data-i18n="SubCat02_module5Title">Atemübung</span>
-            </div>
         </div>
+        
 
-        <div class="subcategory-card" id="subcat02_06" data-href="../basics/basics_solarplexus.html" style="background-color: #0078f8;">
-            
-            <div class="card-text">
-                <span data-i18n="SubCat02_module6Title">Sonnengeflecht</span>
-            </div>
-        </div>
-
-        <div class="subcategory-card" id="subcat02_07" data-href="../basics/basics_visualization.html" style="background-color: #017cff;"> 
-            
-            <div class="card-text">
-                <span data-i18n="SubCat02_module7Title">Visualsierung</span>
-            </div>
-        </div>
     </main>
 
    <script>

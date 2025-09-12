@@ -50,13 +50,13 @@
             max-width: 500px;
             background-color: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             /* Hintergrundbild direkt auf den Body anwenden */
-            background-image: url('../assets/images/backgrounds/bg_audioplayer_teal.png');
+            background-image: url('../assets/images/backgrounds/bg_audioplayer_gold.png');
         }
 
         .controls {
@@ -82,7 +82,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: rgb(0, 180, 193);
+            background-color: rgb(189, 171, 130);
             padding: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -99,7 +99,7 @@
 
         .progress-bar {
             height: 100%;
-            background-color: rgb(0, 180, 193);
+            background-color: rgb(162, 139, 73);
             width: 0%;
             border-radius: 4px;
             transition: width 0.1s linear; /* sanfter Übergang */
@@ -111,13 +111,13 @@
             justify-content: space-between;
             margin-top: 10px;
             font-size: 0.9em;
-            color: rgb(0, 180, 193);
+            color: rgb(239, 245, 246);
         }
 
         #track-title {
             text-align: center;
             font-family: Arial, sans-serif;
-            color: rgb(0, 180, 193);
+            color: rgb(236, 222, 186);
         }
 
         .app-logo {
@@ -133,6 +133,44 @@
         }
       
         
+    /* Styling for the volume slider */
+        #bg-volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgb(162, 139, 73);
+            outline: none;
+            opacity: 0.8;
+            -webkit-transition: opacity .2s;
+            transition: opacity .2s;
+        }
+
+        #bg-volume-slider:hover {
+            opacity: 1;
+        }
+
+        #bg-volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
+
+        #bg-volume-slider::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
     </style>
 </head>
 <body>
@@ -149,6 +187,7 @@
         <div class="player-container">
             <h3 id="track-title"></h3> <!-- Tracktitel -->
             <audio id="audio-player"></audio>
+            <audio id="audio-player-bg"></audio>
             
             <div class="progress-container" id="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
@@ -163,6 +202,11 @@
                 <img src="../assets/images/icons/rewind15_icon_white.png" alt="15 Sekunden zurückspulen" id="rewind-btn">
                 <img src="../assets/images/icons/play_icon_black.png" alt="Abspielen" id="play-pause-btn" class="play-pause-btn">
                 <img src="../assets/images/icons/forward15_icon_white.png" alt="15 Sekunden vorspulen" id="forward-btn">
+            </div>
+
+            <div class="volume-container" id="bg-volume-container" style="display: none; width: 80%; margin-top: 15px; align-items: center; gap: 10px;">
+                <img src="../assets/images/icons/music.png" alt="Hintergrundmusik" style="width: 25px; height: 25px;">
+                <input type="range" id="bg-volume-slider" min="0" max="100" value="50" style="width: 100%;">
             </div>
         </div>
 

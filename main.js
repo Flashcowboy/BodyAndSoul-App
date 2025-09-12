@@ -1,3 +1,5 @@
+
+
 function getPathToRoot() {
     const path = window.location.pathname;
     if (path.includes('/structure/basics/')) return '../../';
@@ -82,6 +84,63 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
+    // --- DATA for Background Music ---
+    const bgMusicTracks = [
+        { id: 'none', title: 'Ohne Musik', path: '' },
+        { id: 'birdparadise', title: 'Vogelgezwitscher', path: `${pathToRoot}assets/audio/bg_music/birdparadise.m4a` }
+    ];
+
+    function showBgMusicModal(trackTitle, mainAudioPath) {
+        // Remove existing modal if any
+        const existingModal = document.getElementById('bg-music-modal');
+        if (existingModal) existingModal.remove();
+
+        // Create modal container
+        const modal = document.createElement('div');
+        modal.id = 'bg-music-modal';
+        modal.style.cssText = 'position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;';
+
+        // Create modal content
+        let modalContentHtml = `
+            <div style="background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 400px; text-align: center;">
+                <h3 style="margin-top: 0;">Hintergrundmusik wählen</h3>
+                <p>für: <strong>${trackTitle}</strong></p>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+        `;
+
+        bgMusicTracks.forEach(track => {
+            modalContentHtml += `
+                <li class="bg-music-option" data-path="${track.path}" style="padding: 12px; border-bottom: 1px solid #eee; cursor: pointer;">
+                    ${track.title}
+                </li>
+            `;
+        });
+
+        modalContentHtml += `</ul><button id="close-modal-btn" style="margin-top: 20px; padding: 10px 20px; border: none; border-radius: 5px; background: #ccc;">Abbrechen</button></div>`;
+        
+        modal.innerHTML = modalContentHtml;
+        document.body.appendChild(modal);
+
+        // Add event listeners
+        modal.querySelector('#close-modal-btn').addEventListener('click', () => modal.remove());
+        modal.addEventListener('click', (e) => {
+            if (e.target.id === 'bg-music-modal') { // Click on backdrop
+                modal.remove();
+            }
+        });
+
+        modal.querySelectorAll('.bg-music-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const bgAudioPath = e.currentTarget.dataset.path;
+                let finalUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(mainAudioPath)}&title=${encodeURIComponent(trackTitle)}`;
+                if (bgAudioPath) {
+                    finalUrl += `&bg_audio=${encodeURIComponent(bgAudioPath)}`;
+                }
+                window.location.href = finalUrl;
+            });
+        });
+    }
+
     document.querySelectorAll('.subcategory-card').forEach(card => {
         const audioBaseName = card.dataset.audioBaseName;
         const cardId = card.id;
@@ -116,14 +175,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentFavorites = currentFavorites.filter(fav => fav.id !== baseName);
                     icon.src = `${pathToRoot}assets/images/icons/heart_inactive.png`;
                 } else {
-                    // Re-fetch title right before adding to handle async translations
                     const freshCardTextElement = card.querySelector('.card-text');
                     const freshTrackTitle = freshCardTextElement ? freshCardTextElement.textContent.trim() : '';
                     currentFavorites.push({ id: baseName, title: freshTrackTitle, audioSrc: audioFilePath });
                     icon.src = `${pathToRoot}assets/images/icons/heart_active.png`;
                 }
                 localStorage.setItem('favorites', JSON.stringify(currentFavorites));
-                return; // Prevent navigation
+                return;
             }
 
             // --- Handle Navigation Click ---
@@ -133,10 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Re-fetch title for navigation to get latest translated value
             const freshCardTextElement = card.querySelector('.card-text');
             const freshTrackTitle = freshCardTextElement ? freshCardTextElement.textContent.trim() : '';
-            window.location.href = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}`;
+            showBgMusicModal(freshTrackTitle, audioFilePath);
         });
     });
 
@@ -145,6 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
    
     const audioPlayer = document.getElementById('audio-player');
+    const bgPlayer = document.getElementById('audio-player-bg');
+
     if (audioPlayer) {
         // --- Get DOM Elements ---
         const playerContainer = document.querySelector('.player-container');
@@ -160,17 +219,49 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentTimeSpan = document.getElementById('current-time');
         const durationSpan = document.getElementById('duration');
         const trackTitleElement = document.getElementById('track-title');
+        const bgVolumeContainer = document.getElementById('bg-volume-container');
+        const bgVolumeSlider = document.getElementById('bg-volume-slider');
+        
+        // --- Get URL Params ---
         const urlParams = new URLSearchParams(window.location.search);
         const audioSrc = decodeURIComponent(urlParams.get('audio') || '');
+        const bgAudioSrc = decodeURIComponent(urlParams.get('bg_audio') || '');
         const trackTitle = decodeURIComponent(urlParams.get('title') || '');
 
+        // --- Set Audio Sources ---
         if (audioSrc) audioPlayer.src = audioSrc;
         if (trackTitle && trackTitleElement) trackTitleElement.textContent = trackTitle;
+        if (bgAudioSrc && bgPlayer) {
+            bgPlayer.src = bgAudioSrc;
+            bgPlayer.loop = true;
+            if (bgVolumeSlider) bgPlayer.volume = bgVolumeSlider.value / 100;
+            if (bgVolumeContainer) bgVolumeContainer.style.display = 'flex';
+        }
 
         // --- State ---
         let sessionMarkedAsComplete = false;
+        let fadeOutInterval = null;
 
-        // --- Helper Functions for Streak Logic ---
+        // --- Sync and Fade Logic ---
+        const startFadeOut = () => {
+            if (!bgPlayer || fadeOutInterval) return;
+            const fadeDuration = 10;
+            const fadeSteps = 50;
+            const volumeStep = bgPlayer.volume / fadeSteps;
+            
+            fadeOutInterval = setInterval(() => {
+                const newVolume = bgPlayer.volume - volumeStep;
+                if (newVolume >= 0) {
+                    bgPlayer.volume = newVolume;
+                } else {
+                    bgPlayer.volume = 0;
+                    bgPlayer.pause();
+                    clearInterval(fadeOutInterval);
+                }
+            }, (fadeDuration * 1000) / fadeSteps);
+        };
+
+        // --- Helper Functions for Streak Logic (unchanged) ---
         const isSameDay = (date1, date2) => {
             if (!date1 || !date2) return false;
             return date1.getFullYear() === date2.getFullYear() &&
@@ -185,12 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return isSameDay(date, yesterday);
         };
 
-        // --- Core Function to Update Stats ---
+        // --- Core Function to Update Stats (unchanged) ---
         async function markSessionComplete() {
             const user = auth.currentUser;
             if (!user || !db) return;
 
-            // Show completion screen
             if(playerContainer) playerContainer.style.display = 'none';
             if(completionScreen) completionScreen.style.display = 'flex';
 
@@ -206,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const currentSessions = userData.sessions || 0;
                     const currentStreak = userData.streak || 0;
                     const lastSessionDate = userData.lastSessionDate ? userData.lastSessionDate.toDate() : null;
-                    const currentListeningTime = userData.listeningTime || 0; // in seconds
+                    const currentListeningTime = userData.listeningTime || 0;
                     
                     let newStreak = currentStreak;
                     if (lastSessionDate && isSameDay(lastSessionDate, new Date())) {
@@ -219,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const newSessions = currentSessions + 1;
                     const newLastSessionDate = new Date();
-                    const newListeningTime = currentListeningTime + audioPlayer.duration; // add duration in seconds
+                    const newListeningTime = currentListeningTime + audioPlayer.duration;
 
                     transaction.update(userDocRef, {
                         sessions: newSessions,
@@ -246,21 +336,43 @@ document.addEventListener('DOMContentLoaded', () => {
             playPauseBtn.addEventListener('click', () => {
                 if (audioPlayer.paused) {
                     audioPlayer.play();
-                    playPauseBtn.src = `${pathToRoot}assets/images/icons/pause_icon_black.png`;
                 } else {
                     audioPlayer.pause();
-                    playPauseBtn.src = `${pathToRoot}assets/images/icons/play_icon_black.png`;
                 }
             });
         }
-        if(rewindBtn) rewindBtn.addEventListener('click', () => { audioPlayer.currentTime -= 15; });
-        if(forwardBtn) forwardBtn.addEventListener('click', () => { audioPlayer.currentTime += 15; });
+
+        audioPlayer.addEventListener('play', () => {
+            if (bgPlayer && bgAudioSrc) {
+                bgPlayer.currentTime = audioPlayer.currentTime;
+                bgPlayer.play();
+            }
+            playPauseBtn.src = `${pathToRoot}assets/images/icons/pause_icon_black.png`;
+        });
+
+        audioPlayer.addEventListener('pause', () => {
+            if (bgPlayer && bgAudioSrc) {
+                bgPlayer.pause();
+            }
+            playPauseBtn.src = `${pathToRoot}assets/images/icons/play_icon_black.png`;
+        });
+
+        if(rewindBtn) rewindBtn.addEventListener('click', () => { 
+            audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 15);
+        });
+        if(forwardBtn) forwardBtn.addEventListener('click', () => { 
+            audioPlayer.currentTime += 15; 
+        });
         
         audioPlayer.addEventListener('timeupdate', () => {
             if (audioPlayer.duration) {
                 const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
                 if(progressBar) progressBar.style.width = `${progress}%`;
                 if(currentTimeSpan) currentTimeSpan.textContent = formatTime(audioPlayer.currentTime);
+
+                if (bgPlayer && bgAudioSrc && (audioPlayer.duration - audioPlayer.currentTime) <= 10) {
+                    startFadeOut();
+                }
 
                 if (progress >= 95 && !sessionMarkedAsComplete) {
                     sessionMarkedAsComplete = true;
@@ -269,9 +381,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        audioPlayer.addEventListener('seeking', () => {
+            if (bgPlayer && bgAudioSrc) {
+                bgPlayer.currentTime = audioPlayer.currentTime;
+            }
+        });
+
         audioPlayer.addEventListener('loadedmetadata', () => {
             if(durationSpan) durationSpan.textContent = formatTime(audioPlayer.duration);
         });
+
+        if (bgVolumeSlider) {
+            bgVolumeSlider.addEventListener('input', (e) => {
+                if (bgPlayer) {
+                    bgPlayer.volume = e.target.value / 100;
+                }
+            });
+        }
 
         if (backToOverviewBtn) {
             backToOverviewBtn.addEventListener('click', () => {
@@ -279,31 +405,39 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
+        // --- Dragging Logic (Progress Bar) ---
         let isDragging = false;
-        const handleDragStart = (e) => { isDragging = true; handleDragMove(e); };
+        const handleDragStart = (e) => {
+            if (e.type.startsWith('touch')) e.preventDefault();
+            isDragging = true; 
+            handleDragMove(e); 
+        };
         const handleDragEnd = () => { isDragging = false; };
         const handleDragMove = (e) => {
             if (!isDragging) return;
-            e.preventDefault();
+            if (e.type.startsWith('touch')) e.preventDefault();
+            
             const totalWidth = progressContainer.clientWidth;
             const rect = progressContainer.getBoundingClientRect();
             const clickX = (e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX) - rect.left;
             const boundedClickX = Math.max(0, Math.min(clickX, totalWidth));
             const progress = boundedClickX / totalWidth;
             const newTime = progress * audioPlayer.duration;
+
             if (!isNaN(newTime) && isFinite(newTime)) {
                 if (progressBar) progressBar.style.width = `${progress * 100}%`;
                 if (currentTimeSpan) currentTimeSpan.textContent = formatTime(newTime);
                 audioPlayer.currentTime = newTime;
             }
         };
+
         if (progressContainer) {
             progressContainer.addEventListener('mousedown', handleDragStart);
             document.addEventListener('mouseup', handleDragEnd);
             document.addEventListener('mousemove', handleDragMove);
-            progressContainer.addEventListener('touchstart', handleDragStart);
+            progressContainer.addEventListener('touchstart', handleDragStart, { passive: false });
             document.addEventListener('touchend', handleDragEnd);
-            document.addEventListener('touchmove', handleDragMove);
+            document.addEventListener('touchmove', handleDragMove, { passive: false });
         }
     }
 
