@@ -46,9 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         favoriteItem.appendChild(action);
 
                         favoriteItem.addEventListener('click', () => {
-                            const pathToRoot = getPathToRoot();
-                            const playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(fav.audioSrc)}&title=${encodeURIComponent(fav.title)}`;
-                            window.location.href = playerUrl;
+                            showBgMusicModal(fav.title, fav.audioSrc);
                         });
 
                         favoritesContainer.appendChild(favoriteItem);

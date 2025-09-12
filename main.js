@@ -26,6 +26,62 @@ if (auth) {
     });
 }
 
+const bgMusicTracks = [
+    { id: 'none', title: 'Ohne Musik', path: '' },
+    { id: 'birdparadise', title: 'Vogelgezwitscher', path: `${getPathToRoot()}assets/audio/bg_music/birdparadise.m4a` }
+];
+
+function showBgMusicModal(trackTitle, mainAudioPath) {
+    // Remove existing modal if any
+    const existingModal = document.getElementById('bg-music-modal');
+    if (existingModal) existingModal.remove();
+
+    // Create modal container
+    const modal = document.createElement('div');
+    modal.id = 'bg-music-modal';
+    modal.style.cssText = 'position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;';
+
+    // Create modal content
+    let modalContentHtml = `
+        <div style="background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 400px; text-align: center;">
+            <h3 style="margin-top: 0;">Hintergrundmusik wählen</h3>
+            <p>für: <strong>${trackTitle}</strong></p>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+    `;
+
+    bgMusicTracks.forEach(track => {
+        modalContentHtml += `
+            <li class="bg-music-option" data-path="${track.path}" style="padding: 12px; border-bottom: 1px solid #eee; cursor: pointer;">
+                ${track.title}
+            </li>
+        `;
+    });
+
+    modalContentHtml += `</ul><button id="close-modal-btn" style="margin-top: 20px; padding: 10px 20px; border: none; border-radius: 5px; background: #ccc;">Abbrechen</button></div>`;
+    
+    modal.innerHTML = modalContentHtml;
+    document.body.appendChild(modal);
+
+    // Add event listeners
+    modal.querySelector('#close-modal-btn').addEventListener('click', () => modal.remove());
+    modal.addEventListener('click', (e) => {
+        if (e.target.id === 'bg-music-modal') { // Click on backdrop
+            modal.remove();
+        }
+    });
+
+    modal.querySelectorAll('.bg-music-option').forEach(option => {
+        option.addEventListener('click', (e) => {
+            const bgAudioPath = e.currentTarget.dataset.path;
+            let finalUrl = `${getPathToRoot()}structure/player.html?audio=${encodeURIComponent(mainAudioPath)}&title=${encodeURIComponent(trackTitle)}`;
+            if (bgAudioPath) {
+                finalUrl += `&bg_audio=${encodeURIComponent(bgAudioPath)}`;
+            }
+            window.location.href = finalUrl;
+        });
+    });
+}
+
 // ==========================================================================
 // --- 3. DOM-RELATED LOGIC ---
 // ==========================================================================
@@ -116,63 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateFavoriteIcons();
         }
     });
-
-    // --- DATA for Background Music ---
-    const bgMusicTracks = [
-        { id: 'none', title: 'Ohne Musik', path: '' },
-        { id: 'birdparadise', title: 'Vogelgezwitscher', path: `${pathToRoot}assets/audio/bg_music/birdparadise.m4a` }
-    ];
-
-    function showBgMusicModal(trackTitle, mainAudioPath) {
-        // Remove existing modal if any
-        const existingModal = document.getElementById('bg-music-modal');
-        if (existingModal) existingModal.remove();
-
-        // Create modal container
-        const modal = document.createElement('div');
-        modal.id = 'bg-music-modal';
-        modal.style.cssText = 'position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;';
-
-        // Create modal content
-        let modalContentHtml = `
-            <div style="background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 400px; text-align: center;">
-                <h3 style="margin-top: 0;">Hintergrundmusik wählen</h3>
-                <p>für: <strong>${trackTitle}</strong></p>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-        `;
-
-        bgMusicTracks.forEach(track => {
-            modalContentHtml += `
-                <li class="bg-music-option" data-path="${track.path}" style="padding: 12px; border-bottom: 1px solid #eee; cursor: pointer;">
-                    ${track.title}
-                </li>
-            `;
-        });
-
-        modalContentHtml += `</ul><button id="close-modal-btn" style="margin-top: 20px; padding: 10px 20px; border: none; border-radius: 5px; background: #ccc;">Abbrechen</button></div>`;
-        
-        modal.innerHTML = modalContentHtml;
-        document.body.appendChild(modal);
-
-        // Add event listeners
-        modal.querySelector('#close-modal-btn').addEventListener('click', () => modal.remove());
-        modal.addEventListener('click', (e) => {
-            if (e.target.id === 'bg-music-modal') { // Click on backdrop
-                modal.remove();
-            }
-        });
-
-        modal.querySelectorAll('.bg-music-option').forEach(option => {
-            option.addEventListener('click', (e) => {
-                const bgAudioPath = e.currentTarget.dataset.path;
-                let finalUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(mainAudioPath)}&title=${encodeURIComponent(trackTitle)}`;
-                if (bgAudioPath) {
-                    finalUrl += `&bg_audio=${encodeURIComponent(bgAudioPath)}`;
-                }
-                window.location.href = finalUrl;
-            });
-        });
-    }
 
     document.querySelectorAll('.subcategory-card').forEach(card => {
         const audioBaseName = card.dataset.audioBaseName;
