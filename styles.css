@@ -11,8 +11,7 @@ body, html {
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    overflow: hidden; /* Prevent rubber-band effect */
+    min-height: 100dvh; /* Prevent rubber-band effect */
 }
 
 main {

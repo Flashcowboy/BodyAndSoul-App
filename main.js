@@ -1,5 +1,3 @@
-
-
 function getPathToRoot() {
     const path = window.location.pathname;
     if (path.includes('/structure/basics/')) return '../../';
@@ -82,7 +80,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // --- 4. Subcategory Cards ---
     // ==========================================================================
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    // --- FAVORITES LOGIC ---
+    let userFavorites = {};
+
+    function updateFavoriteIcons() {
+        document.querySelectorAll('.subcategory-card').forEach(card => {
+            const baseName = card.dataset.audioBaseName || card.id;
+            const icon = card.querySelector('.favorite-icon');
+            if (icon) {
+                const isFavorite = !!userFavorites[baseName];
+                icon.src = isFavorite
+                    ? `${getPathToRoot()}assets/images/icons/heart_active.png`
+                    : `${getPathToRoot()}assets/images/icons/heart_inactive.png`;
+            }
+        });
+    }
+
+    auth.onAuthStateChanged(user => {
+        if (user && db) {
+            const userDocRef = db.collection('User_Profiles').doc(user.uid);
+            userDocRef.onSnapshot(doc => {
+                if (doc.exists) {
+                    userFavorites = doc.data().favorites || {};
+                } else {
+                    userFavorites = {};
+                }
+                updateFavoriteIcons();
+            }, err => {
+                console.error("Error fetching user favorites:", err);
+                userFavorites = {};
+                updateFavoriteIcons();
+            });
+        } else {
+            userFavorites = {};
+            updateFavoriteIcons();
+        }
+    });
 
     // --- DATA for Background Music ---
     const bgMusicTracks = [
@@ -149,38 +182,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!baseName) return;
 
-        // Define common variables
-        const cardTextElement = card.querySelector('.card-text');
-        const trackTitle = cardTextElement ? cardTextElement.textContent.trim() : '';
-        const lang = localStorage.getItem('lang') || 'de';
-        const currentPagePath = window.location.pathname;
-        const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
-        const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
-
-        // Set initial favorite state
-        if (icon) {
-            const isFavorite = favorites.some(fav => fav.id === baseName);
-            icon.src = isFavorite 
-                ? `${pathToRoot}assets/images/icons/heart_active.png`
-                : `${pathToRoot}assets/images/icons/heart_inactive.png`;
-        }
-
         card.addEventListener('click', (e) => {
-            // --- Handle Favorite Click ---
             if (icon && icon.contains(e.target)) {
-                let currentFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-                const isFavorite = currentFavorites.some(fav => fav.id === baseName);
-
-                if (isFavorite) {
-                    currentFavorites = currentFavorites.filter(fav => fav.id !== baseName);
-                    icon.src = `${pathToRoot}assets/images/icons/heart_inactive.png`;
-                } else {
-                    const freshCardTextElement = card.querySelector('.card-text');
-                    const freshTrackTitle = freshCardTextElement ? freshCardTextElement.textContent.trim() : '';
-                    currentFavorites.push({ id: baseName, title: freshTrackTitle, audioSrc: audioFilePath });
-                    icon.src = `${pathToRoot}assets/images/icons/heart_active.png`;
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const currentUser = auth.currentUser;
+                if (!currentUser || !db) {
+                    alert("Bitte einloggen, um Favoriten zu speichern.");
+                    return;
                 }
-                localStorage.setItem('favorites', JSON.stringify(currentFavorites));
+                const userDocRef = db.collection('User_Profiles').doc(currentUser.uid);
+
+                const lang = localStorage.getItem('lang') || 'de';
+                const currentPagePath = window.location.pathname;
+                const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
+                const audioFilePath = `${getPathToRoot()}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
+
+                const favoriteData = {
+                    id: baseName,
+                    title: card.querySelector('.card-text') ? card.querySelector('.card-text').innerHTML.trim() : '',
+                    audioSrc: audioFilePath
+                };
+
+                if (userFavorites[baseName]) {
+                    // Remove favorite
+                    userDocRef.update({
+                        [`favorites.${baseName}`]: firebase.firestore.FieldValue.delete()
+                    }).catch(err => console.error("Error removing favorite:", err));
+                } else {
+                    // Add favorite
+                    userDocRef.update({
+                        [`favorites.${baseName}`]: favoriteData
+                    }).catch(err => console.error("Error adding favorite:", err));
+                }
                 return;
             }
 
@@ -192,7 +227,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             const freshCardTextElement = card.querySelector('.card-text');
-            const freshTrackTitle = freshCardTextElement ? freshCardTextElement.textContent.trim() : '';
+            const freshTrackTitle = freshCardTextElement ? freshCardTextElement.innerHTML.trim() : '';
+            const lang = localStorage.getItem('lang') || 'de';
+            const currentPagePath = window.location.pathname;
+            const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
+            const audioFilePath = `${getPathToRoot()}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
             showBgMusicModal(freshTrackTitle, audioFilePath);
         });
     });
@@ -205,6 +244,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgPlayer = document.getElementById('audio-player-bg');
 
     if (audioPlayer) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        let audioContext;
+        let gainNode;
+        let bgAudioSource;
+        let isWebAudioInitialized = false;
+
         // --- Get DOM Elements ---
         const playerContainer = document.querySelector('.player-container');
         const completionScreen = document.getElementById('session-complete-screen');
@@ -230,11 +275,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Set Audio Sources ---
         if (audioSrc) audioPlayer.src = audioSrc;
-        if (trackTitle && trackTitleElement) trackTitleElement.textContent = trackTitle;
+        if (trackTitle && trackTitleElement) trackTitleElement.innerHTML = trackTitle;
         if (bgAudioSrc && bgPlayer) {
             bgPlayer.src = bgAudioSrc;
             bgPlayer.loop = true;
-            if (bgVolumeSlider) bgPlayer.volume = bgVolumeSlider.value / 100;
+            if (bgVolumeSlider && !isIOS) {
+                bgPlayer.volume = bgVolumeSlider.value / 100;
+            }
             if (bgVolumeContainer) bgVolumeContainer.style.display = 'flex';
         }
 
@@ -245,20 +292,32 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Sync and Fade Logic ---
         const startFadeOut = () => {
             if (!bgPlayer || fadeOutInterval) return;
-            const fadeDuration = 10;
+            const fadeDuration = 10; // seconds
             const fadeSteps = 50;
-            const volumeStep = bgPlayer.volume / fadeSteps;
-            
-            fadeOutInterval = setInterval(() => {
-                const newVolume = bgPlayer.volume - volumeStep;
-                if (newVolume >= 0) {
-                    bgPlayer.volume = newVolume;
+            const interval = (fadeDuration * 1000) / fadeSteps;
+
+            const getVolume = () => (isIOS && gainNode) ? gainNode.gain.value : bgPlayer.volume;
+            const setVolume = (vol) => {
+                if (isIOS && gainNode) {
+                    gainNode.gain.value = vol;
                 } else {
-                    bgPlayer.volume = 0;
+                    bgPlayer.volume = vol;
+                }
+            };
+
+            const initialVolume = getVolume();
+            const volumeStep = initialVolume / fadeSteps;
+
+            fadeOutInterval = setInterval(() => {
+                const newVolume = getVolume() - volumeStep;
+                if (newVolume >= 0) {
+                    setVolume(newVolume);
+                } else {
+                    setVolume(0);
                     bgPlayer.pause();
                     clearInterval(fadeOutInterval);
                 }
-            }, (fadeDuration * 1000) / fadeSteps);
+            }, interval);
         };
 
         // --- Helper Functions for Streak Logic (unchanged) ---
@@ -343,6 +402,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         audioPlayer.addEventListener('play', () => {
+            if (isIOS && !isWebAudioInitialized && bgPlayer && bgAudioSrc) {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    gainNode = audioContext.createGain();
+                    bgAudioSource = audioContext.createMediaElementSource(bgPlayer);
+                    bgAudioSource.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                }
+                if (bgVolumeSlider) {
+                    gainNode.gain.value = bgVolumeSlider.value / 100;
+                }
+                isWebAudioInitialized = true;
+            }
+
             if (bgPlayer && bgAudioSrc) {
                 bgPlayer.currentTime = audioPlayer.currentTime;
                 bgPlayer.play();
@@ -393,8 +466,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (bgVolumeSlider) {
             bgVolumeSlider.addEventListener('input', (e) => {
-                if (bgPlayer) {
-                    bgPlayer.volume = e.target.value / 100;
+                const volumeValue = e.target.value / 100;
+                if (isIOS && gainNode) {
+                    gainNode.gain.value = volumeValue;
+                } else if (bgPlayer) {
+                    bgPlayer.volume = volumeValue;
                 }
             });
         }
