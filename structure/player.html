@@ -171,6 +171,72 @@
             border: none;
             box-shadow: 0 0 2px rgba(0,0,0,0.5);
         }
+
+        /* Modal for Background Music Selection */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.6);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+        }
+
+        .music-tile-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .music-tile {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        .music-tile.active {
+            border-color: #a28b49;
+        }
     </style>
 </head>
 <body>
@@ -178,6 +244,7 @@
     <header>
         <h1 data-i18n="audioPlayerTitle"></h1><!-- Titel des Audio Players -->
     </header>
+
    <main>
 
         <div class="app-logo">
@@ -204,8 +271,8 @@
                 <img src="../assets/images/icons/forward15_icon_white.png" alt="15 Sekunden vorspulen" id="forward-btn">
             </div>
 
-            <div class="volume-container" id="bg-volume-container" style="display: none; width: 80%; margin-top: 15px; align-items: center; gap: 10px;">
-                <img src="../assets/images/icons/music.png" alt="Hintergrundmusik" style="width: 25px; height: 25px;">
+            <div class="volume-container" id="bg-volume-container" style="width: 80%; margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                <img src="../assets/images/icons/music.png" alt="Hintergrundmusik" id="open-music-modal" style="width: 25px; height: 25px; cursor: pointer;">
                 <input type="range" id="bg-volume-slider" min="0" max="100" value="50" style="width: 100%;">
             </div>
         </div>
@@ -220,6 +287,17 @@
             <button id="back-to-overview-btn" class="lang-button">Zurück zur Übersicht</button>
         </div>
     </main>
+
+    <!-- Background Music Modal -->
+    <div id="music-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 data-i18n="bg_music_info_text">Wähle eine Hintergrundmusik</h3>
+            <div id="bg-music-selection" class="music-tile-container">
+                <!-- Music tiles will be inserted here -->
+            </div>
+        </div>
+    </div>
 
  <script>
         fetch('/structure/footer.html')

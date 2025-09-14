@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lang = localStorage.getItem('lang') || 'de';
     // The path is relative to the HTML file, so we need to go up two levels.
-    const audioSrc = `../../assets/audio/miniplayer/${audioBaseName}_${lang}.mp3`;
+    const audioSrc = `../../assets/audio/miniplayer/${audioBaseName}_${lang}.m4a`;
 
     const audio = new Audio(audioSrc);
 
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('storage', (e) => {
         if (e.key === 'lang') {
             const newLang = e.newValue || 'de';
-            audio.src = `../../assets/audio/miniplayer/${audioBaseName}_${newLang}.mp3`;
+            audio.src = `../../assets/audio/miniplayer/${audioBaseName}_${newLang}.m4a`;
             // Reset the player state
             audio.pause();
             icon.src = playIcon;
