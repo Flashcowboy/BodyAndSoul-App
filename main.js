@@ -123,10 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
+        const isSameDay = (d1, d2) => d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+        const isYesterday = (date) => {
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+            return isSameDay(date, yesterday);
+        };
+
 
     // 3.2. Page-Specific Logic
     // =================================================================================================
-
     // --- Index Page ---
     if (path.endsWith('index.html') || path === '/' || path.endsWith('/')) {
         document.querySelectorAll('.lang-button').forEach(button => {
@@ -138,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Subcategory Cards & Favorites ---
-        if (path.includes('subcategories') || path.includes('basics')) {
+    if (path.includes('subcategories') || path.includes('basics')) {
         let userFavorites = {};
 
         function updateFavoriteIcons() {
@@ -183,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!baseName) return;
 
-            card.addEventListener('click', (e) => {
+            card.addEventListener('click', async (e) => {
                 // Favorite icon click
                 if (icon && icon.contains(e.target)) {
                     e.preventDefault();
@@ -224,15 +231,50 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 
-                // Play audio click
+                // --- Play audio click with course progress logic ---
+                const currentUser = auth.currentUser;
+                const courseId = card.id.substring(0, card.id.lastIndexOf('_'));
+                let trackProgress = false;
+
+                if (currentUser && db && courseId) {
+                    const userCourseRef = db.collection('userCourses').doc(`${currentUser.uid}_${courseId}`);
+                    const userCourseDoc = await userCourseRef.get();
+
+                    if (userCourseDoc.exists) {
+                        const progressQuery = userCourseRef.collection('progress').orderBy('completedDate', 'desc').limit(1);
+                        const progressSnapshot = await progressQuery.get();
+                        
+                        let isNewDay = true;
+                        if (!progressSnapshot.empty) {
+                            const lastEntry = progressSnapshot.docs[0].data();
+                            const lastDate = lastEntry.completedDate.toDate();
+                            const today = new Date();
+                            if (isSameDay(lastDate, today)) {
+                                isNewDay = false;
+                            }
+                        }
+
+                        if (isNewDay) {
+                            if (confirm("Soll diese Übung für deine Kurs-Statistik gezählt werden?")) {
+                                trackProgress = true;
+                            }
+                        }
+                    }
+                }
+
                 const freshCardTextElement = card.querySelector('.card-text span');
                 const freshTrackTitle = freshCardTextElement ? freshCardTextElement.innerHTML.trim() : '';
                 const lang = localStorage.getItem('lang') || 'de';
                 const currentPagePath = window.location.pathname;
                 const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
                 const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
-                
-                window.location.href = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}`;
+
+                let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}&courseId=${encodeURIComponent(courseId)}`;
+                if (trackProgress) {
+                    playerUrl += '&trackProgress=true';
+                }
+
+                window.location.href = playerUrl;
             });
         });
     }
@@ -339,6 +381,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const audioSrc = decodeURIComponent(urlParams.get('audio') || '');
         const trackTitle = decodeURIComponent(urlParams.get('title') || '');
+        const courseId = decodeURIComponent(urlParams.get('courseId') || '');
+        const trackProgress = urlParams.get('trackProgress') === 'true';
+        const isChallenge = urlParams.get('challenge') === 'true';
 
         if (audioSrc) audioPlayer.src = audioSrc;
         if (trackTitle && trackTitleElement) trackTitleElement.innerHTML = trackTitle;
@@ -375,13 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, interval);
         };
 
-        const isSameDay = (d1, d2) => d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
-        const isYesterday = (date) => {
-            const today = new Date();
-            const yesterday = new Date(today);
-            yesterday.setDate(today.getDate() - 1);
-            return isSameDay(date, yesterday);
-        };
+
 
         async function markSessionComplete() {
             const user = auth.currentUser;
@@ -390,26 +429,73 @@ document.addEventListener('DOMContentLoaded', () => {
             if(playerContainer) playerContainer.style.display = 'none';
             if(completionScreen) completionScreen.style.display = 'flex';
 
-            const userDocRef = db.collection('User_Profiles').doc(user.uid);
-            try {
-                await db.runTransaction(async (transaction) => {
-                    const userDoc = await transaction.get(userDocRef);
-                    if (!userDoc.exists) return;
-                    const userData = userDoc.data();
-                    const currentSessions = userData.sessions || 0;
-                    const currentStreak = userData.streak || 0;
-                    const lastSessionDate = userData.lastSessionDate ? userData.lastSessionDate.toDate() : null;
-                    const currentListeningTime = userData.listeningTime || 0;
-                    let newStreak = (lastSessionDate && isSameDay(lastSessionDate, new Date())) ? currentStreak : (lastSessionDate && isYesterday(lastSessionDate)) ? currentStreak + 1 : 1;
-                    const newSessions = currentSessions + 1;
-                    const newLastSessionDate = new Date();
-                    const newListeningTime = currentListeningTime + audioPlayer.duration;
-                    transaction.update(userDocRef, { sessions: newSessions, streak: newStreak, lastSessionDate: newLastSessionDate, listeningTime: newListeningTime });
-                    if(completionStats) completionStats.innerHTML = `<p>Sessions: ${newSessions}</p><p>Streak: ${newStreak} Tage</p>`;
-                });
-            } catch (error) {
-                console.error("Transaction failed: ", error);
-                if(completionStats) completionStats.innerHTML = "<p>Fehler beim Speichern.</p>";
+            const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+            // Course-specific progress tracking
+            if (courseId && (trackProgress || isChallenge)) {
+                const progressDocRef = db.collection('userCourses').doc(`${user.uid}_${courseId}`).collection('progress').doc(today);
+                const progressDoc = await progressDocRef.get();
+
+                if (!progressDoc.exists) {
+                    await progressDocRef.set({
+                        completedDate: firebase.firestore.FieldValue.serverTimestamp(),
+                        duration: audioPlayer.duration
+                    });
+
+                    // Only update global stats if this is the first completion for this course today
+                    const userDocRef = db.collection('User_Profiles').doc(user.uid);
+                    try {
+                        await db.runTransaction(async (transaction) => {
+                            const userDoc = await transaction.get(userDocRef);
+                            if (!userDoc.exists) return;
+                            const userData = userDoc.data();
+                            const currentSessions = userData.sessions || 0;
+                            const currentStreak = userData.streak || 0;
+                            const lastSessionDate = userData.lastSessionDate ? userData.lastSessionDate.toDate() : null;
+                            const currentListeningTime = userData.listeningTime || 0;
+                            let newStreak = (lastSessionDate && isSameDay(lastSessionDate, new Date())) ? currentStreak : (lastSessionDate && isYesterday(lastSessionDate)) ? currentStreak + 1 : 1;
+                            const newSessions = currentSessions + 1;
+                            const newLastSessionDate = new Date();
+                            const newListeningTime = currentListeningTime + audioPlayer.duration;
+                            transaction.update(userDocRef, { sessions: newSessions, streak: newStreak, lastSessionDate: newLastSessionDate, listeningTime: newListeningTime });
+                            if(completionStats) completionStats.innerHTML = `<p>Sessions: ${newSessions}</p><p>Streak: ${newStreak} Tage</p>`;
+                        });
+                    } catch (error) {
+                        console.error("Transaction failed: ", error);
+                        if(completionStats) completionStats.innerHTML = "<p>Fehler beim Speichern.</p>";
+                    }
+                } else {
+                    // Already completed today, just show stats without updating
+                    const userDocRef = db.collection('User_Profiles').doc(user.uid);
+                    const userDoc = await userDocRef.get();
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        if(completionStats) completionStats.innerHTML = `<p>Sessions: ${userData.sessions || 0}</p><p>Streak: ${userData.streak || 0} Tage</p>`;
+                    }
+                }
+            } else {
+                // Fallback for non-course audio - original behavior
+                const userDocRef = db.collection('User_Profiles').doc(user.uid);
+                try {
+                    await db.runTransaction(async (transaction) => {
+                        const userDoc = await transaction.get(userDocRef);
+                        if (!userDoc.exists) return;
+                        const userData = userDoc.data();
+                        const currentSessions = userData.sessions || 0;
+                        const currentStreak = userData.streak || 0;
+                        const lastSessionDate = userData.lastSessionDate ? userData.lastSessionDate.toDate() : null;
+                        const currentListeningTime = userData.listeningTime || 0;
+                        let newStreak = (lastSessionDate && isSameDay(lastSessionDate, new Date())) ? currentStreak : (lastSessionDate && isYesterday(lastSessionDate)) ? currentStreak + 1 : 1;
+                        const newSessions = currentSessions + 1;
+                        const newLastSessionDate = new Date();
+                        const newListeningTime = currentListeningTime + audioPlayer.duration;
+                        transaction.update(userDocRef, { sessions: newSessions, streak: newStreak, lastSessionDate: newLastSessionDate, listeningTime: newListeningTime });
+                        if(completionStats) completionStats.innerHTML = `<p>Sessions: ${newSessions}</p><p>Streak: ${newStreak} Tage</p>`;
+                    });
+                } catch (error) {
+                    console.error("Transaction failed: ", error);
+                    if(completionStats) completionStats.innerHTML = "<p>Fehler beim Speichern.</p>";
+                }
             }
         }
 

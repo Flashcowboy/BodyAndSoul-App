@@ -1,0 +1,68 @@
+[debug] [2025-09-15T14:34:14.773Z] ----------------------------------------------------------------------
+[debug] [2025-09-15T14:34:14.783Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only firestore:rules
+[debug] [2025-09-15T14:34:14.784Z] CLI Version:   14.16.0
+[debug] [2025-09-15T14:34:14.784Z] Platform:      darwin
+[debug] [2025-09-15T14:34:14.784Z] Node Version:  v24.7.0
+[debug] [2025-09-15T14:34:14.785Z] Time:          Mon Sep 15 2025 16:34:14 GMT+0200 (Central European Summer Time)
+[debug] [2025-09-15T14:34:14.785Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-15T14:34:14.803Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-09-15T14:34:16.683Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-09-15T14:34:16.686Z] > authorizing via signed-in user (fwittenbecher@gmail.com)
+[debug] [2025-09-15T14:34:16.687Z] [iam] checking project body-and-soul-app for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]
+[debug] [2025-09-15T14:34:16.701Z] Checked if tokens are valid: false, expires at: 1757929458720
+[debug] [2025-09-15T14:34:16.701Z] Checked if tokens are valid: false, expires at: 1757929458720
+[debug] [2025-09-15T14:34:16.702Z] > refreshing access token with scopes: []
+[debug] [2025-09-15T14:34:16.718Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-09-15T14:34:16.719Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-09-15T14:34:17.104Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-09-15T14:34:17.105Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-09-15T14:34:17.154Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/body-and-soul-app:testIamPermissions [none]
+[debug] [2025-09-15T14:34:17.154Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/body-and-soul-app:testIamPermissions x-goog-quota-user=projects/body-and-soul-app
+[debug] [2025-09-15T14:34:17.155Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/body-and-soul-app:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[debug] [2025-09-15T14:34:17.189Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-09-15T14:34:17.193Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2025-09-15T14:34:18.126Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/body-and-soul-app:testIamPermissions 200
+[debug] [2025-09-15T14:34:18.134Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/body-and-soul-app:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[info] 
+[info] === Deploying to 'body-and-soul-app'...
+[info] 
+[info] i  deploying firestore 
+[info] i  firestore: reading indexes from firestore.indexes.json... 
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2025-09-15T14:34:18.168Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:18.168Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:18.169Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/body-and-soul-app:test [none]
+[debug] [2025-09-15T14:34:18.169Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/body-and-soul-app:test [omitted]
+[debug] [2025-09-15T14:34:19.138Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/body-and-soul-app:test 200
+[debug] [2025-09-15T14:34:19.138Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/body-and-soul-app:test {}
+[info] ✔  cloud.firestore: rules file firestore.rules compiled successfully 
+[debug] [2025-09-15T14:34:19.145Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:19.152Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:19.153Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/body-and-soul-app/databases/(default) [none]
+[debug] [2025-09-15T14:34:19.356Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/body-and-soul-app/databases/(default) 200
+[debug] [2025-09-15T14:34:19.357Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/body-and-soul-app/databases/(default) {"name":"projects/body-and-soul-app/databases/(default)","uid":"bfc63b61-3547-4888-b494-7df06959dc03","createTime":"2025-09-05T16:05:05.183705Z","updateTime":"2025-09-05T16:05:05.183705Z","locationId":"europe-west3","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-09-15T13:34:19.364534Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"h","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"etag":"IPm72LD+2o8DMPidyKGAwo8D"}
+[debug] [2025-09-15T14:34:19.370Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:19.370Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:19.370Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/releases pageSize=10&pageToken=
+[debug] [2025-09-15T14:34:20.074Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/releases 200
+[debug] [2025-09-15T14:34:20.077Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/releases {"releases":[{"name":"projects/body-and-soul-app/releases/cloud.firestore","rulesetName":"projects/body-and-soul-app/rulesets/e2e43b71-2a95-40df-8f62-16f0ab13cbb5","createTime":"2025-09-05T16:05:11.810089Z","updateTime":"2025-09-12T23:06:57.724421Z"},{"name":"projects/body-and-soul-app/releases/firebase.storage/body-and-soul-app.firebasestorage.app","rulesetName":"projects/body-and-soul-app/rulesets/a5d0e49d-f4ba-48c1-b04d-31e4c337cabb","createTime":"2025-09-03T23:44:54.885509Z","updateTime":"2025-09-03T23:44:54.885509Z"}]}
+[debug] [2025-09-15T14:34:20.135Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:20.136Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:20.136Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/rulesets/e2e43b71-2a95-40df-8f62-16f0ab13cbb5 [none]
+[debug] [2025-09-15T14:34:20.856Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/rulesets/e2e43b71-2a95-40df-8f62-16f0ab13cbb5 200
+[debug] [2025-09-15T14:34:20.857Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/rulesets/e2e43b71-2a95-40df-8f62-16f0ab13cbb5 [omitted]
+[info] i  firestore: latest version of firestore.rules already up to date, skipping upload... 
+[debug] [2025-09-15T14:34:20.872Z] [rules] releasing cloud.firestore/(default) with ruleset projects/body-and-soul-app/rulesets/e2e43b71-2a95-40df-8f62-16f0ab13cbb5
+[debug] [2025-09-15T14:34:20.872Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:20.873Z] Checked if tokens are valid: true, expires at: 1757950456106
+[debug] [2025-09-15T14:34:20.874Z] >>> [apiv2][query] PATCH https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/releases/cloud.firestore/(default) [none]
+[debug] [2025-09-15T14:34:20.877Z] >>> [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/releases/cloud.firestore/(default) {"release":{"name":"projects/body-and-soul-app/releases/cloud.firestore/(default)","rulesetName":"projects/body-and-soul-app/rulesets/e2e43b71-2a95-40df-8f62-16f0ab13cbb5"}}
+[debug] [2025-09-15T14:34:21.790Z] <<< [apiv2][status] PATCH https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/releases/cloud.firestore/(default) 200
+[debug] [2025-09-15T14:34:21.791Z] <<< [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/body-and-soul-app/releases/cloud.firestore/(default) {"name":"projects/body-and-soul-app/releases/cloud.firestore","rulesetName":"projects/body-and-soul-app/rulesets/e2e43b71-2a95-40df-8f62-16f0ab13cbb5","createTime":"2025-09-05T16:05:11.810089Z","updateTime":"2025-09-15T14:34:21.723370Z"}
+[debug] [2025-09-15T14:34:21.792Z] [rules] updated release projects/body-and-soul-app/releases/cloud.firestore
+[info] ✔  firestore: released rules firestore.rules to cloud.firestore 
+[info] 
+[info] ✔  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/body-and-soul-app/overview
