@@ -8,7 +8,6 @@
    <!-- <link rel="manifest" href="../manifest.json"> -->
     <style>
         body {
-            /* Hintergrundbild direkt auf den Body anwenden */
             background-image: url('../../assets/images/splash_screen_bg.png');
             background-size: cover;
             background-position: center;
@@ -42,8 +41,7 @@
             height: 150px;
         }
 
-
-        .subcategory-card img:not(.favorite-icon) {
+        .subcategory-card .card-background {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -54,15 +52,17 @@
         
         .card-text {
             position: absolute;
-            bottom: 40px; /* Adjusted for the challenge button */
-            left: 0;
-            width: 100%;
-            padding: 15px;
+            bottom: 10px;
+            left: 15px;
+            width: calc(100% - 30px);
+            padding: 5px;
             box-sizing: border-box;
             background: rgba(0, 0, 0, 0.3);
             color: rgb(242, 237, 237);
             font-size: 16px;
             font-weight: regular;
+            text-align: left;
+            border-radius: 8px;
         }
         
         .favorite-icon {
@@ -72,29 +72,29 @@
             width: 30px;
             height: 30px;
             cursor: pointer;
-            z-index: 1;
+            z-index: 3;
         }
 
         .challenge-button {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40px;
+            top: 10px;
+            left: 10px;
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 14px;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
             cursor: pointer;
             z-index: 2;
         }
 
-        .challenge-button img {
-            height: 20px;
-            width: auto;
+        .challenge-button .challenge-icon {
+            height: 18px;
+            width: 18px;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -110,71 +110,71 @@
 
     <main>
      
-        <div class="subcategory-card course-card" id="subcat02_01" data-href="../basics/basics_common.html">
+        <div class="subcategory-card course-card" id="subcat02_01" data-href="../basics/basics_common.html" style="background-color: #001d3d;">
             <div class="card-text">
-                <span data-i18n="SubCat02_module1Title"></span><!-- Allgemeine Entspannung - Text aus Sprachdatei -->
+                <span data-i18n="SubCat02_module1Title"></span>
             </div>
             <div class="challenge-button" data-challenge-href="../basics/basics_common.html?challenge=true">
-                <img src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
                 <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>
-        <div class="subcategory-card course-card" id="subcat02_02" data-href="../basics/basics_breathing.html">
+        <div class="subcategory-card course-card" id="subcat02_02" data-href="../basics/basics_breathing.html" style="background-color: #002450;">
             <div class="card-text">
-                <span data-i18n="SubCat02_module2Title"></span><!-- Atmung - Text aus Sprachdatei -->
+                <span data-i18n="SubCat02_module2Title"></span>
             </div>
             <div class="challenge-button" data-challenge-href="../basics/basics_breathing.html?challenge=true">
-                <img src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
                 <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>
 
-        <div class="subcategory-card course-card" id="subcat02_03" data-href="../basics/basics_heart.html">
+        <div class="subcategory-card course-card" id="subcat02_03" data-href="../basics/basics_heart.html" style="background-color: #01366e;">
             <div class="card-text">
-                <span data-i18n="SubCat02_module3Title"></span><!-- Herz - Text aus Sprachdatei -->
+                <span data-i18n="SubCat02_module3Title"></span>
             </div>
             <div class="challenge-button" data-challenge-href="../basics/basics_heart.html?challenge=true">
-                <img src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
                 <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>
 
-        <div class="subcategory-card course-card" id="subcat02_04" data-href="../basics/basics_visualizing.html">
+        <div class="subcategory-card course-card" id="subcat02_04" data-href="../basics/basics_visualizing.html" style="background-color: #014186;">
             <div class="card-text">
-                <span data-i18n="SubCat02_module4Title"></span><!-- Visualisierung - Text aus Sprachdatei -->
+                <span data-i18n="SubCat02_module4Title"></span>
             </div>
             <div class="challenge-button" data-challenge-href="../basics/basics_visualizing.html?challenge=true">
-                <img src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
                 <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>
 
-        <div class="subcategory-card course-card" id="subcat02_05" data-href="../basics/basics_heaviness.html">
+        <div class="subcategory-card course-card" id="subcat02_05" data-href="../basics/basics_heaviness.html" style="background-color: #0156b1;">
             <div class="card-text">
-                <span data-i18n="SubCat02_module5Title"></span><!-- Schwere - Text aus Sprachdatei -->
+                <span data-i18n="SubCat02_module5Title"></span>
             </div>
             <div class="challenge-button" data-challenge-href="../basics/basics_heaviness.html?challenge=true">
-                <img src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
                 <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>
 
-        <div class="subcategory-card course-card" id="subcat02_06" data-href="../basics/basics_warmth.html">
+        <div class="subcategory-card course-card" id="subcat02_06" data-href="../basics/basics_warmth.html" style="background-color: #026cdd;">
             <div class="card-text">
-                <span data-i18n="SubCat02_module6Title"></span><!-- Wärme - Text aus Sprachdatei -->
+                <span data-i18n="SubCat02_module6Title"></span>
             </div>
             <div class="challenge-button" data-challenge-href="../basics/basics_warmth.html?challenge=true">
-                <img src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
                 <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>
 
-        <div class="subcategory-card course-card" id="subcat02_07" data-href="../basics/basics_solarplexus.html">
+        <div class="subcategory-card course-card" id="subcat02_07" data-href="../basics/basics_solarplexus.html" style="background-color: #0e7ef5;">
             <div class="card-text">
-                <span data-i18n="SubCat02_module7Title"></span><!-- Sonnengeflecht - Text aus Sprachdatei -->
+                <span data-i18n="SubCat02_module7Title"></span>
             </div>
             <div class="challenge-button" data-challenge-href="../basics/basics_solarplexus.html?challenge=true">
-                <img src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
                 <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>

@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
             challengeButton.addEventListener('click', (e) => {
                 e.stopPropagation(); // Prevent the card's click listener from firing
                 const challengeHref = challengeButton.dataset.challengeHref;
+                console.log('Navigating to challengeHref:', challengeHref); // Debugging log
                 if (challengeHref) {
                     window.location.href = challengeHref;
                 }
