@@ -10,5 +10,18 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth != null;
     }
+
+    // User-specific courses and progress
+    match /userCourses/{uid_courseId} {
+      allow read, write: if request.auth != null && uid_courseId.startsWith(request.auth.uid + '_');
+      match /progress/{dateId} {
+        allow read, write: if request.auth != null && uid_courseId.startsWith(request.auth.uid + '_');
+      }
+    }
+
+    // 14-day challenge progress per user
+    match /userChallenges/{uid_challengeId} {
+      allow read, write: if request.auth != null && uid_challengeId.startsWith(request.auth.uid + '_');
+    }
   }
 }

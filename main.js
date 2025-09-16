@@ -103,6 +103,10 @@ if (auth) {
 // 3. CORE APPLICATION LOGIC (DOM-Ready)
 // =================================================================================================
 document.addEventListener('DOMContentLoaded', () => {
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register(`${pathToRoot}service-worker.js`).catch(() => {});
+    }
 
     // 3.1. General Initializations
     // ---------------------------------------------------------------------------------------------
@@ -144,167 +148,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Subcategory Cards & Favorites ---
-    if (path.includes('subcategories') || path.includes('basics')) {
-        let userFavorites = {};
-
-        function updateFavoriteIcons() {
-            document.querySelectorAll('.subcategory-card').forEach(card => {
-                const baseName = card.dataset.audioBaseName || card.id;
-                const icon = card.querySelector('.favorite-icon');
-                if (icon) {
-                    const isFavorite = !!userFavorites[baseName];
-                    icon.src = isFavorite
-                        ? `${pathToRoot}assets/images/icons/heart_active.png`
-                        : `${pathToRoot}assets/images/icons/heart_inactive.png`;
-                }
-            });
-        }
-
-        auth.onAuthStateChanged(user => {
-            if (user && db) {
-                const userDocRef = db.collection('User_Profiles').doc(user.uid);
-                userDocRef.onSnapshot(doc => {
-                    if (doc.exists) {
-                        userFavorites = doc.data().favorites || {};
-                    } else {
-                        userFavorites = {};
-                    }
-                    updateFavoriteIcons();
-                }, err => {
-                    console.error("Error fetching user favorites:", err);
-                    userFavorites = {};
-                    updateFavoriteIcons();
-                });
-            } else {
-                userFavorites = {};
-                updateFavoriteIcons();
+    // --- Subcategory & Course Cards via Tiles module ---
+    const needTiles = path.includes('subcategories') || path.includes('basics') || document.querySelector('.course-card') || document.querySelector('.category-card');
+    if (needTiles) {
+        const script = document.createElement('script');
+        script.src = `${pathToRoot}tiles.js`;
+        script.onload = () => {
+            if (window.Tiles) {
+                window.Tiles.initSubcategoryCards();
+                window.Tiles.initCourseCards();
+                window.Tiles.initCategoryCards();
             }
-        });
-
-        document.querySelectorAll('.subcategory-card:not(.course-card)').forEach(card => {
-            const audioBaseName = card.dataset.audioBaseName;
-            const cardId = card.id;
-            const baseName = audioBaseName || cardId;
-            const icon = card.querySelector('.favorite-icon');
-
-            if (!baseName) return;
-
-            card.addEventListener('click', async (e) => {
-                // Favorite icon click
-                if (icon && icon.contains(e.target)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const currentUser = auth.currentUser;
-                    if (!currentUser || !db) {
-                        alert("Bitte einloggen, um Favoriten zu speichern.");
-                        return;
-                    }
-                    const userDocRef = db.collection('User_Profiles').doc(currentUser.uid);
-
-                    const lang = localStorage.getItem('lang') || 'de';
-                    const currentPagePath = window.location.pathname;
-                    const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
-                    const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
-
-                    const favoriteData = {
-                        id: baseName,
-                        title: card.querySelector('.card-text span') ? card.querySelector('.card-text span').innerHTML.trim() : '',
-                        audioSrc: audioFilePath
-                    };
-
-                    if (userFavorites[baseName]) {
-                        userDocRef.update({ [`favorites.${baseName}`]: firebase.firestore.FieldValue.delete() })
-                            .catch(err => console.error("Error removing favorite:", err));
-                    } else {
-                        userDocRef.update({ [`favorites.${baseName}`]: favoriteData })
-                            .catch(err => console.error("Error adding favorite:", err));
-                    }
-                    return;
-                }
-
-                // Navigation click
-                const href = card.dataset.href;
-                if (href) {
-                    window.location.href = href;
-                    return;
-                }
-                
-                // --- Play audio click with course progress logic ---
-                const currentUser = auth.currentUser;
-                const courseId = card.id.substring(0, card.id.lastIndexOf('_'));
-                let trackProgress = false;
-
-                if (currentUser && db && courseId) {
-                    const userCourseRef = db.collection('userCourses').doc(`${currentUser.uid}_${courseId}`);
-                    const userCourseDoc = await userCourseRef.get();
-
-                    if (userCourseDoc.exists) {
-                        const progressQuery = userCourseRef.collection('progress').orderBy('completedDate', 'desc').limit(1);
-                        const progressSnapshot = await progressQuery.get();
-                        
-                        let isNewDay = true;
-                        if (!progressSnapshot.empty) {
-                            const lastEntry = progressSnapshot.docs[0].data();
-                            const lastDate = lastEntry.completedDate.toDate();
-                            const today = new Date();
-                            if (isSameDay(lastDate, today)) {
-                                isNewDay = false;
-                            }
-                        }
-
-                        if (isNewDay) {
-                            if (confirm("Soll diese Übung für deine Kurs-Statistik gezählt werden?")) {
-                                trackProgress = true;
-                            }
-                        }
-                    }
-                }
-
-                const freshCardTextElement = card.querySelector('.card-text span');
-                const freshTrackTitle = freshCardTextElement ? freshCardTextElement.innerHTML.trim() : '';
-                const lang = localStorage.getItem('lang') || 'de';
-                const currentPagePath = window.location.pathname;
-                const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
-                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
-
-                let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}&courseId=${encodeURIComponent(courseId)}`;
-                if (trackProgress) {
-                    playerUrl += '&trackProgress=true';
-                }
-
-                window.location.href = playerUrl;
-            });
-        });
+        };
+    script.onerror = () => { console.warn('tiles.js failed to load'); };
+        document.head.appendChild(script);
     }
-
-    // --- Course Cards ---
-    document.querySelectorAll('.course-card').forEach(card => {
-        const challengeButton = card.querySelector('.challenge-button');
-
-        card.addEventListener('click', (e) => {
-            // If the challenge button is clicked, the button's own listener will handle it
-            if (e.target.closest('.challenge-button')) {
-                return;
-            }
-            // Otherwise, navigate to the normal href
-            if (card.dataset.href) {
-                window.location.href = card.dataset.href;
-            }
-        });
-
-        if (challengeButton) {
-            challengeButton.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent the card's click listener from firing
-                const challengeHref = challengeButton.dataset.challengeHref;
-                console.log('Navigating to challengeHref:', challengeHref); // Debugging log
-                if (challengeHref) {
-                    window.location.href = challengeHref;
-                }
-            });
-        }
-    });
 
     // --- Audio Player ---
     if (path.endsWith('player.html')) {
@@ -385,8 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const trackProgress = urlParams.get('trackProgress') === 'true';
         const isChallenge = urlParams.get('challenge') === 'true';
 
-        if (audioSrc) audioPlayer.src = audioSrc;
-        if (trackTitle && trackTitleElement) trackTitleElement.innerHTML = trackTitle;
+    if (audioSrc) audioPlayer.src = audioSrc;
+    if (trackTitle && trackTitleElement) trackTitleElement.textContent = trackTitle;
         
         bgPlayer.loop = true;
         if (bgVolumeSlider && !isIOS) bgPlayer.volume = bgVolumeSlider.value / 100;
@@ -496,6 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error("Transaction failed: ", error);
                     if(completionStats) completionStats.innerHTML = "<p>Fehler beim Speichern.</p>";
                 }
+            }
+            // Challenge day recording (if in challenge mode) after handling course stats
+            if (isChallenge && window.Challenge && typeof window.Challenge.recordCompletion === 'function') {
+                try { await window.Challenge.recordCompletion(audioPlayer.duration || 0); } catch(e){ console.warn('Challenge record failed', e); }
             }
         }
 
@@ -799,11 +661,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function renderForYouResults(tracks) {
-            if (tracks.length === 0) {
-                forYouResultsContainer.innerHTML = '';
-                return;
-            }
-            let html = '<div class="for-you-section"><h4 data-i18n="forYouSuggestions">Deine Vorschläge</h4>';
+            forYouResultsContainer.innerHTML = '';
+            if (tracks.length === 0) return;
+            const section = document.createElement('div');
+            section.className = 'for-you-section';
+            const header = document.createElement('h4');
+            header.setAttribute('data-i18n', 'forYouSuggestions');
+            header.textContent = 'Deine Vorschläge';
+            section.appendChild(header);
+
             tracks.forEach(track => {
                 const lang = localStorage.getItem('lang') || 'de';
                 const title = track[`title_${lang}`] || track.title_de || 'Unbenannter Track';
@@ -813,17 +679,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     const filename_base = filename_from_db.split('.')[0];
                     audioPath = `${pathToRoot}assets/audio/subcategories/${lang}/${filename_base}_${lang}.m4a`;
                 }
-                if (audioPath) {
-                    html += `
-                        <div class="result-card" data-audio-path="${audioPath}" data-title="${title}">
-                            <span class="result-card-title">${title}</span>
-                            <img class="result-card-play-icon" src="${pathToRoot}assets/images/icons/play_icon_white.png" alt="Play">
-                        </div>
-                    `;
-                }
+                if (!audioPath) return;
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.dataset.audioPath = audioPath;
+                card.dataset.title = title;
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'result-card-title';
+                titleSpan.textContent = title;
+                const playImg = document.createElement('img');
+                playImg.className = 'result-card-play-icon';
+                playImg.src = `${pathToRoot}assets/images/icons/play_icon_white.png`;
+                playImg.alt = 'Play';
+                card.appendChild(titleSpan);
+                card.appendChild(playImg);
+                section.appendChild(card);
             });
-            html += '</div>';
-            forYouResultsContainer.innerHTML = html;
+            forYouResultsContainer.appendChild(section);
             loadTranslations(localStorage.getItem('lang') || 'de');
             addResultCardListeners();
         }

@@ -248,3 +248,12 @@ footer {
     text-align: center;
     color: #666;
 }
+
+/* --- Ensure subcategory cards are clickable and text overlay doesn't intercept clicks --- */
+.subcategory-card {
+    cursor: pointer;
+    position: relative;
+}
+.subcategory-card .card-text {
+    pointer-events: none;
+}

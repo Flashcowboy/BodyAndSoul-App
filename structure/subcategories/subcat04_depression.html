@@ -17,9 +17,18 @@
         }
 
         header {
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin: 0 auto 20px; /* center horizontally */
+            overflow: hidden;
+            position: relative;
+            top: 10px;
+            width: 95%;
+            height: 150px;
             text-align: center;
             padding: 5px 0;
         }
+
 
         main {
             /* The global rule already has overflow-y, but this page has specific padding */
@@ -61,6 +70,17 @@
             font-weight: regular;
         }
 
+       
+
+        .subcategory-headercard img:not(.favorite-icon) {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
         .favorite-icon {
             position: absolute;
             top: 10px;
@@ -70,33 +90,41 @@
             cursor: pointer;
             z-index: 1;
         }
-   
+        
         
     </style>
 </head>
 <body>
 
+
     <header>
-        <h1 data-i18n="subcat03_Header">Für einen besseren Schlaf</h1>
+        <!--<h1 data-i18n="subcat04_Header">Ziele erreichen</h1>-->
+        <div class="subcategory-headercard" id="Cat_card4Title">
+            <img src="../../assets/images/categories/cat_04.png" alt="Depressionen bekämpfen">
+            <div class="card-text">
+                <h2 data-i18n="card4Title">Depressionen bekämpfen</h2>
+            </div>
+        </div>
     </header>
 
     <main>
-        <div class="subcategory-card" id="subcat03_01" data-audio-base-name="subcat03_01" style="background-color: #6a3401;">
-           <!-- <img src="../../assets/images/subcategories/subcat_03/subcat03_01.png" alt="Besserer Schlaf">-->
-            <div class="card-text" data-i18n="SubCat03_module1Title">
-                <span data-i18n="SubCat03_module1Title"></span>
+        
+
+        <div class="subcategory-card" id="subcat04_01" data-audio-base-name="subcat04_01" style="background-color: #014e6a;">
+        
+            <div class="card-text" data-i18n="SubCat04_module1Title">
+                <span data-i18n="SubCat04_module1Title"></span>
             </div>
             <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
         </div>
 
-        <div class="subcategory-card" id="subcat03_02" data-audio-base-name="subcat03_02" style="background-color: #9f4e02;">
-            <!--<img src="../../assets/images/subcategories/subcat_03/subcat03_02.png" alt="Besserer Schlaf">-->
-            <div class="card-text" data-i18n="SubCat03_module2Title">
-                <span data-i18n="SubCat03_module2Title"></span>
+        <div class="subcategory-card" id="subcat04_02" data-audio-base-name="subcat04_02" style="background-color: #01688e;">
+            <div class="card-text" data-i18n="SubCat04_module2Title">
+                <span data-i18n="SubCat04_module2Title"></span>
             </div>
             <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
         </div>
-        
+
     </main>
 
    <script>

@@ -31,6 +31,7 @@
             position: relative;
             width: 100%;
             height: 150px;
+            z-index: 2; /* Ensure cards stay above timeline */
         }
 
         .subcategory-card img:not(.favorite-icon) {
@@ -53,6 +54,7 @@
             background: rgba(0, 0, 0, 0.3);
             color: rgb(242, 237, 237);
             font-size: 16px;
+            pointer-events: none; /* Let the card handle the click */
         }
 
         .favorite-icon {
@@ -62,7 +64,7 @@
             width: 30px;
             height: 30px;
             cursor: pointer;
-            z-index: 1;
+            z-index: 3; /* Above overlays */
         }
 
         /* --- Timeline Styles (Simplified) --- */
@@ -73,11 +75,13 @@
             padding: 0 20px;
             box-sizing: border-box;
             margin-top: -20px; /* Pull up to overlap card margin */
+            pointer-events: none; /* Do not block clicks on tiles */
         }
 
         .timeline-wrapper {
              padding: 20px 0;
              position: relative; /* For positioning the absolute line */
+             pointer-events: none; /* transparent to clicks */
         }
 
         .timeline-line {
@@ -178,54 +182,8 @@
     <script src="../../firebase-config.js"></script>
     <script src="../../main.js"></script>
     <script src="../../course.js"></script>
+    <script src="../../challenge.js"></script>
+    <!-- Timeline handled by challenge.js when ?challenge=true -->
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const isChallenge = urlParams.get('challenge') === 'true';
-
-            if (isChallenge) {
-                const timelineContainer = document.getElementById('course-timeline-container');
-                const timelineWrapper = timelineContainer.querySelector('.timeline-wrapper');
-                
-                // --- Generate and show timeline ---
-                timelineWrapper.innerHTML = '<div class="timeline-line"></div>'; // Add the single line element
-                let completedDays = 4; // Dummy data: 4 days completed to show 5 nodes
-
-                // Generate nodes for the first 5 days for demonstration
-                for (let i = 1; i <= 5; i++) {
-                    const node = document.createElement('div');
-                    node.classList.add('timeline-node');
-                    
-                    const circle = document.createElement('div');
-                    circle.classList.add('node-circle');
-                    circle.textContent = i;
-
-                    const label = document.createElement('div');
-                    label.classList.add('node-label');
-                    label.textContent = `Tag ${i}`;
-
-                    if (i <= completedDays) {
-                        node.classList.add('completed');
-                    } else if (i === completedDays + 1) {
-                        node.classList.add('active'); // Mark the next day as active
-                        label.textContent += ' (Nächste Übung)';
-                    }
-
-                    node.appendChild(circle);
-                    node.appendChild(label);
-                    timelineWrapper.appendChild(node);
-                }
-
-                // Animate the container
-                requestAnimationFrame(() => {
-                    const height = timelineWrapper.scrollHeight;
-                    timelineContainer.style.height = height + 'px';
-                    timelineContainer.style.padding = '20px';
-                });
-            }
-        });
-    </script>
-
-</body>
-</html>
+ </body>
+ </html>

@@ -41,7 +41,8 @@
             height: 150px;
         }
 
-        .category-card img {
+    /* Only target the background image inside the card, not nested icons */
+    .category-card > img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -57,7 +58,7 @@
             width: 100%;
             padding: 15px;
             box-sizing: border-box;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.4);
             color: rgb(242, 237, 237);
             font-size: 12px;
             font-weight: regular;
@@ -71,6 +72,30 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             margin-bottom: 20px;
             padding: 15px;
+        }
+
+        .challenge-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .challenge-button .challenge-icon {
+            height: 18px;
+            width: 18px;
+            object-fit: contain;
+            /* Ensure the icon participates in the flex layout and doesn't overlap the label */
+            position: static;
         }
     </style>
 </head>
@@ -100,90 +125,43 @@
         <!-- Container for the results, which will be dynamically populated -->
         <div id="for-you-results"></div>
 
-         <div class="category-card" id="Cat_card1Title" onclick="window.location.href = 'subcategories/subcat01_whatisat.html';">
+         <div class="category-card" id="Cat_card1Title" data-href="subcategories/subcat01_whatisat.html">
             <img src="../assets/images/categories/cat_01.png" alt="Allgemeine Entspannung">
             <div class="card-text">
                 <h2 data-i18n="card1Title">Allgemeine Entspannung</h2>
             </div>
         </div>
 
-        <div class="category-card" id="Cat_card2Title" onclick="window.location.href = 'subcategories/subcat02_basics.html';">
+    <div class="category-card" id="Cat_card2Title" data-href="subcategories/subcat02_basics.html">
             <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
             <div class="card-text">
                 <h2 data-i18n="card2Title">Grundübungen</h2>
             </div>
         </div>
 
-<!--         <div class="category-card" id="Cat_card3Title" onclick="window.location.href = 'subcategories/subcat03_sleep.html';"> -->
-            
-        <div class="category-card" id="Cat_card3Title">
-            <img src="../assets/images/categories/cat_03_off.png" alt="Erholsamer Schlaf">
+        <div class="category-card" id="Cat_card3Title" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+            <img src="../assets/images/categories/cat_11.png" alt="Ängste besiegen">
             <div class="card-text">
-                <h2 data-i18n="card3Title">Für einen erholsamen Schlaf</h2>
+                <h2 data-i18n="card3Title">Angstbewältigung</h2>
+            </div>
+            <div class="challenge-button" data-challenge-href="subcategories/subcat03_anxiety.html?challenge=true">
+                <img class="challenge-icon" src="../assets/images/icons/calendar.png" alt="Challenge">
+                <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>
 
-        <!-- <div class="category-card" id="Cat_card4Title" onclick="window.location.href = 'subcategories/subcat04_goals.html';">-->     
-            <div class="category-card" id="Cat_card4Title">       
-            <img src="../assets/images/categories/cat_04_off.png" alt="Ziele erreichen">
+        <div class="category-card" id="Cat_card4Title" onclick="window.location.href = 'subcategories/subcat04_depression.html';">
+            <img src="../assets/images/categories/cat_04.png" alt="Depressionen bekämpfen">
             <div class="card-text">
-                <h2 data-i18n="card4Title">Ziele erreichen</h2>
+                <h2 data-i18n="card4Title">Depressionen bekämpfen</h2>
+            </div>
+            <div class="challenge-button" data-challenge-href="../subcategories/subcat04_goals.html?challenge=true">
+                <img class="challenge-icon" src="../assets/images/icons/calendar.png" alt="Challenge">
+                <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
             </div>
         </div>
 
-        <div class="category-card" id="Cat_card5Title" onclick="window.location.href = 'subcategories/subcat05_weightloss.html';">
-            <img src="../assets/images/categories/cat_05.png" alt="Abnehmen">
-            <div class="card-text">
-                <h2 data-i18n="card5Title">Abnehmen</h2>
-            </div>
-        </div>
-
-    <!--     <div class="category-card" id="Cat_card6Title" onclick="window.location.href = 'subcategories/subcat06_emotions.html';">-->
-        <div class="category-card" id="Cat_card6Title">
-        <img src="../assets/images/categories/cat_06_off.png" alt="Emotionale Stabilität">
-            <div class="card-text">
-                <h2 data-i18n="card6Title">Emotionale Stabilität</h2>
-            </div>
-        </div>
-        <!-- <div class="category-card" id="Cat_card7Title" onclick="window.location.href = 'subcategories/subcat07_health.html';"> -->
-        <div class="category-card" id="Cat_card7Title">
-            <img src="../assets/images/categories/cat_07_off.png" alt="Für ein gesundes Leben">
-            <div class="card-text">
-                <h2 data-i18n="card7Title">Für ein gesundes Leben</h2>
-            </div>
-        </div>
-
-        <!-- <div class="category-card" id="Cat_card8Title" onclick="window.location.href = 'subcategories/subcat08_relaxed.html';"> -->
-        <div class="category-card" id="Cat_card8Title">
-            <img src="../assets/images/categories/cat_08_off.png" alt="Grundübungen">
-            <div class="card-text">
-                <h2 data-i18n="card8Title">Entspannt und ausgeglichen</h2>
-            </div>
-        </div>
-
-        <!-- <div class="category-card" id="Cat_card9Title" onclick="window.location.href = 'subcategories/subcat09_habits.html';"> -->
-        <div class="category-card" id="Cat_card9Title">
-            <img src="../assets/images/categories/cat_09_off.png" alt="Gewohnheiten ändern">
-            <div class="card-text">
-                <h2 data-i18n="card9Title">Gewohnheiten ändern</h2>
-            </div>
-        </div>
-
-        <!-- <div class="category-card" id="Cat_card10Title" onclick="window.location.href = 'subcategories/subcat10_smokeless.html';"> -->
-        <div class="category-card" id="Cat_card10Title">
-            <img src="../assets/images/categories/cat_10_off.png" alt="Nichtraucher werden">
-            <div class="card-text">
-                <h2 data-i18n="card10Title">Nichtraucher werden</h2>
-            </div>
-        </div>
-
-        <!-- <div class="category-card" id="Cat_card11Title" onclick="window.location.href = 'subcategories/subcat11_selfconfidence.html';"> -->
-        <div class="category-card" id="Cat_card11Title">
-            <img src="../assets/images/categories/cat_11_off.png" alt="Mehr Selbstvertrauen">
-            <div class="card-text">
-                <h2 data-i18n="card11Title">Selbstvertrauen</h2>
-            </div>
-        </div>
+   
     </main>
 
      <script>
