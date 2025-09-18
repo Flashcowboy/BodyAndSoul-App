@@ -1,5 +1,7 @@
 {
   "appTitle": "Autogenic Training",
+  "readMore": "show more",
+  "readLess": "show less",
   "trainingSessions": "Your Training Sessions",
   "dashboardTitle": "Your Dashboard",
   "dashboardText": "Your personal progress and statistics will be displayed here.",
@@ -32,10 +34,12 @@
   "SubCat02_module6Title": "Warmth Exercise",
   "SubCat02_module7Title": "Solar Plexus and Forehead Exercise",
   
+  "Anxiety-Text": "Anxiety is a natural response to stress or perceived danger, characterized by feelings of worry, nervousness, or fear. It can manifest in various forms, ranging from mild unease to severe panic attacks. While occasional anxiety is a normal part of life, chronic or excessive anxiety can interfere with daily activities and overall well-being.<br><br>Common symptoms of anxiety include:<ul><li>Restlessness or feeling on edge</li><li>Rapid heartbeat</li><li>Excessive worrying</li><li>Difficulty concentrating</li><li>Muscle tension</li><li>Sleep disturbances</li></ul>Anxiety disorders are the most common mental health disorders and can be triggered by a combination of genetic, environmental, and psychological factors. They often develop in response to stressful life events, trauma, or ongoing stressors.<br><br>Treatment for anxiety typically involves a combination of psychotherapy, medication, and lifestyle changes. Cognitive-behavioral therapy (CBT) is particularly effective in helping individuals identify and change negative thought patterns that contribute to anxiety. Medications such as antidepressants or benzodiazepines may also be prescribed to manage symptoms. Additionally, practices like mindfulness meditation, regular exercise, and adequate sleep can help reduce anxiety levels.<br>",
+  "SocialAnxiety-Text": "<h3>Social Anxiety Disorder</h3><strong>Social Anxiety Disorder</strong> is a mental health condition characterized by an intense fear of social situations. People with social anxiety disorder often fear being negatively judged or evaluated by others, leading to significant stress and avoidance of social interactions. This anxiety can impact various areas of life, including work, school, and personal relationships.<br><br><strong>Typical symptoms</strong> of social anxiety disorder include:<ul><li>Intense fear of social situations</li><li>Avoidance of social interactions</li><li>Physical symptoms such as rapid heartbeat, sweating, or nausea in social situations</li><li>Low self-esteem and excessive self-criticism</li></ul>The causes of social anxiety disorder are multifaceted and may include genetic, environmental, and psychological factors. Often, these fears develop in childhood or adolescence and can be reinforced by traumatic social experiences.<br><br>Treatment for social anxiety disorder typically involves psychotherapy, particularly cognitive-behavioral therapy (CBT), which aims to identify and change negative thought patterns. In some cases, medications such as antidepressants may also be prescribed to alleviate symptoms. With the right support and treatment, individuals with social anxiety disorder can learn to manage their fears and lead fulfilling lives.<br>",
 
   "SubCat03_Header": "FOR A RESTFUL SLEEP",
-  "SubCat03_module1Title": "<b>Restful Sleep</b><br><p>Exercise for Falling Asleep</p>",
-  "SubCat03_module2Title": "<b>Restful Sleep</b><br><p>Exercise with Conclusion</p>",
+  "SubCat03_module1Title": "<b>Generalized Anxiety Disorder</b><br><p>Exercise for Falling Asleep</p>",
+  "SubCat03_module2Title": "<b>Generalized Anxiety Disorder</b><br><p>Exercise with Conclusion</p>",
   "SubCat04_Header": "Achieving Goals",
   "SubCat04_module1Title": "<b>Achieving Goals</b><br><p>Exercise with Conclusion</p>",
   "SubCat04_module2Title": "<b>Achieving Goals</b><br><p>Exercise for Falling Asleep</p>",
@@ -60,6 +64,16 @@
   "SubCat11_Header": "Building Self-Confidence",
   "SubCat11_module1Title": "<b>Building Self-Confidence</b><br><p>Exercise with Conclusion</p>",
   "SubCat11_module2Title": "<b>Building Self-Confidence</b><br><p>Exercise for Falling Asleep</p>",
+
+  "GenAnxiety-Text": "<h3>Generalized Anxiety Disorder</h3><br><strong>Generalized Anxiety Disorder (GAD)</strong> is a mental health condition characterized by persistent and excessive worry and anxiety. Unlike specific phobias, the worries in GAD are not limited to one object or situation; they can extend to almost any area of life, such as family health, finances, or everyday tasks. This mental tension is often accompanied by physical symptoms like muscle tension, restlessness, sleep disturbances, or irritability. People with GAD find it difficult to control their worries, and the anxiety often significantly impairs their daily lives.",
+  "GenAnxiety_cardTitle": "Generalized Anxiety Disorder",
+  "GenAnxiety_module1Title": "Stopping the Thought Carousel<br><p>Exercise with Conclusion</p>",
+  "GenAnxiety_module2Title": "Finding Inner Calm<br><p>Exercise with Conclusion</p>",
+
+  "SocialAnxiety_cardTitle": "Social Anxiety Disorder",
+  "SocialAnxiety_module1Title": "Social Anxiety Disorder<br><p>Exercise with Conclusion</p>",
+  "Depression_cardTitle": "Depression",
+
 
   "SubCat_basics01_Header": "Basic Exercises<br>General Relaxation",
   "SubCat_basics02_Header": "Basic Exercises<br>Breathing Exercise",

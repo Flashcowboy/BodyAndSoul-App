@@ -10,10 +10,13 @@
  */
 function getPathToRoot() {
     const path = window.location.pathname;
-    if (path.includes('/structure/basics/')) return '../../';
-    if (path.includes('/structure/subcategories/')) return '../../';
-    if (path.includes('/structure/')) return '../';
-    return './';
+    // Split the path and remove empty segments
+    const parts = path.split('/').filter(Boolean);
+    // If last segment looks like a file (has a dot), don't count it for depth
+    const isFile = parts.length && parts[parts.length - 1].includes('.');
+    const depth = Math.max(0, parts.length - (isFile ? 1 : 0));
+    if (depth === 0) return './';
+    return '../'.repeat(depth);
 }
 const pathToRoot = getPathToRoot();
 
@@ -112,6 +115,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------------------------------------------------------------------------------------------
     const lang = localStorage.getItem('lang') || 'de';
     loadTranslations(lang);
+
+    // --- Initialize Read More functionality ---
+    if (document.querySelector('[data-read-more]')) {
+        const script = document.createElement('script');
+        script.src = `${pathToRoot}read-more.js`;
+        script.onload = () => {
+            document.querySelectorAll('[data-read-more]').forEach(element => {
+                if (typeof initReadMore === 'function') {
+                    initReadMore(element);
+                }
+            });
+        };
+        document.head.appendChild(script);
+    }
 
     const path = window.location.pathname;
 

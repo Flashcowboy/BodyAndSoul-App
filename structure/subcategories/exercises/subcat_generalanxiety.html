@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="pageTitleSubCategories">Grundübungen</title>
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="../../../styles.css">
    <!-- <link rel="manifest" href="../manifest.json"> -->
     <style>
-        body {
+     body {
             
             background-color: #f4f4f9;
-            background-image: url('../../assets/images/splash_screen_bg.png');
+            background-image: url('../../../assets/images/splash_screen_bg.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -47,9 +47,9 @@
 
         .subcategory-card {
             background-color: #fff;
-             background-image: url('../../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            background-image: url('../../../assets/images/backgrounds/bg_audioplayer_grey.png');
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
             margin-bottom: 20px;
             overflow: hidden;
             position: relative;
@@ -74,7 +74,19 @@
             width: 100%;
             padding: 15px;
             box-sizing: border-box;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.0);
+            color: rgb(242, 237, 237);
+            font-size: 18px;
+            font-weight: regular;
+        }
+        .headercard-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.6);
             color: rgb(242, 237, 237);
             font-size: 18px;
             font-weight: regular;
@@ -99,6 +111,7 @@
             z-index: 1;
         }
    
+   
         
     </style>
 </head>
@@ -106,8 +119,8 @@
 
     <header>
         <div class="subcategory-headercard" id="Cat_card4Title">
-            <img src="../../assets/images/categories/cat_11.png" alt="Angstbewältigung">
-            <div class="card-text">
+            <img src="../../../assets/images/categories/cat_11.png" alt="Angstbewältigung">
+            <div class="headercard-text">
                 <h2 data-i18n="card3Title">Angstbewältigung</h2>
             </div>
         </div>
@@ -115,19 +128,17 @@
 
     <main>
         <!-- <div class="description-card" id="social_anxiety_card"> -->
-            <span id="anxiety-text-content" data-i18n="Anxiety-Text" data-read-more data-max-chars="400"></span><br><br>
+            <span id="anxiety-text-content" data-i18n="GenAnxiety-Text" data-read-more data-max-chars="400"></span><br><br>
         <!-- </div> -->
 
         <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
-        <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat_generalanxiety.html'" style="background-color: #9e4800;">
-            <div class="card-text">
-                <span data-i18n="GenAnxiety_cardTitle"></span>
+        <div class="subcategory-card" id="subcat03_01_01"  style="background-color: #9e4800;" data-audio-base-name="subcat_basics_01_01">
+            <div class="card-text" data-i18n="GenAnxiety_module1Title">
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat03_02" onclick="window.location.href = 'exercises/subcat_socialanxiety.html'" style="background-color: #d92c01;">
-            <div class="card-text">
-                <span data-i18n="SocialAnxiety_cardTitle"></span>
+        <div class="subcategory-card" id="subcat03_01_02"  style="background-color: #d96901;" data-audio-base-name="subcat_basics_01_02">
+            <div class="card-text" data-i18n="GenAnxiety_module2Title">         
             </div>
 
         </div>
@@ -135,7 +146,7 @@
     </main>
 
    <script>
-        fetch('/structure/footer.html')
+        fetch('../../../structure/footer.html')
             .then(response => response.text())
             .then(data => {
                 document.body.insertAdjacentHTML('beforeend', data);
@@ -146,8 +157,9 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <script src="../../firebase-config.js"></script>
-    <script src="../../main.js"></script>
+    <script src="../../../firebase-config.js"></script>
+    <script src="../../../main.js"></script>
+    <script src="../../../read-more.js"></script>
    
 </body>
 </html>

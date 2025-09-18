@@ -3,10 +3,11 @@
 
     function getPathToRoot() {
         const path = window.location.pathname;
-        if (path.includes('/structure/basics/')) return '../../';
-        if (path.includes('/structure/subcategories/')) return '../../';
-        if (path.includes('/structure/')) return '../';
-        return './';
+        const parts = path.split('/').filter(Boolean);
+        const isFile = parts.length && parts[parts.length - 1].includes('.');
+        const depth = Math.max(0, parts.length - (isFile ? 1 : 0));
+        if (depth === 0) return './';
+        return '../'.repeat(depth);
     }
     const pathToRoot = getPathToRoot();
 
