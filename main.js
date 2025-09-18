@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lang = localStorage.getItem('lang') || 'de';
     loadTranslations(lang);
 
-    // --- Initialize Read More functionality ---
+    // --- Initialize Read More functionality - expands and collapses long description text --- //
     if (document.querySelector('[data-read-more]')) {
         const script = document.createElement('script');
         script.src = `${pathToRoot}read-more.js`;
@@ -181,7 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.head.appendChild(script);
     }
 
-    // --- Audio Player ---
+    // =================================================================================================
+    // 4. --- Audio Player ---
+    // =================================================================================================
+    
     if (path.endsWith('player.html')) {
         const audioPlayer = document.getElementById('audio-player');
         const bgPlayer = document.getElementById('audio-player-bg');

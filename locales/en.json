@@ -67,10 +67,16 @@
 
   "GenAnxiety-Text": "<h3>Generalized Anxiety Disorder</h3><br><strong>Generalized Anxiety Disorder (GAD)</strong> is a mental health condition characterized by persistent and excessive worry and anxiety. Unlike specific phobias, the worries in GAD are not limited to one object or situation; they can extend to almost any area of life, such as family health, finances, or everyday tasks. This mental tension is often accompanied by physical symptoms like muscle tension, restlessness, sleep disturbances, or irritability. People with GAD find it difficult to control their worries, and the anxiety often significantly impairs their daily lives.",
   "GenAnxiety_cardTitle": "Generalized Anxiety Disorder",
+  "GenAnxiety_subcat1Title": "Leichte Ausprägung",
+  "GenAnxiety_subcat2Title": "Moderate Ausprägung",
+  "GenAnxiety_subcat3Title": "Schwere Ausprägung",
   "GenAnxiety_module1Title": "Stopping the Thought Carousel<br><p>Exercise with Conclusion</p>",
   "GenAnxiety_module2Title": "Finding Inner Calm<br><p>Exercise with Conclusion</p>",
 
   "SocialAnxiety_cardTitle": "Social Anxiety Disorder",
+  "SocialAnxiety_subcat1Title": "Leichte Ausprägung",
+  "SocialAnxiety_subcat2Title": "Moderate Ausprägung",
+  "SocialAnxiety_subcat3Title": "Schwere Ausprägung",
   "SocialAnxiety_module1Title": "Social Anxiety Disorder<br><p>Exercise with Conclusion</p>",
   "Depression_cardTitle": "Depression",
 

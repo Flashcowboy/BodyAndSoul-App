@@ -36,6 +36,7 @@
 
         .description-card {
             background-color: #fff;
+            background-image: url('../../assets/images/backgrounds/bg_audioplayer_grey.png');
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
             margin-bottom: 20px;
@@ -54,13 +55,13 @@
             overflow: hidden;
             position: relative;
             width: 100%;
-            height: 150px;
+            height: 100px;
         }
 
         /* Only target the background image inside the card, not nested icons */
         .subcategory-card > img {
             width: 100%;
-            height: 100%;
+            height: 70%;
             object-fit: cover;
             position: absolute;
             top: 0;
@@ -119,13 +120,13 @@
         <!-- </div> -->
 
         <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
-        <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat_generalanxiety.html'" style="background-color: #9e4800;">
+        <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = '../anxiety/subcat_generalanxiety.html'" style="background-color: #9e4800;">
             <div class="card-text">
                 <span data-i18n="GenAnxiety_cardTitle"></span>
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat03_02" onclick="window.location.href = 'exercises/subcat_socialanxiety.html'" style="background-color: #d92c01;">
+        <div class="subcategory-card" id="subcat03_02" onclick="window.location.href = '../anxiety/subcat_socialanxiety.html'" style="background-color: #d92c01;">
             <div class="card-text">
                 <span data-i18n="SocialAnxiety_cardTitle"></span>
             </div>

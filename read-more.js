@@ -1,87 +1,144 @@
 function initReadMore(element) {
     if (!element) return;
 
-    const process = () => {
-        // If the element is already processed, do nothing.
+    const processText = () => {
         if (element.dataset.readMoreProcessed) return;
 
-    const fullHTML = element.innerHTML;
-    const maxChars = parseInt(element.dataset.maxChars, 10) || 200;
+        const fullHTML = element.innerHTML;
+        const maxChars = parseInt(element.dataset.maxChars) || 200;
 
-        // Check if the text content is long enough to be truncated.
-        if (element.textContent.length <= maxChars) return;
-
-        // --- Truncation logic ---
-        let truncatedHTML = '';
-        let currentLength = 0;
+        // Create a temporary div to get the plain text length and process nodes
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = fullHTML;
+        const fullText = tempDiv.textContent || tempDiv.innerText || "";
 
-        // Iterate through nodes to safely truncate HTML
-        for (const node of Array.from(tempDiv.childNodes)) {
-            const nodeText = node.textContent;
-            if (currentLength + nodeText.length > maxChars) {
-                const remainingChars = maxChars - currentLength;
-                const slice = nodeText.substring(0, remainingChars);
-                const cutAt = slice.lastIndexOf(' ');
-                const truncatedNodeText = cutAt > 0 ? slice.substring(0, cutAt) : slice;
+        if (fullText.length > maxChars) {
+            let truncatedHTML = '';
+            let currentLength = 0;
+
+            // Iterate through child nodes to safely truncate HTML
+            for (const node of Array.from(tempDiv.childNodes)) {
+                if (currentLength >= maxChars) break; // Stop if max characters reached
 
                 if (node.nodeType === Node.TEXT_NODE) {
-                    truncatedHTML += truncatedNodeText;
-                } else {
-                    // Preserve element tag but truncate its text content
-                    const newNode = node.cloneNode(false);
-                    newNode.textContent = truncatedNodeText;
-                    truncatedHTML += newNode.outerHTML || newNode.textContent;
+                    const remainingChars = maxChars - currentLength;
+                    if (node.textContent.length > remainingChars) {
+                        let truncatedNodeText = node.textContent.substring(0, remainingChars);
+                        // Ensure we don't cut words in half
+                        truncatedNodeText = truncatedNodeText.substr(0, Math.min(truncatedNodeText.length, truncatedNodeText.lastIndexOf(' ') === -1 ? truncatedNodeText.length : truncatedNodeText.lastIndexOf(' ')));
+                        truncatedHTML += truncatedNodeText;
+                        currentLength += truncatedNodeText.length;
+                        break; // Stop after truncating a text node
+                    } else {
+                        truncatedHTML += node.textContent;
+                        currentLength += node.textContent.length;
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    // For element nodes, append their outerHTML if they fit
+                    const nodeOuterHTML = node.outerHTML;
+                    const nodeTextContent = node.textContent || node.innerText || "";
+
+                    if (currentLength + nodeTextContent.length > maxChars) {
+                        // If the element's content would exceed maxChars, try to truncate its children
+                        const clonedNode = node.cloneNode(false); // Clone without children
+                        let innerTruncatedHTML = '';
+                        let innerCurrentLength = 0;
+
+                        for (const childNode of Array.from(node.childNodes)) {
+                            if (innerCurrentLength >= (maxChars - currentLength)) break;
+
+                            if (childNode.nodeType === Node.TEXT_NODE) {
+                                const remainingInnerChars = (maxChars - currentLength) - innerCurrentLength;
+                                if (childNode.textContent.length > remainingInnerChars) {
+                                    let truncatedChildText = childNode.textContent.substring(0, remainingInnerChars);
+                                    truncatedChildText = truncatedChildText.substr(0, Math.min(truncatedChildText.length, truncatedChildText.lastIndexOf(' ') === -1 ? truncatedChildText.length : truncatedChildText.lastIndexOf(' ')));
+                                    innerTruncatedHTML += truncatedChildText;
+                                    innerCurrentLength += truncatedChildText.length;
+                                    break;
+                                } else {
+                                    innerTruncatedHTML += childNode.textContent;
+                                    innerCurrentLength += childNode.textContent.length;
+                                }
+                            } else if (childNode.nodeType === Node.ELEMENT_NODE) {
+                                // For nested elements, append their outerHTML if they fit
+                                const childOuterHTML = childNode.outerHTML;
+                                const childTextContent = childNode.textContent || childNode.innerText || "";
+                                if (innerCurrentLength + childTextContent.length <= (maxChars - currentLength)) {
+                                    innerTruncatedHTML += childOuterHTML;
+                                    innerCurrentLength += childTextContent.length;
+                                } else {
+                                    // If nested element itself is too long, we stop here for simplicity
+                                    break;
+                                }
+                            }
+                        }
+                        clonedNode.innerHTML = innerTruncatedHTML;
+                        truncatedHTML += clonedNode.outerHTML;
+                        currentLength += innerCurrentLength;
+                        break;
+                    } else {
+                        truncatedHTML += nodeOuterHTML;
+                        currentLength += nodeTextContent.length;
+                    }
                 }
-                break; 
-            } else {
-                truncatedHTML += node.outerHTML || node.textContent;
-                currentLength += nodeText.length;
             }
+
+            const showTruncated = () => {
+                element.innerHTML = truncatedHTML + '... ';
+                const readMoreLink = document.createElement('a');
+                readMoreLink.href = '#';
+                readMoreLink.innerHTML = '<span data-i18n="readMore">mehr anzeigen</span>';
+                readMoreLink.style.marginLeft = '5px';
+
+                element.appendChild(readMoreLink);
+
+                readMoreLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showFull();
+                });
+
+                if (window.loadTranslations) {
+                    const lang = localStorage.getItem('lang') || 'de';
+                    window.loadTranslations(lang);
+                }
+            };
+
+            const showFull = () => {
+                const readLessLink = document.createElement('a');
+                readLessLink.href = '#';
+                readLessLink.setAttribute('data-i18n', 'readLess');
+                readLessLink.textContent = 'weniger anzeigen';
+                readLessLink.style.display = 'block';
+                readLessLink.style.marginTop = '10px';
+
+                element.innerHTML = fullHTML;
+                element.appendChild(document.createElement('br'));
+                element.appendChild(readLessLink);
+
+                readLessLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showTruncated();
+                });
+
+                if (window.loadTranslations) {
+                    const lang = localStorage.getItem('lang') || 'de';
+                    window.loadTranslations(lang);
+                }
+            };
+
+            element.removeAttribute('data-i18n');
+            element.dataset.readMoreProcessed = true;
+            
+            showTruncated();
         }
-
-        const showTruncated = () => {
-            element.innerHTML = truncatedHTML + '... ';
-            const readMoreLink = document.createElement('a');
-            readMoreLink.href = '#';
-            readMoreLink.textContent = 'mehr anzeigen';
-            readMoreLink.style.marginLeft = '5px';
-            element.appendChild(readMoreLink);
-
-            readMoreLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                showFull();
-            });
-        };
-
-        const showFull = () => {
-            element.innerHTML = fullHTML;
-            const readLessLink = document.createElement('a');
-            readLessLink.href = '#';
-            readLessLink.textContent = 'weniger anzeigen';
-            readLessLink.style.display = 'block';
-            readLessLink.style.marginTop = '10px';
-            element.appendChild(document.createElement('br'));
-            element.appendChild(readLessLink);
-
-            readLessLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                showTruncated();
-            });
-        };
-
-        showTruncated();
-        element.dataset.readMoreProcessed = true;
     };
 
-    // Wait for content to appear before processing.
     if (element.textContent.trim() !== '') {
-        process();
+        processText();
     } else {
         const observer = new MutationObserver(() => {
             if (element.textContent.trim() !== '') {
-                process();
+                processText();
                 observer.disconnect();
             }
         });

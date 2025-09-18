@@ -62,6 +62,15 @@
 
   "GenAnxiety-Text": "<h3>Generalisierte Angststörung</h3>Die <strong>Generalisierte Angststörung (GAD)</strong> ist eine weit verbreitete psychische Erkrankung, die durch anhaltende und übermäßige Sorgen und Ängste gekennzeichnet ist. Menschen mit GAD finden es oft schwierig, ihre Sorgen zu kontrollieren, was zu erheblichen Beeinträchtigungen im täglichen Leben führen kann. Typische Symptome sind unter anderem ständige Nervosität, Muskelverspannungen, Schlafstörungen und Konzentrationsprobleme.<br><br>Die Ursachen der GAD sind vielfältig und können genetische, umweltbedingte und psychologische Faktoren umfassen. Stressige Lebensereignisse, wie der Verlust eines geliebten Menschen oder berufliche Herausforderungen, können die Entwicklung einer GAD begünstigen.<br><br>Die Behandlung der Generalisierten Angststörung umfasst in der Regel Psychotherapie, insbesondere kognitive Verhaltenstherapie (KVT), die darauf abzielt, negative Denkmuster zu identifizieren und zu verändern. In einigen Fällen können auch Medikamente wie Antidepressiva oder Anxiolytika verschrieben werden, um die Symptome zu lindern. Mit der richtigen Unterstützung und Behandlung können Menschen mit GAD lernen, ihre Ängste zu bewältigen und ein erfülltes Leben zu führen.<br>",
   "GenAnxiety_cardTitle": "Generalisierte Angststörung",
+  "GenAnxiety_subcat1Title": "<b>Generalisierte Angststörung</b><br>Leichte Ausprägung",
+  "GenAnxiety_subcat2Title": "<b>Generalisierte Angststörung</b><br>Moderate Ausprägung",
+  "GenAnxiety_subcat3Title": "<b>Generalisierte Angststörung</b><br>Schwere Ausprägung",
+  "GenAnxiety_audiocard1Title": "<b>Alltägliche Sorgen bewältigen</b>",
+  "GenAnxiety_audiocard2Title": "<b>Ruhe im Alltag finden</b>",
+  "GenAnxiety_audiocard3Title": "<b>Mit den Sorgen umgehen</b>",
+  "GenAnxiety_audiocard4Title": "<b>Balance im Alltag finden</b>",
+  "GenAnxiety_audiocard5Title": "<b>Intensive Angst bewältigen</b>",
+  "GenAnxiety_audiocard6Title": "<b>Tiefenentspannung gegen Angst</b>",
   "GenAnxiety_module1Title": "<h3>Das Gedankenkarussell stoppen</h3><p>Übung mit Ausleitung</p>",
   "GenAnxiety_module2Title": "<h3>Innere Ruhe finden</h3><p>Übung mit Ausleitung</p>",
 
@@ -70,6 +79,8 @@
 
 
   "SocialAnxiety_cardTitle": "Soziale Angststörung",
+  "SocialAnxiety_subcat1Title": "Spezifische soziale Ängste",
+  "SocialAnxiety_subcat2Title": "Allgemeine soziale Angst",
   "SocialAnxiety_module1Title": "<h3>Gelassen in sozialen Situationen</h3><p>Übung mit Ausleitung</p>",
   "SocialAnxiety_module2Title": "<h3>Mit Selbstvertrauen auftreten</h3><p>Übung mit Ausleitung</p>",
 

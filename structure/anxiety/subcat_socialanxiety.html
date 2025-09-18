@@ -10,7 +10,7 @@
      body {
             
             background-color: #f4f4f9;
-            background-image: url('../../../assets/images/splash_screen_bg.png');
+            background-image: url('../../assets/images/splash_screen_bg.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -54,13 +54,13 @@
             overflow: hidden;
             position: relative;
             width: 100%;
-            height: 150px;
+            height: 100px;
         }
 
         /* Only target the background image inside the card, not nested icons */
         .subcategory-card > img {
             width: 100%;
-            height: 100%;
+            height: 70%;
             object-fit: cover;
             position: absolute;
             top: 0;
@@ -76,7 +76,7 @@
             box-sizing: border-box;
             background: rgba(0, 0, 0, 0.0);
             color: rgb(242, 237, 237);
-            font-size: 18px;
+            font-size: 14px;
             font-weight: regular;
         }
         .headercard-text {
@@ -132,15 +132,14 @@
         <!-- </div> -->
 
         <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
-        <div class="subcategory-card" id="subcat03_02_01"  style="background-color: #d92c01;" data-audio-base-name="subcat_basics_01_01>
-            <div class="card-text" data-i18n="SocialAnxiety_module1Title">
+        <div class="subcategory-card" id="subcat03_01_01"  style="background-color: #d96901;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+            <div class="card-text" data-i18n="SocialAnxiety_subcat1Title">
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat03_02_02"  style="background-color: #d92c01;" data-audio-base-name="subcat_basics_01_02">
-            <div class="card-text" data-i18n="SocialAnxiety_module2Title">
+        <div class="subcategory-card" id="subcat03_01_02"  style="background-color: #d96901;" onclick="window.location.href = 'subcategories/subcat_socialanxiety.html';">
+            <div class="card-text" data-i18n="SocialAnxiety_subcat2Title">         
             </div>
-
         </div>
         
     </main>
