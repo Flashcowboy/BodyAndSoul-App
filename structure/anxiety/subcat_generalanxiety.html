@@ -236,7 +236,24 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../../firebase-config.js"></script>
-    <script src="../../main.js"></script>
+        <script src="../../main.js"></script>
+        <script>//Akkordeon-Funktion für Audioplayer-Karten
+            // Ensure accordion behavior is initialized after Tiles is available
+            document.addEventListener('DOMContentLoaded', () => {
+                const ensureTiles = () => {
+                    if (window.Tiles && typeof window.Tiles.initSubcategoryAudioAccordion === 'function') {
+                        window.Tiles.initSubcategoryAudioAccordion();
+                    } else {
+                        // If Tiles was not loaded via main.js, load it here
+                        const s = document.createElement('script');
+                        s.src = '../../tiles.js';
+                        s.onload = () => window.Tiles && window.Tiles.initSubcategoryAudioAccordion();
+                        document.head.appendChild(s);
+                    }
+                };
+                ensureTiles();
+            });
+        </script>
     <script src="../../read-more.js"></script>
    
 </body>

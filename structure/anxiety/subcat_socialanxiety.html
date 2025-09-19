@@ -47,7 +47,7 @@
 
         .subcategory-card {
             background-color: #fff;
-            background-image: url('../../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            background-image: url('../../assets/images/backgrounds/bg_audioplayer_grey.png');
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
             margin-bottom: 20px;
@@ -76,9 +76,23 @@
             box-sizing: border-box;
             background: rgba(0, 0, 0, 0.0);
             color: rgb(242, 237, 237);
-            font-size: 14px;
+            font-size: 18px;
             font-weight: regular;
         }
+
+        .audiocard-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.0);
+            color: rgb(242, 237, 237);
+            font-size: 16px;
+            font-weight: regular;
+        }
+
         .headercard-text {
             position: absolute;
             bottom: 0;
@@ -101,12 +115,34 @@
             left: 0;
         }
 
+        .subcategory-audiocard {
+            background-color: #fff;
+            background-image: url('../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 90%;
+            height: 80px;
+        }
+
+        .playbtn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .playbtn img {
+            width: 24px;
+            height: 24px;
+        }
+
         .favorite-icon {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 30px;
-            height: 30px;
+            width: 15px;
+            height: 15px;
             cursor: pointer;
             z-index: 1;
         }
@@ -132,15 +168,40 @@
         <!-- </div> -->
 
         <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
-        <div class="subcategory-card" id="subcat03_01_01"  style="background-color: #d96901;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+        <div class="subcategory-card" id="subcat03_01_01"  style="background-color: #d92c01;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
             <div class="card-text" data-i18n="SocialAnxiety_subcat1Title">
             </div>
         </div>
 
-        <div class="subcategory-card" id="subcat03_01_02"  style="background-color: #d96901;" onclick="window.location.href = 'subcategories/subcat_socialanxiety.html';">
+         <!-- Unterkacheln, die zu Audioplayer führen  -->
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_01"  style="background-color: #033c5e;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="SocialAnxiety_subcat1Title"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_02"  style="background-color: #033c5e;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="SocialAnxiety_subcat2Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+        <div class="subcategory-card" id="subcat03_01_02"  style="background-color: #d92c01;" onclick="window.location.href = 'subcategories/subcat_socialanxiety.html';">
             <div class="card-text" data-i18n="SocialAnxiety_subcat2Title">         
             </div>
         </div>
+        <!-- Unterkacheln, die zu Audioplayer führen  -->
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_01"  style="background-color: #033c5e;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="SocialAnxiety_audiocard3Title"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_02"  style="background-color: #033c5e;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="SocialAnxiety_audiocard4Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
         
     </main>
 
@@ -158,6 +219,23 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../../../firebase-config.js"></script>
     <script src="../../../main.js"></script>
+     <script>//Akkordeon-Funktion für Audioplayer-Karten
+            // Ensure accordion behavior is initialized after Tiles is available
+            document.addEventListener('DOMContentLoaded', () => {
+                const ensureTiles = () => {
+                    if (window.Tiles && typeof window.Tiles.initSubcategoryAudioAccordion === 'function') {
+                        window.Tiles.initSubcategoryAudioAccordion();
+                    } else {
+                        // If Tiles was not loaded via main.js, load it here
+                        const s = document.createElement('script');
+                        s.src = '../../tiles.js';
+                        s.onload = () => window.Tiles && window.Tiles.initSubcategoryAudioAccordion();
+                        document.head.appendChild(s);
+                    }
+                };
+                ensureTiles();
+            });
+        </script>
     <script src="../../../read-more.js"></script>
    
 </body>

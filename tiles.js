@@ -254,10 +254,123 @@
         });
     }
 
+    // Accordion: Show only subcategory-card by default; expand its following subcategory-audiocard siblings on click
+    function initSubcategoryAudioAccordion() {
+        const rootCards = Array.from(document.querySelectorAll('.subcategory-card'));
+        const anyAudioCards = document.querySelector('.subcategory-audiocard');
+        if (!rootCards.length || !anyAudioCards) return; // nothing to do
+
+        // Build mapping: for each subcategory-card, create/find a wrapper that contains following .subcategory-audiocard until next .subcategory-card
+        const groups = new Map(); // card -> { container, nodes }
+
+        rootCards.forEach(card => {
+            // If a wrapper is already present (idempotent init), use it; otherwise, create and move nodes into it
+            let container = card.nextElementSibling;
+            let collectedNodes = [];
+
+            const ensureContainer = () => {
+                if (!container || !container.classList || !container.classList.contains('subcategory-audiogroup')) {
+                    container = document.createElement('div');
+                    container.className = 'subcategory-audiogroup';
+                    card.parentNode.insertBefore(container, card.nextSibling);
+                }
+            };
+
+            if (container && container.classList && container.classList.contains('subcategory-audiogroup')) {
+                collectedNodes = Array.from(container.children).filter(el => el.classList.contains('subcategory-audiocard'));
+            } else {
+                // Collect following audiocards until next subcategory-card
+                let n = card.nextElementSibling;
+                while (n && !n.classList.contains('subcategory-card')) {
+                    const next = n.nextElementSibling; // keep reference before moving
+                    if (n.classList.contains('subcategory-audiocard')) {
+                        collectedNodes.push(n);
+                    }
+                    n = next;
+                }
+                if (collectedNodes.length) {
+                    ensureContainer();
+                    collectedNodes.forEach(node => container.appendChild(node));
+                }
+            }
+
+            if (collectedNodes.length) {
+                // Apply inline styles for smooth transitions
+                const style = container.style;
+                style.overflow = 'hidden';
+                style.maxHeight = style.maxHeight || '0px';
+                style.opacity = style.opacity || '0';
+                style.transition = style.transition || 'max-height 300ms ease, opacity 300ms ease';
+                style.willChange = style.willChange || 'max-height, opacity';
+                style.pointerEvents = style.pointerEvents || 'none';
+
+                groups.set(card, { container, nodes: collectedNodes });
+            }
+        });
+
+        if (!groups.size) return;
+
+        // Prevent inline onclick navigation on parent cards ONLY for those that act as accordion triggers
+        rootCards.forEach(card => {
+            if (card.hasAttribute('onclick') && groups.has(card)) card.removeAttribute('onclick');
+        });
+
+        let openCard = null;
+        const closeAll = () => {
+            groups.forEach(({ container }) => {
+                container.style.maxHeight = '0px';
+                container.style.opacity = '0';
+                container.style.pointerEvents = 'none';
+            });
+            rootCards.forEach(c => c.classList.remove('open'));
+            openCard = null;
+        };
+
+        const openGroup = (card) => {
+            const group = groups.get(card);
+            if (!group) return;
+            const { container } = group;
+            // Measure then expand to natural height for smooth animation
+            const targetHeight = container.scrollHeight;
+            container.style.maxHeight = targetHeight + 'px';
+            container.style.opacity = '1';
+            container.style.pointerEvents = 'auto';
+            card.classList.add('open');
+            openCard = card;
+        };
+
+        rootCards.forEach(card => {
+            if (card.dataset.accordionBound === '1') return; // idempotency
+            card.dataset.accordionBound = '1';
+            card.addEventListener('click', (e) => {
+                if (!groups.has(card)) return; // card without audiocards behaves normally
+                e.preventDefault();
+                e.stopPropagation();
+                if (openCard === card) {
+                    closeAll();
+                    return;
+                }
+                closeAll();
+                // Next frame to ensure close styles applied before opening new
+                requestAnimationFrame(() => openGroup(card));
+            }, true);
+        });
+
+        // Keep open group's height accurate on resize
+        window.addEventListener('resize', () => {
+            if (!openCard) return;
+            const group = groups.get(openCard);
+            if (group && group.container) {
+                group.container.style.maxHeight = group.container.scrollHeight + 'px';
+            }
+        });
+    }
+
     global.Tiles = {
         initSubcategoryCards,
     initCourseCards,
-    initCategoryCards
+    initCategoryCards,
+        initSubcategoryAudioAccordion
     };
 
 })(window);

@@ -26,13 +26,23 @@
             width: 95%;
             height: 150px;
             text-align: center;
-            padding: 5px 0;
+            padding: 5px 0px;
         }
-
 
         main {
             /* The global rule already has overflow-y, but this page has specific padding */
-            padding: 25px 10px;
+            padding: 10px 30px;
+        }
+
+        .description-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 200px;
         }
 
         .subcategory-card {
@@ -44,34 +54,57 @@
             overflow: hidden;
             position: relative;
             width: 100%;
-            height: 150px;
+            height: 100px;
         }
 
-
-        .subcategory-card img:not(.favorite-icon) {
+        /* Only target the background image inside the card, not nested icons */
+        .subcategory-card > img {
             width: 100%;
-            height: 100%;
+            height: 70%;
             object-fit: cover;
             position: absolute;
             top: 0;
             left: 0;
         }
-        
+
         .card-text {
             position: absolute;
             bottom: 0;
             left: 0;
-            top: 60px; 
             width: 100%;
             padding: 15px;
             box-sizing: border-box;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.0);
+            color: rgb(242, 237, 237);
+            font-size: 18px;
+            font-weight: regular;
+        }
+
+        .audiocard-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.0);
             color: rgb(242, 237, 237);
             font-size: 16px;
             font-weight: regular;
         }
 
-       
+        .headercard-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.6);
+            color: rgb(242, 237, 237);
+            font-size: 18px;
+            font-weight: regular;
+        }
 
         .subcategory-headercard img:not(.favorite-icon) {
             width: 100%;
@@ -82,12 +115,34 @@
             left: 0;
         }
 
+        .subcategory-audiocard {
+            background-color: #fff;
+            background-image: url('../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 90%;
+            height: 80px;
+        }
+
+        .playbtn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .playbtn img {
+            width: 24px;
+            height: 24px;
+        }
+
         .favorite-icon {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 30px;
-            height: 30px;
+            width: 15px;
+            height: 15px;
             cursor: pointer;
             z-index: 1;
         }
@@ -97,35 +152,131 @@
 </head>
 <body>
 
+    <!-- **********************************************************************************************
+    //                                  Depression Subcategory Page
+    // **********************************************************************************************-->
 
     <header>
         <!--<h1 data-i18n="subcat04_Header">Ziele erreichen</h1>-->
         <div class="subcategory-headercard" id="Cat_card4Title">
             <img src="../../assets/images/categories/cat_04.png" alt="Depressionen bekämpfen">
             <div class="card-text">
-                <h2 data-i18n="card4Title">Depressionen bekämpfen</h2>
+                <h2 data-i18n="card4Title">...</h2>
             </div>
         </div>
     </header>
 
     <main>
-        
+        <span id="depression-text-content" data-i18n="Depression-Text" data-read-more data-max-chars="450"></span><br><br>
 
-        <div class="subcategory-card" id="subcat04_01" data-audio-base-name="subcat04_01" style="background-color: #028ce7;">
-        
-            <div class="card-text" data-i18n="SubCat04_module1Title">
-                <span data-i18n="SubCat04_module1Title"></span>
+        <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
+        <div class="subcategory-card" id="subcat04_01"  style="background-color: #296ca7;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+            <div class="card-text" data-i18n="Depression_subcat1Title">
             </div>
-            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
         </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  -->
+                <div class="subcategory-audiocard" id="Depression_audiocard_01"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard1Title"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <div class="subcategory-audiocard" id="Depression_audiocard_02"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard2Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
 
-        <div class="subcategory-card" id="subcat04_02" data-audio-base-name="subcat04_02" style="background-color: #028ce7;">
-            <div class="card-text" data-i18n="SubCat04_module2Title">
-                <span data-i18n="SubCat04_module2Title"></span>
+        <div class="subcategory-card" id="subcat04_02"  style="background-color:  #296ca7;" onclick="window.location.href = 'subcategories/subcat_socialanxiety.html';">
+            <div class="card-text" data-i18n="Depression_subcat2Title">         
             </div>
-            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
         </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  -->
+                <div class="subcategory-audiocard" id="Depression_audiocard_03"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard3Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <div class="subcategory-audiocard" id="Depression_audiocard_04"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard4Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
 
+
+        <div class="subcategory-card" id="subcat04_03"  style="background-color: #296ca7;"onclick="window.location.href = 'exercises/subcat_generalanxiety.html';">
+            <div class="card-text" data-i18n="Depression_subcat3Title">         
+            </div>
+        </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  -->
+                <div class="subcategory-audiocard" id="Depression_audiocard_05"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard5Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <div class="subcategory-audiocard" id="Depression_audiocard_06"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard6Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+        <div class="subcategory-card" id="subcat04_04"  style="background-color: #296ca7;"onclick="window.location.href = 'exercises/subcat_generalanxiety.html';">
+            <div class="card-text" data-i18n="Depression_subcat4Title">         
+            </div>
+        </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  -->
+                <div class="subcategory-audiocard" id="Depression_audiocard_07"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard7Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <div class="subcategory-audiocard" id="Depression_audiocard_08"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard8Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+        <div class="subcategory-card" id="subcat04_05"  style="background-color: #296ca7;"onclick="window.location.href = 'exercises/subcat_generalanxiety.html';">
+            <div class="card-text" data-i18n="Depression_subcat5Title">         
+            </div>
+        </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  -->
+                <div class="subcategory-audiocard" id="Depression_audiocard_09"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard9Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <div class="subcategory-audiocard" id="Depression_audiocard_10"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard10Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+        <div class="subcategory-card" id="subcat04_06"  style="background-color: #296ca7;"onclick="window.location.href = 'exercises/subcat_generalanxiety.html';">
+            <div class="card-text" data-i18n="Depression_subcat6Title">         
+            </div>
+        </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  -->
+                <div class="subcategory-audiocard" id="Depression_audiocard_11"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard11Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <div class="subcategory-audiocard" id="Depression_audiocard_12"  style="background-color: #035e15;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+                    <div class="audiocard-text" data-i18n="Depression_audiocard12Title">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
     </main>
 
    <script>
@@ -142,6 +293,24 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../../firebase-config.js"></script>
     <script src="../../main.js"></script>
+     <script>//Akkordeon-Funktion für Audioplayer-Karten
+            // Ensure accordion behavior is initialized after Tiles is available
+            document.addEventListener('DOMContentLoaded', () => {
+                const ensureTiles = () => {
+                    if (window.Tiles && typeof window.Tiles.initSubcategoryAudioAccordion === 'function') {
+                        window.Tiles.initSubcategoryAudioAccordion();
+                    } else {
+                        // If Tiles was not loaded via main.js, load it here
+                        const s = document.createElement('script');
+                        s.src = '../../tiles.js';
+                        s.onload = () => window.Tiles && window.Tiles.initSubcategoryAudioAccordion();
+                        document.head.appendChild(s);
+                    }
+                };
+                ensureTiles();
+            });
+        </script>
+        <script src="../../read-more.js"></script>
    
 </body>
 </html>
