@@ -55,6 +55,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative; /* make favorite icon (absolute) relative to this container */
             /* Hintergrundbild direkt auf den Body anwenden */
             background-image: url('../assets/images/backgrounds/bg_audioplayer_gold.png');
         }
@@ -237,6 +238,16 @@
         .music-tile.active {
             border-color: #a28b49;
         }
+
+        .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -271,11 +282,19 @@
                 <img src="../assets/images/icons/forward15_icon_white.png" alt="15 Sekunden vorspulen" id="forward-btn">
             </div>
 
+            <!-- Background music controls: icon opens modal, slider controls volume -->
             <div class="volume-container" id="bg-volume-container" style="width: 80%; margin-top: 15px; display: flex; align-items: center; gap: 10px;">
                 <img src="../assets/images/icons/music.png" alt="Hintergrundmusik" id="open-music-modal" style="width: 25px; height: 25px; cursor: pointer;">
                 <input type="range" id="bg-volume-slider" min="0" max="100" value="50" style="width: 100%;">
             </div>
+            <!-- Displays the localized name of the currently selected background music -->
+            <div id="bg-music-name" style="width: 80%; margin-top: 6px; font-size: 0.9em; color: white; text-align: left;"></div>
+
+            <div><img src="../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite"></div>
+
         </div>
+
+
 
         <!-- Session Completion Screen (Initially Hidden) -->
         <div id="session-complete-screen" class="player-container" style="display: none; text-align: center; justify-content: center;">
@@ -289,6 +308,7 @@
     </main>
 
     <!-- Background Music Modal -->
+    <!-- Modal: Choose background music by selecting one of the tiles -->
     <div id="music-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>

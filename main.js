@@ -31,6 +31,7 @@ async function loadTranslations(lang) {
         const response = await fetch(`${pathToRoot}locales/${lang}.json`);
         if (!response.ok) throw new Error('Language file not found');
         const translations = await response.json();
+    try { window.__i18n = { lang, dict: translations }; } catch(_) {}
         document.querySelectorAll('[data-i18n], [data-i18n-placeholder]').forEach(element => {
             const key = element.getAttribute('data-i18n');
             const placeholderKey = element.getAttribute('data-i18n-placeholder');
@@ -65,8 +66,9 @@ async function getBgMusicTracks() {
                 id: doc.id,
                 title_de: data.title_de,
                 title_en: data.title_en,
-                path: data.path ? `${pathToRoot}${data.path}` : '',
-                image: data.image ? `${pathToRoot}${data.image}` : ''
+                // Keep paths relative to project root; prefix with pathToRoot when using
+                path: data.path || '',
+                image: data.image || ''
             });
         });
     } catch (error) {
@@ -132,6 +134,124 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const path = window.location.pathname;
 
+    // Initialize Favorites Drawer in footer (footer HTML is injected via fetch and scripts there don't run)
+    (function initFooterFavoritesDrawer() {
+        const MAX_TRIES = 50;
+        let tries = 0;
+        const interval = setInterval(() => {
+            tries++;
+            const btn = document.getElementById('footer-favorites-btn');
+            const drawer = document.getElementById('favorites-drawer');
+            const closeBtn = document.getElementById('favorites-drawer-close');
+            const listEl = document.getElementById('favorites-list');
+            if (!btn || !drawer || !listEl) {
+                if (tries >= MAX_TRIES) clearInterval(interval);
+                return;
+            }
+            clearInterval(interval);
+
+            // Ensure any i18n in injected footer gets applied once elements exist
+            try { loadTranslations(localStorage.getItem('lang') || 'de'); } catch(_) {}
+
+            let latestFavs = {};
+            const audioMetaCache = {};
+            let currentUserId = null;
+            const renderFavorites = async (favs) => {
+                latestFavs = favs || {};
+                listEl.innerHTML = '';
+                const favArray = Object.values(favs || {});
+                if (!favArray.length) {
+                    listEl.innerHTML = '<div style="padding:10px; color:#777;">Noch keine Favoriten.</div>';
+                    return;
+                }
+
+                const lang = localStorage.getItem('lang') || 'de';
+
+                // Optionally enrich titles from audio_files if available
+                if (window.db) {
+                    await Promise.all(favArray.map(async (f) => {
+                        const key = f.id;
+                        if (!key || audioMetaCache[key]) return;
+                        try {
+                            const doc = await window.db.collection('audio_files').doc(key).get();
+                            if (doc.exists) audioMetaCache[key] = doc.data();
+                            else audioMetaCache[key] = null;
+                        } catch(_) { audioMetaCache[key] = null; }
+                    }));
+                }
+
+                // Auto-backfill missing localized titles into user's favorites if we have metadata
+                if (window.db && currentUserId) {
+                    const updatePayload = {};
+                    favArray.forEach(f => {
+                        const meta = audioMetaCache[f.id];
+                        if (!meta) return;
+                        if (!f.title_de && meta.title_de) updatePayload[`favorites.${f.id}.title_de`] = meta.title_de;
+                        if (!f.title_en && meta.title_en) updatePayload[`favorites.${f.id}.title_en`] = meta.title_en;
+                    });
+                    if (Object.keys(updatePayload).length) {
+                        try { await window.db.collection('User_Profiles').doc(currentUserId).update(updatePayload); } catch(_) {}
+                    }
+                }
+
+                favArray.forEach(f => {
+                    const row = document.createElement('div');
+                    row.style.display = 'flex';
+                    row.style.alignItems = 'center';
+                    row.style.justifyContent = 'space-between';
+                    row.style.padding = '10px 8px';
+                    row.style.borderBottom = '1px solid #f0f0f0';
+                    row.style.cursor = 'pointer';
+
+                    const title = document.createElement('span');
+                    const meta = audioMetaCache[f.id];
+                    let localized = (meta && (meta[`title_${lang}`])) || f[`title_${lang}`];
+                    if (!localized && f.titleKey && window.__i18n && window.__i18n.lang === lang && window.__i18n.dict) {
+                        localized = window.__i18n.dict[f.titleKey] || localized;
+                    }
+                    title.textContent = localized || f.title || f.id || 'Unbenannter Track';
+
+                    const play = document.createElement('img');
+                    play.src = `${pathToRoot}assets/images/icons/play_icon_white_small.png`;
+                    play.alt = 'Play';
+                    play.style.width = '20px';
+                    play.style.height = '20px';
+                    row.appendChild(title);
+                    row.appendChild(play);
+                    row.addEventListener('click', () => {
+                        if (!f.audioSrc) return;
+                        const playerTitle = (localized || f.title || '');
+                        const url = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(f.audioSrc)}&title=${encodeURIComponent(playerTitle)}&courseId=${encodeURIComponent(f.id || '')}`;
+                        window.location.href = url;
+                    });
+                    listEl.appendChild(row);
+                });
+            };
+
+            // Toggle drawer open/close
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                drawer.style.display = drawer.style.display === 'none' ? 'block' : 'none';
+            });
+            if (closeBtn) closeBtn.addEventListener('click', () => drawer.style.display = 'none');
+
+            // Live subscribe to favorites
+        if (window.auth && window.db) {
+                window.auth.onAuthStateChanged(user => {
+                    if (!user) { renderFavorites({}); return; }
+            currentUserId = user.uid;
+                    const ref = window.db.collection('User_Profiles').doc(user.uid);
+                    ref.onSnapshot(async (doc) => {
+                        const favs = doc.exists ? (doc.data().favorites || {}) : {};
+                        await renderFavorites(favs);
+                    });
+                });
+            }
+                // Re-render list when language changes to show the appropriate localized title
+            window.addEventListener('lang-changed', () => renderFavorites(latestFavs));
+        }, 100);
+    })();
+
     /**
      * Formats time in seconds to a "m:ss" format.
      * @param {number} seconds - The time in seconds.
@@ -166,7 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Subcategory & Course Cards via Tiles module ---
-    const needTiles = path.includes('subcategories') || path.includes('basics') || document.querySelector('.course-card') || document.querySelector('.category-card');
+    // Load Tiles module if the page contains any known tile elements, regardless of URL path
+    const needTiles = (
+        document.querySelector('.subcategory-card') ||
+        document.querySelector('.subcategory-audiocard') ||
+        document.querySelector('.course-card') ||
+        document.querySelector('.category-card') ||
+        path.includes('subcategories') ||
+        path.includes('basics')
+    );
     if (needTiles) {
         const script = document.createElement('script');
         script.src = `${pathToRoot}tiles.js`;
@@ -175,6 +303,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.Tiles.initSubcategoryCards();
                 window.Tiles.initCourseCards();
                 window.Tiles.initCategoryCards();
+                window.Tiles.initSubcategoryAudioCards();
+                // If accordion exists, ensure audiocard binding remains active
+                if (typeof window.Tiles.initSubcategoryAudioAccordion === 'function') {
+                    window.Tiles.initSubcategoryAudioAccordion();
+                }
             }
         };
     script.onerror = () => { console.warn('tiles.js failed to load'); };
@@ -189,6 +322,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const audioPlayer = document.getElementById('audio-player');
         const bgPlayer = document.getElementById('audio-player-bg');
         const bgMusicSelectionContainer = document.getElementById('bg-music-selection');
+        const bgMusicNameEl = document.getElementById('bg-music-name');
+        const favoriteIcon = document.querySelector('.player-container .favorite-icon');
         const musicModal = document.getElementById('music-modal');
         const openModalBtn = document.getElementById('open-music-modal');
         const closeModalBtn = musicModal.querySelector('.close-button');
@@ -201,11 +336,75 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        const setBgMusicName = (track) => {
+            if (!bgMusicNameEl || !track) return;
+            const title = (localStorage.getItem('lang') || 'de') === 'de' ? track.title_de : track.title_en;
+            bgMusicNameEl.textContent = title || '';
+        };
+
+        // --- Favorites handling (Player) ---
+        // Compute a stable favorite ID from the current audio source path
+        function getFavoriteIdFromAudioSrc(src) {
+            try {
+                const parts = src.split('?')[0].split('#')[0].split('/');
+                const file = parts[parts.length - 1] || '';
+                const base = file.replace('.m4a', '');
+                const idx = base.lastIndexOf('_');
+                return idx > 0 ? base.substring(0, idx) : base; // trims trailing _de/_en
+            } catch (_) { return ''; }
+        }
+
+        async function refreshFavoriteIcon() {
+            if (!favoriteIcon || !db || !auth || !auth.currentUser || !audioPlayer || !audioPlayer.src) return;
+            try {
+                const favId = getFavoriteIdFromAudioSrc(audioPlayer.src);
+                if (!favId) return;
+                const userDoc = await db.collection('User_Profiles').doc(auth.currentUser.uid).get();
+                const favs = (userDoc.exists && userDoc.data().favorites) || {};
+                const isFav = !!favs[favId];
+                favoriteIcon.src = `${pathToRoot}assets/images/icons/${isFav ? 'heart_active' : 'heart_inactive'}.png`;
+            } catch (e) { /* ignore */ }
+        }
+
+        async function toggleFavorite() {
+            if (!db || !auth || !auth.currentUser) {
+                alert('Bitte einloggen, um Favoriten zu speichern.');
+                return;
+            }
+            const userDocRef = db.collection('User_Profiles').doc(auth.currentUser.uid);
+            const favId = getFavoriteIdFromAudioSrc(audioPlayer.src || '');
+            if (!favId) return;
+            try {
+                const doc = await userDocRef.get();
+                const favs = (doc.exists && doc.data().favorites) || {};
+                if (favs[favId]) {
+                    await userDocRef.update({ [`favorites.${favId}`]: firebase.firestore.FieldValue.delete() });
+                } else {
+                    const lang = localStorage.getItem('lang') || 'de';
+                    const trackTitleEl = document.getElementById('track-title');
+                    const currentTitle = (trackTitleEl?.textContent || '').trim();
+                    const titleKey = trackTitleEl?.getAttribute('data-i18n') || '';
+                    const merged = { ...(favs[favId] || {}), id: favId, title: currentTitle, audioSrc: (audioPlayer.src || '') };
+                    merged[`title_${lang}`] = currentTitle || merged[`title_${lang}`] || merged.title || '';
+                    if (titleKey) merged.titleKey = titleKey;
+                    await userDocRef.update({ [`favorites.${favId}`]: merged });
+                }
+                refreshFavoriteIcon();
+            } catch (e) {
+                console.error('Favorite toggle failed', e);
+            }
+        }
+
+        if (favoriteIcon) {
+            favoriteIcon.addEventListener('click', toggleFavorite);
+        }
+
         getBgMusicTracks().then(bgMusicTracks => {
             bgMusicSelectionContainer.innerHTML = ''; // Clear existing tiles
             bgMusicTracks.forEach(track => {
                 const tile = document.createElement('div');
                 tile.className = 'music-tile';
+                tile.dataset.id = track.id;
                 tile.dataset.path = track.path;
                 if (track.image) {
                     tile.style.backgroundImage = `url(${pathToRoot}${track.image})`;
@@ -221,19 +420,69 @@ document.addEventListener('DOMContentLoaded', () => {
                 bgMusicSelectionContainer.appendChild(tile);
 
                 tile.addEventListener('click', () => {
-                    bgPlayer.src = track.path ? `${pathToRoot}${track.path}`: '';
+                    // Update UI state
                     document.querySelectorAll('.music-tile').forEach(t => t.classList.remove('active'));
                     tile.classList.add('active');
-                    if(musicModal) musicModal.style.display = 'none'; // Close modal on selection
+                    if (musicModal) musicModal.style.display = 'none';
+                    // Persist selection & update label
+                    try { localStorage.setItem('bgMusicId', track.id); } catch(_) {}
+                    setBgMusicName(track);
+
+                    // Handle "none" (no background music)
+                    if (!track.path) {
+                        if (bgPlayer) {
+                            try { bgPlayer.pause(); } catch(_) {}
+                            bgPlayer.src = '';
+                        }
+                        return;
+                    }
+
+                    // Reset any running fade-out when switching tracks
+                    if (typeof fadeOutInterval !== 'undefined' && fadeOutInterval) {
+                        clearInterval(fadeOutInterval);
+                        fadeOutInterval = null;
+                    }
+
+                    // Set new source and start playing immediately if main audio is playing
+                    if (bgPlayer) {
+                        const desiredTime = (audioPlayer && !isNaN(audioPlayer.currentTime)) ? audioPlayer.currentTime : 0;
+                        const applyVolume = () => {
+                            const volumeValue = bgVolumeSlider ? (bgVolumeSlider.value / 100) : (bgPlayer.volume || 0.5);
+                            if (isIOS && typeof gainNode !== 'undefined' && gainNode) gainNode.gain.value = volumeValue;
+                            else bgPlayer.volume = volumeValue;
+                        };
+
+                        const startBg = () => {
+                            try { bgPlayer.currentTime = desiredTime; } catch(_) {}
+                            applyVolume();
+                            if (audioPlayer && !audioPlayer.paused) {
+                                bgPlayer.play().catch(() => {});
+                            }
+                        };
+
+                        bgPlayer.src = `${pathToRoot}${track.path}`;
+                        if (bgPlayer.readyState >= 1) startBg();
+                        else bgPlayer.addEventListener('loadedmetadata', startBg, { once: true });
+                    }
                 });
             });
 
-            // Set default background music
-            const defaultBgTrack = bgMusicTracks.find(t => t.id === 'birdparadise');
-            if (defaultBgTrack) {
-                bgPlayer.src = `${pathToRoot}${defaultBgTrack.path}`;
-                const defaultTile = Array.from(document.querySelectorAll('.music-tile')).find(tile => tile.dataset.path === defaultBgTrack.path);
-                if(defaultTile) defaultTile.classList.add('active');
+            // Determine initial background music (stored selection -> preferred default -> fallback)
+            const storedBgId = (() => { try { return localStorage.getItem('bgMusicId'); } catch(_) { return null; } })();
+            let initialTrack = null;
+            if (storedBgId) {
+                initialTrack = bgMusicTracks.find(t => t.id === storedBgId) || null;
+            }
+            if (!initialTrack) {
+                initialTrack = bgMusicTracks.find(t => t.id === 'birdparadise')
+                    || bgMusicTracks.find(t => t.id !== 'none')
+                    || bgMusicTracks[0];
+            }
+            if (initialTrack) {
+                bgPlayer.src = initialTrack.path ? `${pathToRoot}${initialTrack.path}` : '';
+                const initialTile = document.querySelector(`.music-tile[data-id="${initialTrack.id}"]`);
+                if (initialTile) initialTile.classList.add('active');
+                setBgMusicName(initialTrack);
             }
         });
 
@@ -256,15 +505,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const bgVolumeContainer = document.getElementById('bg-volume-container');
         const bgVolumeSlider = document.getElementById('bg-volume-slider');
         
-        const urlParams = new URLSearchParams(window.location.search);
-        const audioSrc = decodeURIComponent(urlParams.get('audio') || '');
-        const trackTitle = decodeURIComponent(urlParams.get('title') || '');
-        const courseId = decodeURIComponent(urlParams.get('courseId') || '');
+    const urlParams = new URLSearchParams(window.location.search);
+    const audioSrc = decodeURIComponent(urlParams.get('audio') || '');
+    const trackTitle = decodeURIComponent(urlParams.get('title') || '');
+    const titleKeyParam = urlParams.get('titleKey');
+    const courseId = decodeURIComponent(urlParams.get('courseId') || '');
         const trackProgress = urlParams.get('trackProgress') === 'true';
         const isChallenge = urlParams.get('challenge') === 'true';
 
     if (audioSrc) audioPlayer.src = audioSrc;
-    if (trackTitle && trackTitleElement) trackTitleElement.textContent = trackTitle;
+    if (trackTitleElement) {
+        if (titleKeyParam) {
+            trackTitleElement.setAttribute('data-i18n', titleKeyParam);
+            // Render via current translations if available
+            const i18n = window.__i18n;
+            const langCode = (localStorage.getItem('lang') || 'de');
+            if (i18n && i18n.lang === langCode && i18n.dict && i18n.dict[titleKeyParam]) {
+                trackTitleElement.textContent = i18n.dict[titleKeyParam];
+            } else {
+                // fallback to provided title if dict not ready
+                trackTitleElement.textContent = trackTitle || '';
+            }
+        } else if (trackTitle) {
+            trackTitleElement.textContent = trackTitle;
+        }
+    }
+    // Initialize favorite icon state for the loaded track
+    refreshFavoriteIcon();
         
         bgPlayer.loop = true;
         if (bgVolumeSlider && !isIOS) bgPlayer.volume = bgVolumeSlider.value / 100;
@@ -419,7 +686,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         audioPlayer.addEventListener('seeking', () => { if (bgPlayer.src) bgPlayer.currentTime = audioPlayer.currentTime; });
-        audioPlayer.addEventListener('loadedmetadata', () => { if(durationSpan) durationSpan.textContent = formatTime(audioPlayer.duration); });
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            if(durationSpan) durationSpan.textContent = formatTime(audioPlayer.duration);
+            refreshFavoriteIcon();
+        });
         if (bgVolumeSlider) bgVolumeSlider.addEventListener('input', (e) => {
             const volumeValue = e.target.value / 100;
             if (isIOS && gainNode) gainNode.gain.value = volumeValue;
@@ -572,12 +842,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newLang = (localStorage.getItem('lang') || 'de') === 'de' ? 'en' : 'de';
                 localStorage.setItem('lang', newLang);
                 updateLangDisplay(newLang);
-                loadTranslations(newLang);
+                    loadTranslations(newLang);
+                    try { window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang: newLang } })); } catch(_) {}
             });
         }
 
         auth.onAuthStateChanged(user => {
             if (user) {
+                const resetFavBtn = document.getElementById('reset-favorites-btn');
+                if (resetFavBtn) {
+                    resetFavBtn.addEventListener('click', async () => {
+                        if (!auth.currentUser || !db) return alert('Login erforderlich.');
+                        if (!confirm('Favoritenliste wirklich löschen?')) return;
+                        try {
+                            await db.collection('User_Profiles').doc(auth.currentUser.uid).update({ favorites: {} });
+                            alert('Favoriten zurückgesetzt.');
+                            try { window.dispatchEvent(new CustomEvent('favorites-reset')); } catch(_) {}
+                        } catch (e) {
+                            console.error('Favoriten-Reset fehlgeschlagen:', e);
+                            alert('Fehler beim Zurücksetzen.');
+                        }
+                    });
+                }
                 const userDocRef = db.collection('User_Profiles').doc(user.uid);
                 const profileAvatarImg = document.getElementById('profile-avatar-img');
                 const profileImageUpload = document.getElementById('profile-image-upload');
@@ -697,7 +983,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let audioPath = '';
                 if (filename_from_db) {
                     const filename_base = filename_from_db.split('.')[0];
-                    audioPath = `${pathToRoot}assets/audio/subcategories/${lang}/${filename_base}_${lang}.m4a`;
+                    audioPath = `${pathToRoot}assets/audio/subcategories/${lang}/${filename_base}.m4a`;
                 }
                 if (!audioPath) return;
                 const card = document.createElement('div');

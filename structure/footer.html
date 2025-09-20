@@ -6,9 +6,14 @@
     <a class="nav-item" href="/structure/courses.html" aria-label="Courses">
         <img src="/assets/images/icons/calendar.png" alt="Courses">
     </a>
+    <!-- Favoriten-Button: öffnet die Liste der Favoriten -->
+    <a class="nav-item" id="footer-favorites-btn" href="#" aria-label="Favorites" style="position: relative;">
+        <img src="/assets/images/icons/heart_active.png" alt="Favorites">
+    </a>
     <a class="nav-item" href="/structure/profile.html" aria-label="Profile">
         <img src="/assets/images/icons/yoga.png" alt="Profile">
     </a>
+    
     
     <!--
     <a class="nav-item" href="/structure/settings.html" aria-label="Settings">
@@ -16,3 +21,87 @@
     </a>
 -->
 </footer>
+
+<!-- Einfaches Drawer-Panel für Favoriten (wird per JS befüllt) -->
+<div id="favorites-drawer" style="display:none; position: fixed; left: 10px; right: 10px; bottom: 70px; background: #033c5e; color: #fcfdfd; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); max-height: 50vh; overflow-y: auto; z-index: 900;">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #eee;">
+    <strong data-i18n="profile_favorites_title" style="color: #ffa602; font-size: 22px;">Favoriten</strong>
+        <button id="favorites-drawer-close" style="background:none; border:none; font-size:18px; color: #fcfdfd; cursor:pointer;">✕</button>
+    </div>
+    <div id="favorites-list" style="padding: 8px 10px;"></div>
+</div>
+
+<script>
+// Populate and toggle the favorites drawer; assumes firebase-config is loaded on the page
+(function(){
+    const btn = document.getElementById('footer-favorites-btn');
+    const drawer = document.getElementById('favorites-drawer');
+    const closeBtn = document.getElementById('favorites-drawer-close');
+    const listEl = document.getElementById('favorites-list');
+
+    if (!btn || !drawer || !listEl) return;
+
+    function getPathToRoot(){
+        const path = window.location.pathname.split('/').filter(Boolean);
+        const isFile = path.length && path[path.length-1].includes('.');
+        const depth = Math.max(0, path.length - (isFile ? 1 : 0));
+        return depth === 0 ? './' : '../'.repeat(depth);
+    }
+    const pathToRoot = getPathToRoot();
+
+    function renderFavorites(favs){
+        listEl.innerHTML = '';
+        const favArray = Object.values(favs || {});
+        if (!favArray.length){
+            listEl.innerHTML = '<div style="padding:10px; color:#777;">Noch keine Favoriten.</div>';
+            return;
+        }
+        favArray.forEach(f => {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.alignItems = 'center';
+            row.style.justifyContent = 'space-between';
+            row.style.padding = '10px 8px';
+            row.style.borderBottom = '1px solid #f0f0f0';
+            row.style.cursor = 'pointer';
+            const title = document.createElement('span');
+            title.textContent = f.title || f.id || 'Unbenannter Track';
+            const play = document.createElement('img');
+            play.src = pathToRoot + 'assets/images/icons/play_icon_white_small.png';
+            play.alt = 'Play';
+            play.style.width = '20px';
+            play.style.height = '20px';
+            row.appendChild(title);
+            row.appendChild(play);
+            row.addEventListener('click', () => {
+                // Navigate to player using stored audioSrc and title
+                if (!f.audioSrc) return;
+                const url = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(f.audioSrc)}&title=${encodeURIComponent(f.title || '')}&courseId=${encodeURIComponent(f.id || '')}`;
+                window.location.href = url;
+            });
+            listEl.appendChild(row);
+        });
+    }
+
+    function subscribeFavorites(){
+        if (!(window.auth && window.db)) return;
+        window.auth.onAuthStateChanged(user => {
+            if (!user) { renderFavorites({}); return; }
+            const ref = window.db.collection('User_Profiles').doc(user.uid);
+            ref.onSnapshot(doc => {
+                const favs = doc.exists ? (doc.data().favorites || {}) : {};
+                renderFavorites(favs);
+            });
+        });
+    }
+
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        drawer.style.display = drawer.style.display === 'none' ? 'block' : 'none';
+    });
+    if (closeBtn) closeBtn.addEventListener('click', () => drawer.style.display = 'none');
+
+    // Begin subscription once footer is inserted
+    subscribeFavorites();
+})();
+</script>

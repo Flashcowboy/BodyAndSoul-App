@@ -20,9 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const lang = localStorage.getItem('lang') || 'de';
         const trackTitle = card.querySelector('h2').textContent;
         
-        const currentPagePath = window.location.pathname;
-        const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
-        const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
+    const audioFilePath = `${pathToRoot}assets/audio/subcategories/${lang}/${baseName}_${lang}.m4a`;
 
         const icon = card.querySelector('.favorite-icon');
         if (!icon) return;

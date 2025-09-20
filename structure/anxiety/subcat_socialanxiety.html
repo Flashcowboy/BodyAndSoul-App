@@ -164,40 +164,40 @@
 
     <main>
         <!-- <div class="description-card" id="social_anxiety_card"> -->
-            <span id="anxiety-text-content" data-i18n="SocialAnxiety-Text" data-read-more data-max-chars="400"></span><br><br>
+            <span id="anxiety-text-content" data-i18n="SocialAnxiety-Text" data-read-more data-max-chars="450"></span><br><br>
         <!-- </div> -->
 
         <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
-        <div class="subcategory-card" id="subcat03_01_01"  style="background-color: #d92c01;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+        <div class="subcategory-card" id="subcat04_02_01"  style="background-color: #d92c01;">
             <div class="card-text" data-i18n="SocialAnxiety_subcat1Title">
             </div>
         </div>
 
          <!-- Unterkacheln, die zu Audioplayer führen  -->
-                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_01"  style="background-color: #033c5e;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
-                    <div class="audiocard-text" data-i18n="SocialAnxiety_subcat1Title"></div>
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_01" data-audio-base-name="socialanxiety_01_01" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="socialanxiety_01_01"></div>
                     <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
                     <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
                 </div>
-                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_02"  style="background-color: #033c5e;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
-                    <div class="audiocard-text" data-i18n="SocialAnxiety_subcat2Title">
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_02" data-audio-base-name="socialanxiety_01_02" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="socialanxiety_01_02">
                     </div>
                     <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
                     <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
                 </div>
 
-        <div class="subcategory-card" id="subcat03_01_02"  style="background-color: #d92c01;" onclick="window.location.href = 'subcategories/subcat_socialanxiety.html';">
+        <div class="subcategory-card" id="04_02_02"  style="background-color: #d92c01;">
             <div class="card-text" data-i18n="SocialAnxiety_subcat2Title">         
             </div>
         </div>
         <!-- Unterkacheln, die zu Audioplayer führen  -->
-                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_01"  style="background-color: #033c5e;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
-                    <div class="audiocard-text" data-i18n="SocialAnxiety_audiocard3Title"></div>
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_03" data-audio-base-name="socialanxiety_02_01" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="socialanxiety_02_01"></div>
                     <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
                     <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
                 </div>
-                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_02"  style="background-color: #033c5e;" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
-                    <div class="audiocard-text" data-i18n="SocialAnxiety_audiocard4Title">
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_04" data-audio-base-name="socialanxiety_02_02" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="socialanxiety_02_02">
                     </div>
                     <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
                     <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
@@ -219,7 +219,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../../../firebase-config.js"></script>
     <script src="../../../main.js"></script>
-     <script>//Akkordeon-Funktion für Audioplayer-Karten
+    <script>//Akkordeon-Funktion für Audioplayer-Karten
             // Ensure accordion behavior is initialized after Tiles is available
             document.addEventListener('DOMContentLoaded', () => {
                 const ensureTiles = () => {

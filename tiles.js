@@ -1,6 +1,8 @@
 (function (global) {
     'use strict';
 
+    // Small utility to compute relative path back to project root.
+    // This ensures our links work from nested pages.
     function getPathToRoot() {
         const path = window.location.pathname;
         const parts = path.split('/').filter(Boolean);
@@ -10,6 +12,22 @@
         return '../'.repeat(depth);
     }
     const pathToRoot = getPathToRoot();
+    // Determine audio subfolder (e.g., 'basics/') by context or naming.
+    // Priority order:
+    // 1) Explicit override via data-audio-subfolder on the element
+    // 2) Page path contains /structure/basics/
+    // 3) Heuristic: baseName contains "_basics_"
+    function getAudioSubFolder(baseName, element) {
+        // explicit override via data attribute if provided
+        const explicit = element && element.dataset && element.dataset.audioSubfolder;
+        if (explicit) return explicit.endsWith('/') ? explicit : explicit + '/';
+        // page-based
+        const byPage = window.location.pathname.includes('/structure/basics/');
+        if (byPage) return 'basics/';
+        // name-based heuristic
+        if (baseName && baseName.includes('_basics_')) return 'basics/';
+        return '';
+    }
 
     const isSameDay = (d1, d2) => d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
     const isYesterday = (date) => {
@@ -19,6 +37,10 @@
         return isSameDay(date, yesterday);
     };
 
+    // Binds behavior to high-level subcategory tiles (the bigger section cards).
+    // - Handles favorites toggle (Firestore)
+    // - Asks to count toward course progress (optional)
+    // - Navigates to player with constructed audio path and localized title
     function initSubcategoryCards() {
         const path = window.location.pathname;
         if (!(path.includes('subcategories') || path.includes('basics'))) return;
@@ -93,7 +115,7 @@
             try { console.debug('[Tiles] Binding subcategory cards:', subcatCards.length); } catch(_){}
         }
 
-        subcatCards.forEach(card => {
+    subcatCards.forEach(card => {
             const audioBaseName = card.dataset.audioBaseName;
             const cardId = card.id;
             const baseName = audioBaseName || cardId;
@@ -115,15 +137,22 @@
                     const userDocRef = global.db.collection('User_Profiles').doc(currentUser.uid);
 
                     const lang = localStorage.getItem('lang') || 'de';
-                    const currentPagePath = window.location.pathname;
-                    const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
-                    const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
+                    const audioSubFolder = getAudioSubFolder(baseName, card);
+                        const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${audioBaseName}.m4a`;
 
+                    const rawTitleEl = card.querySelector('.audiocard-text, .card-text span, .card-text, .subcategory-audiocard-title, [data-title]');
+                    const localizedTitle = rawTitleEl ? (rawTitleEl.textContent || rawTitleEl.innerText || rawTitleEl.getAttribute('data-title') || '').trim() : '';
+                    const titleKey = rawTitleEl ? (rawTitleEl.getAttribute('data-i18n') || '') : '';
+                    const snap = await userDocRef.get();
+                    const existing = (snap.exists && snap.data().favorites && snap.data().favorites[baseName]) || {};
                     const favoriteData = {
+                        ...existing,
                         id: baseName,
-                        title: card.querySelector('.card-text span') ? card.querySelector('.card-text span').innerHTML.trim() : '',
-                        audioSrc: audioFilePath
+                        title: localizedTitle || existing.title || '',
+                        audioSrc: audioFilePath,
                     };
+                    favoriteData[`title_${lang}`] = localizedTitle || existing[`title_${lang}`] || existing.title || '';
+                    if (titleKey) favoriteData.titleKey = titleKey;
 
                     if (userFavorites[baseName]) {
                         userDocRef.update({ [`favorites.${baseName}`]: global.firebase.firestore.FieldValue.delete() })
@@ -176,14 +205,15 @@
                     try { console.warn('Kurs-Statistik nicht verfügbar (Weiterleitung ohne Abfrage).', err); } catch(_){}
                 }
 
-                const freshCardTextElement = card.querySelector('.card-text span');
+                const freshCardTextElement = card.querySelector('.audiocard-text, .card-text span');
                 const freshTrackTitle = freshCardTextElement ? freshCardTextElement.textContent.trim() : '';
+                const freshTitleKey = freshCardTextElement ? (freshCardTextElement.getAttribute('data-i18n') || '') : '';
                 const lang = localStorage.getItem('lang') || 'de';
-                const currentPagePath = window.location.pathname;
-                const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
-                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}_${lang}.m4a`;
+                const audioSubFolder = getAudioSubFolder(baseName, card);
+                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}.m4a`;
 
                 let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}&courseId=${encodeURIComponent(courseId)}`;
+                if (freshTitleKey) playerUrl += `&titleKey=${encodeURIComponent(freshTitleKey)}`;
                 if (trackProgress) {
                     playerUrl += '&trackProgress=true';
                 }
@@ -195,11 +225,12 @@
             });
         });
 
-        // Fallback delegation in case binding fails due to dynamic DOM changes
-        document.addEventListener('click', async (evt) => {
+    // Fallback delegation in case binding fails due to dynamic DOM changes
+    // This listens at the document level and reacts if individual bindings were missed.
+        document.addEventListener('click', (evt) => {
             const card = evt.target.closest && evt.target.closest('.subcategory-card');
             if (!card || card.classList.contains('course-card')) return;
-            if (card.dataset.clickBound === '1') return; // already has a listener
+            if (card.dataset.clickBound === '1') return; // already has per-card listener
             const icon = card.querySelector('.favorite-icon');
             if (icon && icon.contains(evt.target)) return; // let favorite handler handle it
 
@@ -207,12 +238,11 @@
             if (!audioBaseName) return;
 
             // Build title and path
-            const freshCardTextElement = card.querySelector('.card-text span');
+            const freshCardTextElement = card.querySelector('.audiocard-text, .card-text span');
             const freshTrackTitle = freshCardTextElement ? freshCardTextElement.textContent.trim() : '';
             const lang = localStorage.getItem('lang') || 'de';
-            const currentPagePath = window.location.pathname;
-            const audioSubFolder = currentPagePath.includes('/structure/basics/') ? 'basics/' : '';
-            const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${audioBaseName}_${lang}.m4a`;
+            const audioSubFolder = getAudioSubFolder(audioBaseName, card);
+            const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${audioBaseName}.m4a`;
             const courseId = card.id.substring(0, card.id.lastIndexOf('_'));
 
             let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}&courseId=${encodeURIComponent(courseId)}`;
@@ -222,6 +252,7 @@
         }, true);
     }
 
+    // Binds behavior to course tiles and their challenge button (if any).
     function initCourseCards() {
         const cards = document.querySelectorAll('.course-card');
         if (!cards.length) return;
@@ -244,6 +275,7 @@
         });
     }
 
+    // Simple click navigation for category tiles using data-href.
     function initCategoryCards() {
         const cards = document.querySelectorAll('.category-card');
         if (!cards.length) return;
@@ -254,7 +286,123 @@
         });
     }
 
-    // Accordion: Show only subcategory-card by default; expand its following subcategory-audiocard siblings on click
+    // Handles clicks on concrete audio tiles (subcategory-audiocard)
+    // - Prevents favorite icon clicks from triggering navigation
+    // - Builds the final audio file path with lang and optional basics/ subfolder
+    // - Derives courseId from the base name to enable progress tracking
+    function initSubcategoryAudioCards() {
+        const cards = Array.from(document.querySelectorAll('.subcategory-audiocard'));
+        if (!cards.length) return;
+
+        const pageParams = new URLSearchParams(window.location.search);
+        const pageIsChallenge = pageParams.get('challenge') === 'true';
+
+        // Remove legacy inline onclicks that navigate elsewhere
+        cards.forEach(card => { if (card.hasAttribute('onclick')) card.removeAttribute('onclick'); });
+
+        // Keep heart icons in sync with user's favorites (initial and live updates)
+        function updateAudioFavoriteIcons(favs) {
+            const allCards = document.querySelectorAll('.subcategory-audiocard');
+            allCards.forEach(card => {
+                const icon = card.querySelector('.favorite-icon');
+                if (!icon) return;
+                const baseName = card.dataset.audioBaseName || card.id;
+                const isFav = !!(favs && favs[baseName]);
+                icon.src = `${pathToRoot}assets/images/icons/${isFav ? 'heart_active' : 'heart_inactive'}.png`;
+            });
+        }
+
+        if (global.auth && global.db && !global._tilesAudioFavSubscriptionBound) {
+            global._tilesAudioFavSubscriptionBound = true;
+            try {
+                global.auth.onAuthStateChanged(user => {
+                    if (!user) { updateAudioFavoriteIcons({}); return; }
+                    const ref = global.db.collection('User_Profiles').doc(user.uid);
+                    ref.onSnapshot(doc => {
+                        const favs = doc.exists ? (doc.data().favorites || {}) : {};
+                        updateAudioFavoriteIcons(favs);
+                    }, () => updateAudioFavoriteIcons({}));
+                });
+            } catch(_) { /* noop */ }
+        } else {
+            // No auth/db available; default all to inactive
+            updateAudioFavoriteIcons({});
+        }
+
+        cards.forEach(card => {
+            // Bind favorite icon toggle on audiocard
+            const favIcon = card.querySelector('.favorite-icon');
+            if (favIcon && favIcon.dataset.bound !== '1') {
+                favIcon.dataset.bound = '1';
+                favIcon.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    try {
+                        if (!(global.auth && global.db)) return alert('Bitte einloggen, um Favoriten zu speichern.');
+                        const user = global.auth.currentUser;
+                        if (!user) return alert('Bitte einloggen, um Favoriten zu speichern.');
+                        const baseName = card.dataset.audioBaseName || card.id;
+                        if (!baseName) return;
+                        const lang = localStorage.getItem('lang') || 'de';
+                        const audioSubFolder = getAudioSubFolder(baseName, card);
+                        const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}.m4a`;
+                        const titleEl = card.querySelector('.audiocard-text, .card-text span, .subcategory-audiocard-title, [data-title]');
+                        const title = titleEl ? (titleEl.textContent || titleEl.getAttribute('data-title') || '').trim() : '';
+                        const userDocRef = global.db.collection('User_Profiles').doc(user.uid);
+                        const snap = await userDocRef.get();
+                        const favs = snap.exists ? (snap.data().favorites || {}) : {};
+                        if (favs[baseName]) {
+                            await userDocRef.update({ [`favorites.${baseName}`]: global.firebase.firestore.FieldValue.delete() });
+                            favIcon.src = `${pathToRoot}assets/images/icons/heart_inactive.png`;
+                        } else {
+                            await userDocRef.update({ [`favorites.${baseName}`]: { id: baseName, title: title, audioSrc: audioFilePath } });
+                            favIcon.src = `${pathToRoot}assets/images/icons/heart_active.png`;
+                        }
+                    } catch (err) {
+                        try { console.error('Favoriten-Umschalten fehlgeschlagen:', err); } catch(_){ }
+                    }
+                }, true);
+            }
+            if (card.dataset.audioBound === '1') return;
+            card.dataset.audioBound = '1';
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.favorite-icon')) return; // handled above
+                const challengeBtn = e.target.closest('.challenge-button');
+                if (challengeBtn && challengeBtn.dataset.challengeHref) {
+                    e.stopPropagation();
+                    window.location.href = challengeBtn.dataset.challengeHref;
+                    return;
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                const baseName = card.dataset.audioBaseName || card.id;
+                if (!baseName) return;
+
+                const titleEl = card.querySelector('.audiocard-text, .card-text span, .subcategory-audiocard-title, [data-title]');
+                const title = titleEl ? (titleEl.textContent || titleEl.getAttribute('data-title') || '').trim() : '';
+                const titleKey = titleEl ? (titleEl.getAttribute('data-i18n') || '') : '';
+
+                const lang = localStorage.getItem('lang') || 'de';
+                const audioSubFolder = getAudioSubFolder(baseName, card);
+                const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}.m4a`;
+
+                // Derive courseId from baseName by trimming last _NN segment
+                const lastUnderscore = baseName.lastIndexOf('_');
+                const courseId = lastUnderscore > 0 ? baseName.substring(0, lastUnderscore) : baseName;
+
+                let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(title)}&courseId=${encodeURIComponent(courseId)}`;
+                if (titleKey) playerUrl += `&titleKey=${encodeURIComponent(titleKey)}`;
+                if (pageIsChallenge) playerUrl += '&challenge=true';
+                window.location.href = playerUrl;
+            }, true);
+        });
+    }
+
+    // Accordion:
+    // - Shows only the subcategory-card rows initially
+    // - Groups subsequent subcategory-audiocard elements into a collapsible container
+    // - Smooth open/close animations via max-height/opacity
+    // - Idempotent: safe to call multiple times
     function initSubcategoryAudioAccordion() {
         const rootCards = Array.from(document.querySelectorAll('.subcategory-card'));
         const anyAudioCards = document.querySelector('.subcategory-audiocard');
@@ -308,14 +456,14 @@
             }
         });
 
-        if (!groups.size) return;
+    if (!groups.size) return;
 
         // Prevent inline onclick navigation on parent cards ONLY for those that act as accordion triggers
         rootCards.forEach(card => {
             if (card.hasAttribute('onclick') && groups.has(card)) card.removeAttribute('onclick');
         });
 
-        let openCard = null;
+    let openCard = null;
         const closeAll = () => {
             groups.forEach(({ container }) => {
                 container.style.maxHeight = '0px';
@@ -339,7 +487,7 @@
             openCard = card;
         };
 
-        rootCards.forEach(card => {
+    rootCards.forEach(card => {
             if (card.dataset.accordionBound === '1') return; // idempotency
             card.dataset.accordionBound = '1';
             card.addEventListener('click', (e) => {
@@ -356,6 +504,8 @@
             }, true);
         });
 
+    // Start with all groups collapsed; they open on header click.
+
         // Keep open group's height accurate on resize
         window.addEventListener('resize', () => {
             if (!openCard) return;
@@ -370,7 +520,8 @@
         initSubcategoryCards,
     initCourseCards,
     initCategoryCards,
-        initSubcategoryAudioAccordion
+    initSubcategoryAudioAccordion,
+    initSubcategoryAudioCards
     };
 
 })(window);

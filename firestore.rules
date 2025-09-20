@@ -13,15 +13,21 @@ service cloud.firestore {
 
     // User-specific courses and progress
     match /userCourses/{uid_courseId} {
-      allow read, write: if request.auth != null && uid_courseId.startsWith(request.auth.uid + '_');
+      allow read, write: if request.auth != null && uid_courseId.matches('^' + request.auth.uid + '_.*');
       match /progress/{dateId} {
-        allow read, write: if request.auth != null && uid_courseId.startsWith(request.auth.uid + '_');
+        allow read, write: if request.auth != null && uid_courseId.matches('^' + request.auth.uid + '_.*');
       }
+    }
+
+    // Background music tracks (used by player UI)
+    match /background_music/{docId} {
+      allow read: if true;           // public readable for player
+      allow write: if request.auth != null; // restrict writes to authenticated
     }
 
     // 14-day challenge progress per user
     match /userChallenges/{uid_challengeId} {
-      allow read, write: if request.auth != null && uid_challengeId.startsWith(request.auth.uid + '_');
+      allow read, write: if request.auth != null && uid_challengeId.matches('^' + request.auth.uid + '_.*');
     }
   }
 }
