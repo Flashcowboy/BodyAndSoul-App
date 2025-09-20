@@ -401,15 +401,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Compute a stable favorite ID from the current audio source path
         function getFavoriteIdFromAudioSrc(src) {
             try {
-                const parts = src.split('?')[0].split('#')[0].split('/');
-                const file = parts[parts.length - 1] || '';
-                const base = file.replace('.m4a', '');
-                const idx = base.lastIndexOf('_');
-                return idx > 0 ? base.substring(0, idx) : base; // trims trailing _de/_en
+                const clean = decodeURIComponent((src || '').split('?')[0].split('#')[0]);
+                const file = clean.substring(clean.lastIndexOf('/') + 1);
+                let base = file.replace(/\.m4a$/i, '');
+                // Backward-compat: strip only a language suffix exactly at the end
+                base = base.replace(/_(de|en)$/i, '');
+                return base;
             } catch (_) { return ''; }
         }
 
-        async function refreshFavoriteIcon() {
+    async function refreshFavoriteIcon() {
             if (!favoriteIcon || !db || !auth || !auth.currentUser || !audioPlayer || !audioPlayer.src) return;
             try {
                 const favId = getFavoriteIdFromAudioSrc(audioPlayer.src);
@@ -452,6 +453,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (favoriteIcon) {
             favoriteIcon.addEventListener('click', toggleFavorite);
+        }
+
+        // Keep heart icon in sync with user favorites while on the player page
+        if (auth && db) {
+            auth.onAuthStateChanged(user => {
+                if (!user) return;
+                db.collection('User_Profiles').doc(user.uid)
+                    .onSnapshot(() => { refreshFavoriteIcon(); });
+            });
         }
 
         getBgMusicTracks().then(bgMusicTracks => {
