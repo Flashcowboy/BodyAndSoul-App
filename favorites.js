@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const lang = localStorage.getItem('lang') || 'de';
         const trackTitle = card.querySelector('h2').textContent;
         
-    const audioFilePath = `${pathToRoot}assets/audio/subcategories/${lang}/${baseName}_${lang}.m4a`;
+    const audioFilePath = `${pathToRoot}assets/audio/subcategories/${lang}/${baseName}.m4a`;
 
         const icon = card.querySelector('.favorite-icon');
         if (!icon) return;

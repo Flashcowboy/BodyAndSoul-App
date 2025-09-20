@@ -1,6 +1,56 @@
 (function (global) {
     'use strict';
 
+    // Ensure a larger clickable area (hitbox) around a .favorite-icon without changing the icon size.
+    // Returns an object { wrapper, icon } where wrapper is the new clickable container and icon is the img.
+    function ensureFavoriteHitArea(card) {
+        if (!card) return { wrapper: null, icon: null };
+        const icon = card.querySelector('.favorite-icon');
+        if (!icon) return { wrapper: null, icon: null };
+
+        // If already wrapped, return existing wrapper
+        if (icon.parentElement && icon.parentElement.classList && icon.parentElement.classList.contains('favorite-hit')) {
+            return { wrapper: icon.parentElement, icon };
+        }
+
+        // Read current absolute offsets from computed styles (fallback to 10px if unset)
+        const cs = window.getComputedStyle(icon);
+        const top = cs.top && cs.top !== 'auto' ? cs.top : '10px';
+        const right = cs.right && cs.right !== 'auto' ? cs.right : '10px';
+        // Create wrapper hit area
+        const wrapper = document.createElement('div');
+        wrapper.className = 'favorite-hit';
+        const ws = wrapper.style;
+        ws.position = 'absolute';
+        ws.top = top;
+        ws.right = right;
+        ws.width = '36px';
+        ws.height = '36px';
+        ws.display = 'flex';
+        ws.alignItems = 'center';
+        ws.justifyContent = 'center';
+        ws.cursor = 'pointer';
+        ws.zIndex = '2';
+        ws.touchAction = 'manipulation';
+        // Place wrapper in card, before icon, then move icon inside
+        card.appendChild(wrapper);
+        // Normalize icon style so it sits centered inside wrapper
+        icon.style.position = 'static';
+        icon.style.top = 'auto';
+        icon.style.right = 'auto';
+        icon.style.margin = '0';
+        // Keep icon size as originally defined by CSS (fallback to 15x15)
+        if (!icon.style.width && !icon.style.height) {
+            icon.style.width = cs.width && cs.width !== 'auto' ? cs.width : '15px';
+            icon.style.height = cs.height && cs.height !== 'auto' ? cs.height : '15px';
+        }
+        // Let the wrapper receive the click, not the img
+        icon.style.pointerEvents = 'none';
+        wrapper.appendChild(icon);
+
+        return { wrapper, icon };
+    }
+
     // Small utility to compute relative path back to project root.
     // This ensures our links work from nested pages.
     function getPathToRoot() {
@@ -119,16 +169,17 @@
             const audioBaseName = card.dataset.audioBaseName;
             const cardId = card.id;
             const baseName = audioBaseName || cardId;
-            const icon = card.querySelector('.favorite-icon');
+            const { wrapper: favHit, icon } = ensureFavoriteHitArea(card);
             if (!baseName) return;
 
             card.dataset.clickBound = '1';
-            card.addEventListener('click', async (e) => {
-                // Favorite icon click
-                if (icon && icon.contains(e.target)) {
+
+            // Bind favorite toggle on enlarged hit area (wrapper)
+            if (favHit && !favHit.dataset.bound) {
+                favHit.dataset.bound = '1';
+                favHit.addEventListener('click', async (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-
                     const currentUser = authUser || (global.auth ? global.auth.currentUser : null) || await getCurrentUserWithWait();
                     if (!currentUser || !global.db) {
                         alert('Bitte einloggen, um Favoriten zu speichern.');
@@ -138,7 +189,7 @@
 
                     const lang = localStorage.getItem('lang') || 'de';
                     const audioSubFolder = getAudioSubFolder(baseName, card);
-                        const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${audioBaseName}.m4a`;
+                    const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${audioBaseName}.m4a`;
 
                     const rawTitleEl = card.querySelector('.audiocard-text, .card-text span, .card-text, .subcategory-audiocard-title, [data-title]');
                     const localizedTitle = rawTitleEl ? (rawTitleEl.textContent || rawTitleEl.innerText || rawTitleEl.getAttribute('data-title') || '').trim() : '';
@@ -161,8 +212,12 @@
                         userDocRef.update({ [`favorites.${baseName}`]: favoriteData })
                             .catch(err => console.error('Error adding favorite:', err));
                     }
-                    return;
-                }
+                }, true);
+            }
+
+            card.addEventListener('click', async (e) => {
+                // Ignore clicks on the enlarged favorite hit area
+                if (e.target.closest('.favorite-hit')) return; // handled by wrapper listener
 
                 // Navigation click
                 const href = card.dataset.href;
@@ -232,7 +287,8 @@
             if (!card || card.classList.contains('course-card')) return;
             if (card.dataset.clickBound === '1') return; // already has per-card listener
             const icon = card.querySelector('.favorite-icon');
-            if (icon && icon.contains(evt.target)) return; // let favorite handler handle it
+            if (icon && icon.contains(evt.target)) return; // legacy guard
+            if (evt.target.closest && evt.target.closest('.favorite-hit')) return; // let favorite handler handle it
 
             const audioBaseName = card.dataset.audioBaseName || card.id;
             if (!audioBaseName) return;
@@ -301,7 +357,7 @@
         cards.forEach(card => { if (card.hasAttribute('onclick')) card.removeAttribute('onclick'); });
 
         // Keep heart icons in sync with user's favorites (initial and live updates)
-        function updateAudioFavoriteIcons(favs) {
+    function updateAudioFavoriteIcons(favs) {
             const allCards = document.querySelectorAll('.subcategory-audiocard');
             allCards.forEach(card => {
                 const icon = card.querySelector('.favorite-icon');
@@ -332,9 +388,10 @@
         cards.forEach(card => {
             // Bind favorite icon toggle on audiocard
             const favIcon = card.querySelector('.favorite-icon');
-            if (favIcon && favIcon.dataset.bound !== '1') {
-                favIcon.dataset.bound = '1';
-                favIcon.addEventListener('click', async (e) => {
+            const { wrapper: favHit } = ensureFavoriteHitArea(card);
+            if (favHit && favHit.dataset.bound !== '1') {
+                favHit.dataset.bound = '1';
+                favHit.addEventListener('click', async (e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     try {
@@ -353,10 +410,10 @@
                         const favs = snap.exists ? (snap.data().favorites || {}) : {};
                         if (favs[baseName]) {
                             await userDocRef.update({ [`favorites.${baseName}`]: global.firebase.firestore.FieldValue.delete() });
-                            favIcon.src = `${pathToRoot}assets/images/icons/heart_inactive.png`;
+                            if (favIcon) favIcon.src = `${pathToRoot}assets/images/icons/heart_inactive.png`;
                         } else {
                             await userDocRef.update({ [`favorites.${baseName}`]: { id: baseName, title: title, audioSrc: audioFilePath } });
-                            favIcon.src = `${pathToRoot}assets/images/icons/heart_active.png`;
+                            if (favIcon) favIcon.src = `${pathToRoot}assets/images/icons/heart_active.png`;
                         }
                     } catch (err) {
                         try { console.error('Favoriten-Umschalten fehlgeschlagen:', err); } catch(_){ }
@@ -366,7 +423,7 @@
             if (card.dataset.audioBound === '1') return;
             card.dataset.audioBound = '1';
             card.addEventListener('click', (e) => {
-                if (e.target.closest('.favorite-icon')) return; // handled above
+                if (e.target.closest('.favorite-icon') || e.target.closest('.favorite-hit')) return; // handled above
                 const challengeBtn = e.target.closest('.challenge-button');
                 if (challengeBtn && challengeBtn.dataset.challengeHref) {
                     e.stopPropagation();

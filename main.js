@@ -159,6 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const renderFavorites = async (favs) => {
                 latestFavs = favs || {};
                 listEl.innerHTML = '';
+                // Ensure container styles support multi-line rows consistently
+                listEl.style.overflowY = 'auto';
+                listEl.style.padding = '8px 10px';
                 const favArray = Object.values(favs || {});
                 if (!favArray.length) {
                     listEl.innerHTML = '<div style="padding:10px; color:#777;">Noch keine Favoriten.</div>';
@@ -180,7 +183,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     }));
                 }
 
-                // Auto-backfill missing localized titles into user's favorites if we have metadata
+                // Helper: derive i18n key from favorite (titleKey -> id -> filename from audioSrc)
+                const deriveKey = (f) => {
+                    if (f && f.titleKey) return f.titleKey;
+                    if (f && f.id && /^[A-Za-z0-9_]+$/.test(f.id)) return f.id;
+                    if (f && f.audioSrc) {
+                        const last = f.audioSrc.split('/').pop() || '';
+                        let base = last.replace(/\.m4a$/i, '');
+                        base = base.replace(/_(de|en)$/i, '');
+                        return base;
+                    }
+                    return '';
+                };
+
+                // Auto-backfill missing localized titles and titleKey into user's favorites if we have metadata
                 if (window.db && currentUserId) {
                     const updatePayload = {};
                     favArray.forEach(f => {
@@ -188,28 +204,61 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (!meta) return;
                         if (!f.title_de && meta.title_de) updatePayload[`favorites.${f.id}.title_de`] = meta.title_de;
                         if (!f.title_en && meta.title_en) updatePayload[`favorites.${f.id}.title_en`] = meta.title_en;
+                        const dk = deriveKey(f);
+                        if (!f.titleKey && dk) updatePayload[`favorites.${f.id}.titleKey`] = dk;
                     });
                     if (Object.keys(updatePayload).length) {
                         try { await window.db.collection('User_Profiles').doc(currentUserId).update(updatePayload); } catch(_) {}
                     }
                 }
 
-                favArray.forEach(f => {
+                // Sort by localized title for a stable order per language
+                const dict = (window.__i18n && window.__i18n.lang === lang) ? (window.__i18n.dict || null) : null;
+                const localizedTitle = (f) => {
+                    const meta = audioMetaCache[f.id];
+                    let text = (meta && (meta[`title_${lang}`])) || f[`title_${lang}`];
+                    const keyFromFav = deriveKey(f);
+                    if (!text && dict && keyFromFav && dict[keyFromFav]) text = dict[keyFromFav];
+                    return text || f.title || f.id || 'Unbenannter Track';
+                };
+                favArray.sort((a, b) => localizedTitle(a).localeCompare(localizedTitle(b)));
+
+                favArray.forEach((f, idx) => {
                     const row = document.createElement('div');
                     row.style.display = 'flex';
-                    row.style.alignItems = 'center';
+                    row.style.alignItems = 'flex-start';
                     row.style.justifyContent = 'space-between';
                     row.style.padding = '10px 8px';
+                    // Keep bottom border even on last item to preserve visual height consistency
                     row.style.borderBottom = '1px solid #f0f0f0';
+                    // Ensure rows can grow for multiline titles and still be tappable
+                    row.style.minHeight = '36px';
                     row.style.cursor = 'pointer';
 
                     const title = document.createElement('span');
+                    // Ensure multi-line titles render fully on mobile
+                    title.style.display = 'block';
+                    title.style.lineHeight = '1.3';
+                    title.style.whiteSpace = 'normal';
+                    title.style.wordBreak = 'break-word';
+                    title.style.overflowWrap = 'anywhere';
+                    title.style.flex = '1 1 auto';
+                    title.style.paddingRight = '8px';
                     const meta = audioMetaCache[f.id];
-                    let localized = (meta && (meta[`title_${lang}`])) || f[`title_${lang}`];
-                    if (!localized && f.titleKey && window.__i18n && window.__i18n.lang === lang && window.__i18n.dict) {
-                        localized = window.__i18n.dict[f.titleKey] || localized;
+                    const keyFromFav = deriveKey(f);
+                    // Prefer dictionary (i18n) first so HTML like <br> is honored; then metadata; then stored titles
+                    let localized = '';
+                    if (dict && keyFromFav && dict[keyFromFav]) {
+                        localized = dict[keyFromFav];
+                    } else if (meta && meta[`title_${lang}`]) {
+                        localized = meta[`title_${lang}`];
+                    } else if (f[`title_${lang}`]) {
+                        localized = f[`title_${lang}`];
+                    } else {
+                        localized = f.title;
                     }
-                    title.textContent = localized || f.title || f.id || 'Unbenannter Track';
+                    // Allow HTML tags in labels
+                    title.innerHTML = localized || f.title || f.id || 'Unbenannter Track';
 
                     const play = document.createElement('img');
                     play.src = `${pathToRoot}assets/images/icons/play_icon_white_small.png`;
@@ -220,8 +269,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     row.appendChild(play);
                     row.addEventListener('click', () => {
                         if (!f.audioSrc) return;
-                        const playerTitle = (localized || f.title || '');
-                        const url = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(f.audioSrc)}&title=${encodeURIComponent(playerTitle)}&courseId=${encodeURIComponent(f.id || '')}`;
+                        // Strip HTML for the player title
+                        const plainTitle = (localized || f.title || '').replace(/<[^>]*>/g, '');
+                        // Normalize older stored paths like genanxiety_01_01_de.m4a -> genanxiety_01_01.m4a
+                        const normalizedSrc = f.audioSrc.replace(/_(de|en)\.m4a$/, '.m4a');
+                        let url = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(normalizedSrc)}&title=${encodeURIComponent(plainTitle)}&courseId=${encodeURIComponent(f.id || '')}`;
+                        const keyParam = keyFromFav;
+                        if (keyParam) url += `&titleKey=${encodeURIComponent(keyParam)}`;
                         window.location.href = url;
                     });
                     listEl.appendChild(row);
@@ -248,7 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
                 // Re-render list when language changes to show the appropriate localized title
-            window.addEventListener('lang-changed', () => renderFavorites(latestFavs));
+            // Re-render slightly delayed so async loadTranslations has time to set window.__i18n
+            window.addEventListener('lang-changed', () => setTimeout(() => renderFavorites(latestFavs), 150));
         }, 100);
     })();
 
