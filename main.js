@@ -134,6 +134,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const path = window.location.pathname;
 
+
+    // =================================================================================================
+    //                  --- Favorite Drawer in Footer Menu ---
+    // =================================================================================================
+
     // Initialize Favorites Drawer in footer (footer HTML is injected via fetch and scripts there don't run)
     (function initFooterFavoritesDrawer() {
         const MAX_TRIES = 50;
@@ -282,6 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     listEl.appendChild(row);
                 });
             };
+
+
+    // =================================================================================================
+    //             --- Back-Button Logik ---
+    // =================================================================================================
 
             // Central Back Navigation: history-first, then logical fallbacks
             const navigateBack = () => {

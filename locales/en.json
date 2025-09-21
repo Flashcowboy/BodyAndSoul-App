@@ -11,6 +11,7 @@
   "card2Title": "Basic Exercises",
   "card3Title": "Overcoming Anxiety",
   "card4Title": "Support for Depression",
+  "card5Title": "Bonus Content",
 
  
   "//comment": "****************************************************************************************",
@@ -142,6 +143,19 @@
   "SubCat_basics07_Header": "Basic Exercises<br>Solar Plexus and Forehead",
 
 
+  "//comment": "****************************************************************************************",
+  "//comment": "                                 Bonus-Inhalte                                          ",
+  "//comment": "****************************************************************************************",
+
+  "Bonus-Text": "<h2>Bonus-Inhalte</h2><p>In this section you will find exclusive exercises, inspirations, and additional materials available only here. Check back regularly – new highlights and information are added from time to time.</p>",
+  "bonus_subcat1Title": "<b>Basic Exercises Complete</b>",
+  "bonus_01_01": "<b>AT Basic Exercises Complete</b></br>Exercise with Conclusion",
+  "bonus_01_02": "<b>AT Basic Exercises Complete</b></br>Exercise for Falling Asleep",
+  "bonus_subcat2Title": "<b>Weight Reduction</b></br>through Motivation and Mindfulness",
+  "bonus_02_01": "<b>Weight Reduction</b></br>Exercise with Conclusion",
+  "bonus_02_02": "<b>Weight Reduction</b></br>Exercise for Falling Asleep",
+ 
+ 
   "//comment": "****************************************************************************************",
   "//comment": "                          Tags für 14-Tage-Challenge                                    ",
   "//comment": "****************************************************************************************",
