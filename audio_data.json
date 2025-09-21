@@ -1,81 +1,52 @@
 [
   {
-    "description_de": "15 min geführte Übung zur allgemeinen Entspannung",
-    "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_01_01.m4a",
-    "tags": ["stress", "nervös", "unsicher", "müde", "relaxation", "ängstlich", "überfordert", "depressiv", "traurigkeit", "unruhe", "klarheit", "aggressiv"],
+    "description_de": "Allgemeine Entspannung",
+    "description_en": "common relaxation.",
+    "path": "basics_01_01.m4a",
+    "tags": ["gestresst","aggressiv","depressiv","traurig","überfordert","ängstlich"],
     "title_de": "Allgemeine Entspannung<br>Übung mit Ausleitung",
     "title_en": "Letting go of Stress"
   },
+
   {
-    "description_de": "15 min geführte Übung zur allgemeinen Entspannung",
-    "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_01_02.m4a",
-    "tags": ["stress", "nervös", "unsicher", "müde", "relaxation", "ängstlich", "überfordert", "depressiv", "traurigkeit", "unruhe", "klarheit", "aggressiv"],
-    "title_de": "Allgemeine Entspannung<br>Übung mit Ausleitung",
-    "title_en": "Letting go of Stress"
+    "description_de": "15 min geführte Atem-Übung zum Einschlafen",
+    "description_en": "A 15-minute session for breathing exercise.",
+    "path": "basics_02_01.m4a",
+    "tags": ["gestresst","aggressiv","depressiv","traurig","überfordert","ängstlich"],
+    "title_de": "Atemübung",
+    "title_en": "Breathing Exercise"
   },
+
   {
     "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
     "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_02_01.m4a",
-    "tags": [""],
+    "path": "basics_03_01.m4a",
+    "tags": ["gestresst","aggressiv","depressiv","traurig","überfordert","ängstlich"],
     "title_de": "Schwereübung<br>Übung zum Einschlafen",
     "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
   },
   {
     "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
     "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_02_02.m4a",
-    "tags": [""],
+    "path": "basics_04_01.m4a",
+    "tags": ["gestresst","aggressiv","depressiv","traurig","überfordert","ängstlich"],
+    "title_de": "Schwereübung<br>Übung zum Einschlafen",
+    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
+    "description_en": "A 15-minute session for common relaxation.",
+    "path": "basics_05_01.m4a",
+    "tags": ["gestresst","aggressiv","depressiv","traurig","überfordert","ängstlich"],
     "title_de": "Schwereübung<br>Übung zum Einschlafen",
     "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
   },
   {
     "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
     "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_03_01.m4a",
-    "tags": [""],
-    "title_de": "Schwereübung<br>Übung zum Einschlafen",
-    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
-  },
-  {
-    "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
-    "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_03_02.m4a",
-    "tags": [""],
-    "title_de": "Schwereübung<br>Übung zum Einschlafen",
-    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
-  },
-  {
-    "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
-    "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_04_01.m4a",
-    "tags": [""],
-    "title_de": "Schwereübung<br>Übung zum Einschlafen",
-    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
-  },
-  {
-    "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
-    "description_en": "A 15-minute session for common relaxation.",
-    "path": "assets/audio/basics/subcategories/de/subcat_basics_04_02_de.m4a",
-    "tags": [""],
-    "title_de": "Schwereübung<br>Übung zum Einschlafen",
-    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
-  },
-  {
-    "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
-    "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_05_01.m4a",
-    "tags": [""],
-    "title_de": "Schwereübung<br>Übung zum Einschlafen",
-    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
-  },
-  {
-    "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
-    "description_en": "A 15-minute session for common relaxation.",
-    "path": "subcat_basics_05_02.m4a",
-    "tags": [""],
+    "path": "basics_06_01.m4a",
+    "tags": ["gestresst","aggressiv","depressiv","traurig","überfordert","ängstlich"],
     "title_de": "Schwereübung<br>Übung zum Einschlafen",
     "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
   }

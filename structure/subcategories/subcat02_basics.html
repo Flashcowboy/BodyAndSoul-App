@@ -168,6 +168,27 @@
             width: 18px;
             object-fit: contain;
         }
+        /* Back button next to description headline (push text below button) */
+        .desc-header {
+            position: relative;
+            margin: 10px 0 10px;
+            padding-top: 32px; /* make room for the back button (28px + small gap) */
+        }
+        .desc-header .back-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            line-height: 0;
+        }
+        .desc-header .back-btn img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
@@ -191,7 +212,8 @@
 
 
     <main>
-        <span data-i18n="AT_Basics_Instruction" data-read-more data-max-chars="500"></span><br><br>
+        
+            <span data-i18n="AT_Basics_Instruction" data-read-more data-max-chars="500"></span><br><br>
 
         <div class="subcategory-card course-card" id="subcat02_01" style="background-color: #001d3d;">
             <div class="card-text">
@@ -377,6 +399,21 @@
     <script src="../../firebase-config.js"></script>
     <script src="../../main.js"></script>
     <script src="../../challenge.js"></script>
+    <script>
+        // Back button behavior: history back with fallback
+        (function(){
+            const btn = document.getElementById('back-btn');
+            if (!btn) return;
+            btn.addEventListener('click', function(e){
+                e.preventDefault();
+                if (window.history && window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '../categories.html';
+                }
+            });
+        })();
+    </script>
 
     <script>//Akkordeon-Funktion für Audioplayer-Karten
             // Ensure accordion behavior is initialized after Tiles is available

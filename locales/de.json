@@ -66,9 +66,9 @@
   
   "GenAnxiety-Text": "<h3>Generalisierte Angststörung</h3>Die <strong>Generalisierte Angststörung (GAD)</strong> ist eine weit verbreitete psychische Erkrankung, die durch anhaltende und übermäßige Sorgen und Ängste gekennzeichnet ist. Menschen mit GAD finden es oft schwierig, ihre Sorgen zu kontrollieren, was zu erheblichen Beeinträchtigungen im täglichen Leben führen kann. Typische Symptome sind unter anderem ständige Nervosität, Muskelverspannungen, Schlafstörungen und Konzentrationsprobleme.<br><br><strong>Die Ursachen der GAD</strong> sind vielfältig und können genetische, umweltbedingte und psychologische Faktoren umfassen. Stressige Lebensereignisse, wie der Verlust eines geliebten Menschen oder berufliche Herausforderungen, können die Entwicklung einer GAD begünstigen.<br><br><strong>Die Behandlung der Generalisierten Angststörung</strong> umfasst in der Regel Psychotherapie, insbesondere kognitive Verhaltenstherapie (KVT), die darauf abzielt, negative Denkmuster zu identifizieren und zu verändern. In einigen Fällen können auch Medikamente wie Antidepressiva oder Anxiolytika verschrieben werden, um die Symptome zu lindern. Mit der richtigen Unterstützung und Behandlung können Menschen mit GAD lernen, ihre Ängste zu bewältigen und ein erfülltes Leben zu führen.<br><br><strong>Autogenes Training</strong> kann bei Generalisierter Angststörung (GAS) helfen, indem es die tief verwurzelte körperliche und geistige Anspannung löst. Die ständige Sorge bei GAS führt oft zu physiologischen Symptomen wie Muskelverspannungen, Magen-Darm-Problemen oder Schlaflosigkeit. Durch gezielte Autosuggestionen wie „Mein Körper ist ganz schwer“ oder „Mein Atem geht ruhig und gleichmäßig“ lernen Anwender, diese körperlichen Reaktionen bewusst zu beruhigen. Dies sendet ein Entspannungssignal an das Nervensystem und unterbricht den Teufelskreis aus Angst und Anspannung. Auf kognitiver Ebene hilft autogenes Training, das „Gedankenkarussell“ zu stoppen. Anwender lernen, den Fokus von ihren Sorgen wegzulenken und sich auf die körperlichen Empfindungen der Entspannung zu konzentrieren. Diese Übung trainiert den Geist, Abstand zu den Gedanken zu gewinnen und ein Gefühl der inneren Kontrolle wiederzuerlangen. Es ist ein aktiver Weg, die übermäßige Sorge zu reduzieren und die Lebensqualität nachhaltig zu verbessern.",
   "GenAnxiety_cardTitle": "Generalisierte Angststörung",
-  "GenAnxiety_subcat1Title": "<b>Generalisierte Angststörung</b><br>Leichte Ausprägung",
-  "GenAnxiety_subcat2Title": "<b>Generalisierte Angststörung</b><br>Moderate Ausprägung",
-  "GenAnxiety_subcat3Title": "<b>Generalisierte Angststörung</b><br>Schwere Ausprägung",
+  "GenAnxiety_subcat1Title": "<b>Generalisierte Angststörung</b></br>Leichte Ausprägung",
+  "GenAnxiety_subcat2Title": "<b>Generalisierte Angststörung</b></br>Moderate Ausprägung",
+  "GenAnxiety_subcat3Title": "<b>Generalisierte Angststörung</b></br>Schwere Ausprägung",
 
   "//comment": "***********  Kacheln von denen aus die Audiofiles aufgerufen werden ****************",
   "//comment": "***********  Die Labels müssen mit den Audiofilenames übereinstimmen ****************",
@@ -109,12 +109,12 @@
   "//comment": "****************************************************************************************",
 
   "Depression_cardTitle": "Depression",
-  "Depression_subcat1Title": "<b>Depression</b><br>Leichte Ausprägung",
-  "Depression_subcat2Title": "<b>Depression</b><br>Moderate Ausprägung",
-  "Depression_subcat3Title": "<b>Depression</b><br>Schwere Ausprägung",
-  "Depression_subcat4Title": "<b>Depression</b><br>Essstörungen",
-  "Depression_subcat5Title": "<b>Depression</b><br>Antriebslosigkeit",
-  "Depression_subcat6Title": "<b>Depression</b><br>Emotionale Erschöpfung",
+  "Depression_subcat1Title": "<b>Depression</b></br>Leichte Ausprägung",
+  "Depression_subcat2Title": "<b>Depression</b></br>Moderate Ausprägung",
+  "Depression_subcat3Title": "<b>Depression</b></br>Schwere Ausprägung",
+  "Depression_subcat4Title": "<b>Depression</b></br>Essstörungen",
+  "Depression_subcat5Title": "<b>Depression</b></br>Antriebslosigkeit",
+  "Depression_subcat6Title": "<b>Depression</b></br>Emotionale Erschöpfung",
 
   "//comment": "***********  Kacheln von denen aus die Audiofiles aufgerufen werden ****************",
   "//comment": "***********  Die Labels müssen mit den Audiofilenames übereinstimmen ****************",
@@ -196,8 +196,9 @@
   "//comment": "       Stimmungs-Buttons auf Kategorie-Seite für Zufallsauswahl                         ",
   "//comment": "****************************************************************************************",
 
-  "forYouTitle": "<h3>Herzlich Willkommen</h3>Teile mir mit wie du dich gerade fühlst, dann kann ich dir geeignete Übungen vorschlagen oder du suchst dir einfach eine Übung aus der Liste aus.",
+  "forYouTitle": "<h3>Herzlich Willkommen</h3>Teile mir mit wie du dich gerade fühlst, dann kann ich dir geeignete Übungen vorschlagen.",
   "moodStress": "Gestresst",
+  "moodRestless": "Unruhig",
   "moodFocus": "Fokussiert",
   "moodTired": "Müde",
   "moodOverstrained": "Überfordert",

@@ -13,37 +13,32 @@
             return { wrapper: icon.parentElement, icon };
         }
 
-        // Read current absolute offsets from computed styles (fallback to 10px if unset)
-        const cs = window.getComputedStyle(icon);
-        const top = cs.top && cs.top !== 'auto' ? cs.top : '10px';
-        const right = cs.right && cs.right !== 'auto' ? cs.right : '10px';
-        // Create wrapper hit area
+        // Create wrapper hit area anchored to the top-right of the card
         const wrapper = document.createElement('div');
         wrapper.className = 'favorite-hit';
         const ws = wrapper.style;
         ws.position = 'absolute';
-        ws.top = top;
-        ws.right = right;
+        ws.top = '0px';
+        ws.right = '0px';
         ws.width = '36px';
         ws.height = '36px';
-        ws.display = 'flex';
-        ws.alignItems = 'center';
-        ws.justifyContent = 'center';
+        // no centering; icon will be absolutely positioned inside
         ws.cursor = 'pointer';
         ws.zIndex = '2';
         ws.touchAction = 'manipulation';
         // Place wrapper in card, before icon, then move icon inside
         card.appendChild(wrapper);
-        // Normalize icon style so it sits centered inside wrapper
-        icon.style.position = 'static';
-        icon.style.top = 'auto';
-        icon.style.right = 'auto';
+        // Position icon closer to the corner within the hit area
+        const cs = window.getComputedStyle(icon);
+        icon.style.position = 'absolute';
+        icon.style.top = '4px';
+        icon.style.right = '4px';
         icon.style.margin = '0';
         // Keep icon size as originally defined by CSS (fallback to 15x15)
-        if (!icon.style.width && !icon.style.height) {
-            icon.style.width = cs.width && cs.width !== 'auto' ? cs.width : '15px';
-            icon.style.height = cs.height && cs.height !== 'auto' ? cs.height : '15px';
-        }
+        const w = (cs.width && cs.width !== 'auto') ? cs.width : '';
+        const h = (cs.height && cs.height !== 'auto') ? cs.height : '';
+        if (w) icon.style.width = w; else if (!icon.style.width) icon.style.width = '15px';
+        if (h) icon.style.height = h; else if (!icon.style.height) icon.style.height = '15px';
         // Let the wrapper receive the click, not the img
         icon.style.pointerEvents = 'none';
         wrapper.appendChild(icon);

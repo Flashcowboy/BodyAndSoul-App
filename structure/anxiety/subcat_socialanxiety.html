@@ -146,6 +146,26 @@
             cursor: pointer;
             z-index: 1;
         }
+        /* Back button next to description headline */
+        .desc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin: 10px 0 10px;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            line-height: 0;
+        }
+        .back-btn img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
    
    
         
@@ -163,9 +183,9 @@
     </header>
 
     <main>
-        <!-- <div class="description-card" id="social_anxiety_card"> -->
-            <span id="anxiety-text-content" data-i18n="SocialAnxiety-Text" data-read-more data-max-chars="450"></span><br><br>
-        <!-- </div> -->
+
+            <span id="anxiety-text-content" data-i18n="SocialAnxiety-Text" data-read-more data-max-chars="450"></span>
+            
 
         <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
         <div class="subcategory-card" id="subcat04_02_01"  style="background-color: #d92c01;">
@@ -237,6 +257,7 @@
             });
         </script>
     <script src="../../../read-more.js"></script>
+    <!-- Back is now handled globally via the footer back button -->
    
 </body>
 </html>

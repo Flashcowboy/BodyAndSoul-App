@@ -141,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const interval = setInterval(() => {
             tries++;
             const btn = document.getElementById('footer-favorites-btn');
+            const backBtn = document.getElementById('footer-back-btn');
             const drawer = document.getElementById('favorites-drawer');
             const closeBtn = document.getElementById('favorites-drawer-close');
             const listEl = document.getElementById('favorites-list');
@@ -281,6 +282,40 @@ document.addEventListener('DOMContentLoaded', () => {
                     listEl.appendChild(row);
                 });
             };
+
+            // Central Back Navigation: history-first, then logical fallbacks
+            const navigateBack = () => {
+                const ref = document.referrer || '';
+                const cameFromPlayer = /\/structure\/player\.html(\?|#|$)/.test(ref) || /player\.html(\?|#|$)/.test(ref);
+                const canGoBack = window.history && window.history.length > 1 && !cameFromPlayer;
+                if (canGoBack) {
+                    window.history.back();
+                    return;
+                }
+                // Map detail/leaf pages to their nearest overview; default to categories
+                const path = window.location.pathname;
+                const toOverview = () => { window.location.href = `${pathToRoot}structure/categories.html`; };
+                if (/\/structure\/anxiety\//.test(path)) {
+                    // All anxiety detail pages → anxiety overview
+                    window.location.href = `${pathToRoot}structure/subcategories/subcat03_anxiety.html`;
+                } else if (/\/structure\/basics\//.test(path)) {
+                    // Basics detail pages → basics overview or categories
+                    window.location.href = `${pathToRoot}structure/subcategories/subcat02_basics.html`;
+                } else if (/\/structure\/subcategories\//.test(path)) {
+                    // If already on an overview, go to categories
+                    toOverview();
+                } else if (/\/structure\/player\.html$/.test(path)) {
+                    // Player → categories to avoid bounce
+                    toOverview();
+                } else {
+                    toOverview();
+                }
+            };
+
+            // Bind Back button in footer if present
+            if (backBtn) {
+                backBtn.addEventListener('click', (e) => { e.preventDefault(); navigateBack(); });
+            }
 
             // Toggle drawer open/close
             btn.addEventListener('click', (e) => {

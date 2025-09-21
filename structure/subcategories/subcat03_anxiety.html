@@ -99,6 +99,7 @@
             cursor: pointer;
             z-index: 1;
         }
+
    
         
     </style>
@@ -115,10 +116,8 @@
     </header>
 
     <main>
-        <!-- <div class="description-card" id="social_anxiety_card"> -->
             <span id="anxiety-text-content" data-i18n="Anxiety-Text" data-read-more data-max-chars="450"></span><br><br>
-        <!-- </div> -->
-
+            
         <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
         <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = '../anxiety/subcat_generalanxiety.html'" style="background-color:  #d96901;">
             <div class="card-text">
@@ -149,6 +148,23 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../../firebase-config.js"></script>
     <script src="../../main.js"></script>
+    <script>
+        // Back button: avoid bouncing into player; fallback to categories overview
+        (function(){
+            const btn = document.getElementById('back-btn');
+            if (!btn) return;
+            btn.addEventListener('click', function(e){
+                e.preventDefault();
+                const ref = document.referrer || '';
+                const isPlayer = /player\.html(\?|#|$)/.test(ref);
+                if (!isPlayer && window.history && window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '../categories.html';
+                }
+            });
+        })();
+    </script>
    
 </body>
 </html>
