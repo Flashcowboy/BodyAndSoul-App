@@ -12,7 +12,7 @@
     </a>
     <!-- Favoriten-Button: öffnet die Liste der Favoriten -->
     <a class="nav-item" id="footer-favorites-btn" href="#" aria-label="Favorites" style="position: relative;">
-        <img src="/assets/images/icons/heart_active.png" alt="Favorites">
+        <img src="/assets/images/icons/heart_inactive.png" alt="Favorites">
     </a>
     <a class="nav-item" href="/structure/profile.html" aria-label="Profile">
         <img src="/assets/images/icons/yoga.png" alt="Profile">
@@ -36,3 +36,24 @@
 </div>
 
 <!-- Favorites drawer is now rendered and managed by main.js (initFooterFavoritesDrawer). -->
+
+<!-- Help wrapper: places the tab at the screen edge and slides both tab + panel together -->
+<div id="help-wrap" style="position: fixed; top: 50%; right: 0; width: calc(86vw + 28px); max-width: calc(360px + 28px); z-index: 930; transform: translate(calc(100% - 28px), -50%); transition: transform 0.3s ease;">
+    <div id="help-panel" style="position: relative; left: 28px; width: 86vw; max-width: 360px; background: #033c5e; color: #fcfdfd; border-radius: 12px; box-shadow: 0 10px 24px rgba(0,0,0,0.35);">
+        <!-- Tab attached to the panel's top-left corner; initially appears at screen edge -->
+        <div id="help-tab" role="button" aria-label="Hilfe öffnen" title="Hilfe" style="position: absolute; left: -28px; top: 0; width: 28px; height: 90px; background: #a28b49; color: #fff; border-top-left-radius: 8px; border-bottom-left-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; letter-spacing: 0.5px;">
+            <span data-i18n="help_tab_label">SOS</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); border-top-left-radius: 12px; border-top-right-radius: 12px;">
+            <strong data-i18n="help_panel_title" style="color:#ffa602; font-size: 20px;">Hilfe & Notfall</strong>
+            <button id="help-close-btn" aria-label="Schließen" title="Schließen" style="background:none; border:none; font-size:22px; color:#fcfdfd; cursor:pointer;">✕</button>
+        </div>
+        <div id="help-panel-content" style="padding: 12px 14px; font-size: 15px; line-height: 1.35;">
+            <p data-i18n="help_panel_hint"><strong>Bei akuter Gefahr rufen Sie sofort den Notruf an.</strong></p>
+            <p>Notruf: <a href="tel:112" style="color:#ffd36b; text-decoration: underline;">112</a></p>
+            <p>Telefonseelsorge für depressive und suizidgefährdete Menschen: <br><a href="tel:08001110111" style="color:#ffd36b; text-decoration: underline;">0800 111 0 111</a>, <br><a href="tel:08001110222" style="color:#ffd36b; text-decoration: underline;">0800 111 0 222</a></p>
+            <p>Deutsche Depressionshilfe: <br><a href="tel:08003344533" style="color:#ffd36b; text-decoration: underline;">0800 334 4534</a></p>
+            <p data-i18n="help_panel_more">Weitere Infos und Hilfeangebote findest du online oder bei lokalen Beratungsstellen.</p>
+        </div>
+    </div>
+</div>

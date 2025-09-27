@@ -43,39 +43,8 @@ async function loadTranslations(lang) {
     }
 }
 
-// 1.3. Background Music Configuration
-// =================================================================================================
-/**
- * Fetches the list of background music tracks from the Firestore collection.
- * @returns {Promise<Array>} A promise that resolves to an array of background music track objects.
- */
-
-async function getBgMusicTracks() {
-    const simulatedTracks = [
-        { id: 'none', title_de: 'Ohne Musik', title_en: 'Without Music', path: '', image: '' },
-        { id: 'birdparadise', title_de: 'Bird´s Paradise', title_en: 'Bird´s Paradise', path: `assets/audio/bg_music/birdparadise.m4a`, image: `assets/images/backgrounds/bg_trees.png` },
-        { id: 'merlinsmagic', title_de: 'Merlin´s Magic', title_en: 'Merlin´s Magic', path: `assets/audio/bg_music/merlinsmagic.m4a`, image: `assets/images/backgrounds/bg_waterfall.png` }
-    ];
-
-    const tracks = [];
-    try {
-        const snapshot = await db.collection('background_music').get();
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            tracks.push({
-                id: doc.id,
-                title_de: data.title_de,
-                title_en: data.title_en,
-                // Keep paths relative to project root; prefix with pathToRoot when using
-                path: data.path || '',
-                image: data.image || ''
-            });
-        });
-    } catch (error) {
-        console.error("Error fetching background music:", error);
-    }
-    return tracks.length > 0 ? tracks : simulatedTracks; // Fallback to simulated tracks if firestore is empty
-}
+// 1.3. Background Music Configuration (removed)
+// Runtime background-music selection and mixing have been removed. Premixed files will be used instead.
 
 
 // =================================================================================================
@@ -150,6 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const drawer = document.getElementById('favorites-drawer');
             const closeBtn = document.getElementById('favorites-drawer-close');
             const listEl = document.getElementById('favorites-list');
+            const helpTab = document.getElementById('help-tab');
+            const helpWrap = document.getElementById('help-wrap');
+            const helpPanel = document.getElementById('help-panel');
+            const helpCloseBtn = document.getElementById('help-close-btn');
             if (!btn || !drawer || !listEl) {
                 if (tries >= MAX_TRIES) clearInterval(interval);
                 return;
@@ -327,6 +300,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 backBtn.addEventListener('click', (e) => { e.preventDefault(); navigateBack(); });
             }
 
+            // Emergency panel interactions
+            const openHelp = () => {
+                if (!helpWrap) return;
+                helpWrap.style.right = 'auto';
+                helpWrap.style.left = '50%';
+                helpWrap.style.transform = 'translate(-50%, -50%)';
+            };
+            const closeHelp = () => {
+                if (!helpWrap) return;
+                helpWrap.style.left = '';
+                helpWrap.style.right = '0';
+                helpWrap.style.transform = 'translate(calc(100% - 28px), -50%)';
+            };
+            if (helpTab) helpTab.addEventListener('click', (e) => { e.preventDefault(); openHelp(); });
+            if (helpCloseBtn) helpCloseBtn.addEventListener('click', (e) => { e.preventDefault(); closeHelp(); });
+
             // Toggle drawer open/close
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -420,27 +409,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (path.endsWith('player.html')) {
         const audioPlayer = document.getElementById('audio-player');
-        const bgPlayer = document.getElementById('audio-player-bg');
-        const bgMusicSelectionContainer = document.getElementById('bg-music-selection');
-        const bgMusicNameEl = document.getElementById('bg-music-name');
         const favoriteIcon = document.querySelector('.player-container .favorite-icon');
-        const musicModal = document.getElementById('music-modal');
-        const openModalBtn = document.getElementById('open-music-modal');
-        const closeModalBtn = musicModal.querySelector('.close-button');
-
-        if(openModalBtn) openModalBtn.onclick = () => musicModal.style.display = 'block';
-        if(closeModalBtn) closeModalBtn.onclick = () => musicModal.style.display = 'none';
-        window.onclick = (event) => {
-            if (event.target == musicModal) {
-                musicModal.style.display = 'none';
-            }
-        }
-
-        const setBgMusicName = (track) => {
-            if (!bgMusicNameEl || !track) return;
-            const title = (localStorage.getItem('lang') || 'de') === 'de' ? track.title_de : track.title_en;
-            bgMusicNameEl.textContent = title || '';
-        };
+    const loadingIndicator = document.getElementById('audio-loading-indicator');
 
         // --- Favorites handling (Player) ---
         // Compute a stable favorite ID from the current audio source path
@@ -509,98 +479,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        getBgMusicTracks().then(bgMusicTracks => {
-            bgMusicSelectionContainer.innerHTML = ''; // Clear existing tiles
-            bgMusicTracks.forEach(track => {
-                const tile = document.createElement('div');
-                tile.className = 'music-tile';
-                tile.dataset.id = track.id;
-                tile.dataset.path = track.path;
-                if (track.image) {
-                    tile.style.backgroundImage = `url(${pathToRoot}${track.image})`;
-                } else {
-                    tile.style.backgroundColor = '#ccc';
-                }
-                
-                const title = lang === 'de' ? track.title_de : track.title_en;
-                const titleSpan = document.createElement('span');
-                titleSpan.textContent = title;
-                tile.appendChild(titleSpan);
+    // Background music selection and playback removed; using single premixed audio per track.
 
-                bgMusicSelectionContainer.appendChild(tile);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-                tile.addEventListener('click', () => {
-                    // Update UI state
-                    document.querySelectorAll('.music-tile').forEach(t => t.classList.remove('active'));
-                    tile.classList.add('active');
-                    if (musicModal) musicModal.style.display = 'none';
-                    // Persist selection & update label
-                    try { localStorage.setItem('bgMusicId', track.id); } catch(_) {}
-                    setBgMusicName(track);
-
-                    // Handle "none" (no background music)
-                    if (!track.path) {
-                        if (bgPlayer) {
-                            try { bgPlayer.pause(); } catch(_) {}
-                            bgPlayer.src = '';
-                        }
-                        return;
-                    }
-
-                    // Reset any running fade-out when switching tracks
-                    if (typeof fadeOutInterval !== 'undefined' && fadeOutInterval) {
-                        clearInterval(fadeOutInterval);
-                        fadeOutInterval = null;
-                    }
-
-                    // Set new source and start playing immediately if main audio is playing
-                    if (bgPlayer) {
-                        const desiredTime = (audioPlayer && !isNaN(audioPlayer.currentTime)) ? audioPlayer.currentTime : 0;
-                        const applyVolume = () => {
-                            const volumeValue = bgVolumeSlider ? (bgVolumeSlider.value / 100) : (bgPlayer.volume || 0.5);
-                            if (isIOS && typeof gainNode !== 'undefined' && gainNode) gainNode.gain.value = volumeValue;
-                            else bgPlayer.volume = volumeValue;
-                        };
-
-                        const startBg = () => {
-                            try { bgPlayer.currentTime = desiredTime; } catch(_) {}
-                            applyVolume();
-                            if (audioPlayer && !audioPlayer.paused) {
-                                bgPlayer.play().catch(() => {});
-                            }
-                        };
-
-                        bgPlayer.src = `${pathToRoot}${track.path}`;
-                        if (bgPlayer.readyState >= 1) startBg();
-                        else bgPlayer.addEventListener('loadedmetadata', startBg, { once: true });
-                    }
-                });
-            });
-
-            // Determine initial background music (stored selection -> preferred default -> fallback)
-            const storedBgId = (() => { try { return localStorage.getItem('bgMusicId'); } catch(_) { return null; } })();
-            let initialTrack = null;
-            if (storedBgId) {
-                initialTrack = bgMusicTracks.find(t => t.id === storedBgId) || null;
-            }
-            if (!initialTrack) {
-                initialTrack = bgMusicTracks.find(t => t.id === 'birdparadise')
-                    || bgMusicTracks.find(t => t.id !== 'none')
-                    || bgMusicTracks[0];
-            }
-            if (initialTrack) {
-                bgPlayer.src = initialTrack.path ? `${pathToRoot}${initialTrack.path}` : '';
-                const initialTile = document.querySelector(`.music-tile[data-id="${initialTrack.id}"]`);
-                if (initialTile) initialTile.classList.add('active');
-                setBgMusicName(initialTrack);
-            }
-        });
-
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        let audioContext, gainNode, bgAudioSource;
-        let isWebAudioInitialized = false;
-
-        const playerContainer = document.querySelector('.player-container');
+    const playerContainer = document.querySelector('.player-container');
         const completionScreen = document.getElementById('session-complete-screen');
         const completionStats = document.getElementById('completion-stats');
         const backToOverviewBtn = document.getElementById('back-to-overview-btn');
@@ -612,8 +495,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentTimeSpan = document.getElementById('current-time');
         const durationSpan = document.getElementById('duration');
         const trackTitleElement = document.getElementById('track-title');
-        const bgVolumeContainer = document.getElementById('bg-volume-container');
-        const bgVolumeSlider = document.getElementById('bg-volume-slider');
+    // Playback flags
+    let userInitiatedPlayAt = 0;
+
+        const tryResumeMainAudio = () => {
+            if (audioPlayer.ended) return;
+            const p = audioPlayer.play();
+            if (p && typeof p.catch === 'function') p.catch(() => {});
+        };
         
     const urlParams = new URLSearchParams(window.location.search);
     const audioSrc = decodeURIComponent(urlParams.get('audio') || '');
@@ -623,7 +512,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const trackProgress = urlParams.get('trackProgress') === 'true';
         const isChallenge = urlParams.get('challenge') === 'true';
 
-    if (audioSrc) audioPlayer.src = audioSrc;
+    if (audioSrc) {
+        try {
+            audioPlayer.src = new URL(audioSrc, window.location.href).href;
+        } catch (_) {
+            audioPlayer.src = audioSrc;
+        }
+            // Show loading indicator early for potentially large files
+            if (loadingIndicator) loadingIndicator.style.display = 'block';
+    }
     if (trackTitleElement) {
         if (titleKeyParam) {
             trackTitleElement.setAttribute('data-i18n', titleKeyParam);
@@ -640,40 +537,58 @@ document.addEventListener('DOMContentLoaded', () => {
             trackTitleElement.textContent = trackTitle;
         }
     }
+    // --- Dynamic Panel Explanation Text ---
+    // panel-text element shows a short explanation specific to the current exercise.
+    // Key pattern: <audioBaseName>-text (e.g., basics_01_01-text)
+    // Fallback: the generic 'panelText' key already on the element.
+    (function applyPanelExplanation(){
+        const panelEl = document.querySelector('.panel-text');
+        if(!panelEl) return;
+        // Derive base name from audio source (strip path, extension, trailing _de/_en)
+        const src = audioSrc || audioPlayer?.src || '';
+        if(!src) return;
+        try {
+            const clean = decodeURIComponent(src.split('?')[0].split('#')[0]);
+            let file = clean.substring(clean.lastIndexOf('/')+1);
+            file = file.replace(/\.(m4a|mp3|wav|aif|aiff)$/i,'');
+            file = file.replace(/_(de|en)$/i,'');
+            if(!file) return;
+            const explanationKey = `${file}-text`;
+            const i18n = window.__i18n;
+            // If translations already loaded and key exists: set it.
+            if(i18n && i18n.dict && i18n.dict[explanationKey]){
+                panelEl.setAttribute('data-i18n', explanationKey);
+                panelEl.innerHTML = i18n.dict[explanationKey];
+            } else {
+                // Defer: wait briefly for translations or language change event
+                let attempts = 0;
+                const maxAttempts = 20; // ~2s if 100ms interval
+                const interval = setInterval(()=>{
+                    attempts++;
+                    const dict = (window.__i18n && window.__i18n.dict) || {};
+                    if(dict[explanationKey]){
+                        panelEl.setAttribute('data-i18n', explanationKey);
+                        panelEl.innerHTML = dict[explanationKey];
+                        clearInterval(interval);
+                    } else if(attempts >= maxAttempts){
+                        clearInterval(interval); // keep generic text
+                    }
+                },100);
+            }
+            // Re-apply on custom language change (if app dispatches 'languageChanged')
+            window.addEventListener('languageChanged', ()=>{
+                const dict = (window.__i18n && window.__i18n.dict) || {};
+                if(dict[explanationKey]){
+                    panelEl.setAttribute('data-i18n', explanationKey);
+                    panelEl.innerHTML = dict[explanationKey];
+                }
+            });
+        } catch(_) { /* ignore */ }
+    })();
     // Initialize favorite icon state for the loaded track
     refreshFavoriteIcon();
         
-        bgPlayer.loop = true;
-        if (bgVolumeSlider && !isIOS) bgPlayer.volume = bgVolumeSlider.value / 100;
-        if (bgVolumeContainer) bgVolumeContainer.style.display = 'flex';
-        
-
-        let sessionMarkedAsComplete = false;
-        let fadeOutInterval = null;
-
-        const startFadeOut = () => {
-            if (!bgPlayer || fadeOutInterval) return;
-            const fadeDuration = 10; // seconds
-            const fadeSteps = 50;
-            const interval = (fadeDuration * 1000) / fadeSteps;
-            const getVolume = () => (isIOS && gainNode) ? gainNode.gain.value : bgPlayer.volume;
-            const setVolume = (vol) => {
-                if (isIOS && gainNode) gainNode.gain.value = vol;
-                else bgPlayer.volume = vol;
-            };
-            const initialVolume = getVolume();
-            const volumeStep = initialVolume / fadeSteps;
-            fadeOutInterval = setInterval(() => {
-                const newVolume = getVolume() - volumeStep;
-                if (newVolume >= 0) {
-                    setVolume(newVolume);
-                } else {
-                    setVolume(0);
-                    bgPlayer.pause();
-                    clearInterval(fadeOutInterval);
-                }
-            }, interval);
-        };
+    let sessionMarkedAsComplete = false;
 
 
 
@@ -758,29 +673,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if(playPauseBtn) playPauseBtn.addEventListener('click', () => audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause());
-        audioPlayer.addEventListener('play', () => {
-            if (isIOS && !isWebAudioInitialized && bgPlayer.src) {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    gainNode = audioContext.createGain();
-                    bgAudioSource = audioContext.createMediaElementSource(bgPlayer);
-                    bgAudioSource.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
+        if (playPauseBtn) {
+            playPauseBtn.addEventListener('click', () => {
+                userInitiatedPlayAt = Date.now();
+                if (audioPlayer.paused) {
+                    const p = audioPlayer.play();
+                    if (p && typeof p.catch === 'function') p.catch((err) => console.warn('audioPlayer.play() blocked:', err));
+                } else {
+                    audioPlayer.pause();
                 }
-                if (bgVolumeSlider) gainNode.gain.value = bgVolumeSlider.value / 100;
-                isWebAudioInitialized = true;
-            }
-            if (bgPlayer.src) {
-                bgPlayer.currentTime = audioPlayer.currentTime;
-                bgPlayer.play();
-            }
+            });
+        }
+        audioPlayer.addEventListener('play', () => {
             playPauseBtn.src = `${pathToRoot}assets/images/icons/pause_icon_black.png`;
+            if (loadingIndicator) loadingIndicator.style.display = 'none';
         });
         audioPlayer.addEventListener('pause', () => {
-            if (bgPlayer.src) bgPlayer.pause();
             playPauseBtn.src = `${pathToRoot}assets/images/icons/play_icon_black.png`;
         });
+    audioPlayer.addEventListener('playing', () => {});
+    audioPlayer.addEventListener('ended', () => {});
         if(rewindBtn) rewindBtn.addEventListener('click', () => { audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 15); });
         if(forwardBtn) forwardBtn.addEventListener('click', () => { audioPlayer.currentTime += 15; });
         audioPlayer.addEventListener('timeupdate', () => {
@@ -788,42 +700,125 @@ document.addEventListener('DOMContentLoaded', () => {
                 const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
                 if(progressBar) progressBar.style.width = `${progress}%`;
                 if(currentTimeSpan) currentTimeSpan.textContent = formatTime(audioPlayer.currentTime);
-                if (bgPlayer.src && (audioPlayer.duration - audioPlayer.currentTime) <= 10) startFadeOut();
                 if (progress >= 95 && !sessionMarkedAsComplete) {
                     sessionMarkedAsComplete = true;
                     markSessionComplete();
                 }
+                // If we have some buffered and playback is progressing, hide loader
+                if (!audioPlayer.paused && audioPlayer.currentTime > 0 && loadingIndicator) loadingIndicator.style.display = 'none';
             }
         });
-        audioPlayer.addEventListener('seeking', () => { if (bgPlayer.src) bgPlayer.currentTime = audioPlayer.currentTime; });
+        audioPlayer.addEventListener('seeking', () => {
+            // no-op for BG since premixed-only
+        });
         audioPlayer.addEventListener('loadedmetadata', () => {
             if(durationSpan) durationSpan.textContent = formatTime(audioPlayer.duration);
             refreshFavoriteIcon();
+            if (audioPlayer.readyState >= 1 && loadingIndicator) loadingIndicator.style.display = 'none';
         });
-        if (bgVolumeSlider) bgVolumeSlider.addEventListener('input', (e) => {
-            const volumeValue = e.target.value / 100;
-            if (isIOS && gainNode) gainNode.gain.value = volumeValue;
-            else if (bgPlayer) bgPlayer.volume = volumeValue;
+        const onStall = () => {
+            const justInteracted = (Date.now() - userInitiatedPlayAt) < 500;
+            if (justInteracted) return;
+            // Only nudge resume if we are actually waiting/stalled
+            tryResumeMainAudio();
+        };
+        audioPlayer.addEventListener('waiting', onStall);
+        audioPlayer.addEventListener('stalled', onStall);
+        audioPlayer.addEventListener('error', () => {
+            const err = audioPlayer.error;
+            console.warn('audioPlayer error', { code: err && err.code, src: audioPlayer.currentSrc });
+            if (loadingIndicator) loadingIndicator.style.display = 'none';
         });
-        if (backToOverviewBtn) backToOverviewBtn.addEventListener('click', () => { window.location.href = 'categories.html'; });
+        audioPlayer.addEventListener('waiting', () => { if (loadingIndicator) loadingIndicator.style.display = 'block'; });
+        audioPlayer.addEventListener('stalled', () => { if (loadingIndicator) loadingIndicator.style.display = 'block'; });
+        audioPlayer.addEventListener('canplay', () => { if (loadingIndicator) loadingIndicator.style.display = 'none'; });
+        audioPlayer.addEventListener('canplaythrough', () => { if (loadingIndicator) loadingIndicator.style.display = 'none'; });
+        if (backToOverviewBtn) backToOverviewBtn.addEventListener('click', () => {
+            // Only hide the completion screen and show the player again
+            if (completionScreen) completionScreen.style.display = 'none';
+            if (playerContainer) playerContainer.style.display = 'flex';
+        });
+        const completionCloseBtn = document.getElementById('completion-close-button');
+        if (completionCloseBtn) {
+            completionCloseBtn.addEventListener('click', () => {
+                if (completionScreen) completionScreen.style.display = 'none';
+                if (playerContainer) playerContainer.style.display = 'flex';
+            });
+        }
         
         let isDragging = false;
-        const handleDrag = (e) => {
-            if (!isDragging || !audioPlayer.duration) return;
-            if (e.type.startsWith('touch')) e.preventDefault();
+        const updateFromPointer = (clientX) => {
+            if (!audioPlayer.duration) return;
             const rect = progressContainer.getBoundingClientRect();
-            const clickX = (e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX) - rect.left;
-            const progress = Math.max(0, Math.min(clickX / progressContainer.clientWidth, 1));
-            audioPlayer.currentTime = progress * audioPlayer.duration;
+            const x = Math.max(rect.left, Math.min(clientX, rect.right));
+            const ratio = (x - rect.left) / rect.width;
+            audioPlayer.currentTime = ratio * audioPlayer.duration;
         };
-        if(progressContainer) {
-            progressContainer.addEventListener('mousedown', () => isDragging = true);
-            document.addEventListener('mouseup', () => isDragging = false);
-            document.addEventListener('mousemove', handleDrag);
-            progressContainer.addEventListener('touchstart', () => isDragging = true, { passive: false });
-            document.addEventListener('touchend', () => isDragging = false);
-            document.addEventListener('touchmove', handleDrag, { passive: false });
-            progressContainer.addEventListener('click', handleDrag);
+        const onPointerMove = (e) => {
+            if (!isDragging) return;
+            if (e.cancelable) e.preventDefault();
+            const clientX = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
+            updateFromPointer(clientX);
+        };
+        if (progressContainer) {
+            progressContainer.addEventListener('mousedown', (e) => { isDragging = true; updateFromPointer(e.clientX); });
+            document.addEventListener('mouseup', () => { isDragging = false; });
+            document.addEventListener('mousemove', onPointerMove);
+            progressContainer.addEventListener('touchstart', (e) => { if (e.cancelable) e.preventDefault(); isDragging = true; if (e.touches.length) updateFromPointer(e.touches[0].clientX); }, { passive: false });
+            document.addEventListener('touchend', () => { isDragging = false; }, { passive: true });
+            document.addEventListener('touchmove', onPointerMove, { passive: false });
+            progressContainer.addEventListener('click', (e) => { updateFromPointer(e.clientX); });
+        }
+
+    // No BG resync needed in premixed-only mode
+
+        // Media Session API: better OS integration and lock screen controls
+        if ('mediaSession' in navigator) {
+            try {
+                const titleText = (trackTitleElement?.textContent || '').trim() || 'Audio';
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: titleText,
+                    artist: 'Body & Soul',
+                    artwork: [
+                        { src: `${pathToRoot}assets/images/logo_192.png`, sizes: '192x192', type: 'image/png' },
+                        { src: `${pathToRoot}assets/images/logo_512.png`, sizes: '512x512', type: 'image/png' }
+                    ]
+                });
+
+                navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
+                navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
+                navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+                    const offset = details.seekOffset || 10;
+                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - offset);
+                });
+                navigator.mediaSession.setActionHandler('seekforward', (details) => {
+                    const offset = details.seekOffset || 10;
+                    audioPlayer.currentTime = Math.min(audioPlayer.duration || Infinity, audioPlayer.currentTime + offset);
+                });
+                navigator.mediaSession.setActionHandler('seekto', (details) => {
+                    if (details.fastSeek && 'fastSeek' in audioPlayer) {
+                        audioPlayer.fastSeek(details.seekTime);
+                    } else {
+                        audioPlayer.currentTime = details.seekTime;
+                    }
+                });
+
+                const updatePositionState = () => {
+                    try {
+                        if (navigator.mediaSession.setPositionState && isFinite(audioPlayer.duration)) {
+                            navigator.mediaSession.setPositionState({
+                                duration: audioPlayer.duration || 0,
+                                playbackRate: audioPlayer.playbackRate || 1,
+                                position: audioPlayer.currentTime || 0
+                            });
+                        }
+                    } catch (_) {}
+                };
+                audioPlayer.addEventListener('timeupdate', updatePositionState);
+                audioPlayer.addEventListener('loadedmetadata', updatePositionState);
+                audioPlayer.addEventListener('play', () => { try { navigator.mediaSession.playbackState = 'playing'; } catch (_) {} });
+                audioPlayer.addEventListener('pause', () => { try { navigator.mediaSession.playbackState = 'paused'; } catch (_) {} });
+            } catch (_) { /* ignore media session errors */ }
         }
     }
 

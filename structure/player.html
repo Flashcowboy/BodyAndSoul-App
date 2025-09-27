@@ -10,11 +10,17 @@
         
             background-color: #f2f4f7;
             /* Hintergrundbild direkt auf den Body anwenden */
-            background-image: url('../assets/images/splash_screen_bg.png');
+            /* background-image: url('../assets/images/splash_screen_bg.png'); */
+            /* background-image: url('../assets/images/backgrounds/lake_mountain.png'); */
+            background-image: url('../assets/images/backgrounds/bg_trees.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-        }
+    }
+
+    /* Prevent horizontal dragging causing lateral page shift */
+    html, body { overscroll-behavior-x: none; touch-action: pan-y; }
+    .progress-container { touch-action: none; }
 
         header {
             text-align: center;
@@ -46,25 +52,32 @@
 
         .player-container {
             width: 90%;
-            height: 300px;
+            height: 550px;
             max-width: 500px;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.0);
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
             padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            position: relative; /* make favorite icon (absolute) relative to this container */
-            /* Hintergrundbild direkt auf den Body anwenden */
-            background-image: url('../assets/images/backgrounds/bg_audioplayer_blue02.png');
+            position: relative; /* favorite icon positioning */
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .progress-wrapper {
+            width: 100%;
+            margin: 0 auto;
         }
 
         .controls {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 20px;
-            margin-top: 20px;
+            margin: 20px auto 0;
+            width: 100%;
         }
 
         .controls img {
@@ -83,9 +96,9 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: rgb(189, 171, 130);
+            background-color: rgba(117, 178, 238, 0);
             padding: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
         }
 
         /* Fortschrittsbalken */
@@ -95,12 +108,32 @@
             background-color: #001405;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 20px;
         }
+        .panel-text {
+            text-align: justify;
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            color: rgb(0, 51, 82);
+            margin-top: 6px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-right: 4px; /* small gutter for scrollbar */
+        }
+        .track-title-block { width:100%; }
+        .track-title-block #track-title { margin: 10px 0 0 0; text-align:center; }
+        .scroll-area { flex:1 1 auto; width:100%; display:flex; flex-direction:column; min-height:0; }
+        .scroll-area .panel-text-wrapper { flex:1 1 auto; min-height:0; display:flex; }
+        .panel-text-wrapper .panel-text { flex:1 1 auto; min-height:0; }
+        /* Constrain explanation area: reserve ~170px for playback group (progress + controls + spacing) */
+        .panel-text { max-height: calc(100% - 20px); }
+        @media (max-height: 640px){ .panel-text { max-height: calc(100% - 190px); } }
+        .playback-group { margin-top:12px; width:100%; }
+        .playback-group .progress-wrapper { margin-bottom:10px; }
+        .playback-group .controls { margin-top:10px; }
 
         .progress-bar {
             height: 100%;
-            background-color: rgb(162, 139, 73);
+            background-color: rgb(243, 244, 246);
             width: 0%;
             border-radius: 4px;
             transition: width 0.1s linear; /* sanfter Übergang */
@@ -112,93 +145,30 @@
             justify-content: space-between;
             margin-top: 10px;
             font-size: 0.9em;
-            color: rgb(239, 245, 246);
+            color: rgb(15, 27, 59);
         }
 
         #track-title {
             text-align: center;
             font-family: Arial, sans-serif;
-            color: rgb(236, 222, 186);
+            color: rgb(15, 27, 59);
+            margin-top: 15px;
+            flex-grow: 1;
         }
 
         .app-logo {
             display: flex;
             justify-content: center;
-        
             width: 100%;
+            margin-top: 20px;
         }
 
         .app-logo img {
-            max-width: 220px;
+            max-width: 120px;
             height: auto;
         }
       
         
-    /* Styling for the volume slider */
-        #bg-volume-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: rgb(162, 139, 73);
-            outline: none;
-            opacity: 0.8;
-            -webkit-transition: opacity .2s;
-            transition: opacity .2s;
-        }
-
-        #bg-volume-slider:hover {
-            opacity: 1;
-        }
-
-        #bg-volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            box-shadow: 0 0 2px rgba(0,0,0,0.5);
-        }
-
-        #bg-volume-slider::-moz-range-thumb {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 0 2px rgba(0,0,0,0.5);
-        }
-
-        /* Modal for Background Music Selection */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.6);
-            -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; 
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
         .close-button {
             color: #aaa;
             float: right;
@@ -212,39 +182,14 @@
             color: black;
         }
 
-        .music-tile-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        .music-tile {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-size: cover;
-            background-position: center;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: border-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px black;
-        }
-
-        .music-tile.active {
-            border-color: #a28b49;
-        }
+    /* Note: Background music UI removed (premixed-only). Keeping close-button for completion overlay. */
 
         .favorite-icon {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 15px;
-            height: 15px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
             z-index: 1;
         }
@@ -258,46 +203,44 @@
 
    <main>
 
-        <div class="app-logo">
-            <img src="../assets/images/logo_512.png" alt="Logo">
-        </div>
-
         <div class="player-container">
-            <p id="track-title"></p> <!-- Tracktitel -->
-            <audio id="audio-player"></audio>
-            <audio id="audio-player-bg"></audio>
-            
-            <div class="progress-container" id="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
+            <div class="app-logo">
+                <img src="../assets/images/logo_512.png" alt="Logo">
             </div>
-            
-            <div class="time-display">
-                <span id="current-time">0:00</span>
-                <span id="duration">0:00</span>
+            <audio id="audio-player" playsinline webkit-playsinline preload="auto"></audio>
+            <div id="audio-loading-indicator" data-i18n="loadingAudio" style="display:none; text-align:center; font-size:0.85em; color:#0f1b3b; margin:6px 0 4px;">Lade...</div>
+            <div class="scroll-area">
+                <div class="track-title-block">
+                    <p id="track-title"></p>
+                </div>
+                <div class="panel-text-wrapper">
+                    <span class="panel-text" data-i18n="panelText"></span>
+                </div>
             </div>
-
-            <div class="controls">
-                <img src="../assets/images/icons/rewind15_icon_white.png" alt="15 Sekunden zurückspulen" id="rewind-btn">
-                <img src="../assets/images/icons/play_icon_black.png" alt="Abspielen" id="play-pause-btn" class="play-pause-btn">
-                <img src="../assets/images/icons/forward15_icon_white.png" alt="15 Sekunden vorspulen" id="forward-btn">
+            <div class="playback-group">
+                <div class="progress-wrapper">
+                    <div class="progress-container" id="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <div class="time-display">
+                        <span id="current-time">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <img src="../assets/images/icons/rewind15_icon_black.png" alt="15 Sekunden zurückspulen" id="rewind-btn">
+                    <img src="../assets/images/icons/play_icon_black.png" alt="Abspielen" id="play-pause-btn" class="play-pause-btn">
+                    <img src="../assets/images/icons/forward15_icon_black.png" alt="15 Sekunden vorspulen" id="forward-btn">
+                </div>
             </div>
-
-            <!-- Background music controls: icon opens modal, slider controls volume -->
-            <div class="volume-container" id="bg-volume-container" style="width: 80%; margin-top: 15px; display: flex; align-items: center; gap: 10px;">
-                <img src="../assets/images/icons/music.png" alt="Hintergrundmusik" id="open-music-modal" style="width: 25px; height: 25px; cursor: pointer;">
-                <input type="range" id="bg-volume-slider" min="0" max="100" value="50" style="width: 100%;">
-            </div>
-            <!-- Displays the localized name of the currently selected background music -->
-            <div id="bg-music-name" style="width: 80%; margin-top: 6px; font-size: 0.9em; color: white; text-align: left;"></div>
-
             <div><img src="../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite"></div>
-
         </div>
 
 
 
         <!-- Session Completion Screen (Initially Hidden) -->
-        <div id="session-complete-screen" class="player-container" style="display: none; text-align: center; justify-content: center;">
+        <div id="session-complete-screen" class="player-container" style="display: none; text-align: center; justify-content: center; position: relative;">
+            <span id="completion-close-button" class="close-button" aria-label="Schließen" title="Schließen" style="position:absolute; right:10px; top:10px; color:#fff;">&times;</span>
             <h2 data-i18n="sessionCompleteTitle" style="color: white;">Gut gemacht!</h2>
             <p data-i18n="sessionCompleteMsg" style="color: white;">Dein Fortschritt wurde gespeichert.</p>
             <div id="completion-stats" style="color: white; margin: 20px 0;">
@@ -307,17 +250,7 @@
         </div>
     </main>
 
-    <!-- Background Music Modal -->
-    <!-- Modal: Choose background music by selecting one of the tiles -->
-    <div id="music-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3 data-i18n="bg_music_info_text">Wähle eine Hintergrundmusik</h3>
-            <div id="bg-music-selection" class="music-tile-container">
-                <!-- Music tiles will be inserted here -->
-            </div>
-        </div>
-    </div>
+    <!-- Background music selection modal removed (premixed-only). -->
 
  <script>
         fetch('/structure/footer.html')
@@ -333,6 +266,29 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../firebase-config.js"></script>
     <script src="../main.js"></script>
+
+    <script>
+    // Extra guard: prevent unintended horizontal page shift while interacting with player
+    (function(){
+        const root = document.scrollingElement || document.documentElement;
+        let lastX = 0, active = false;
+        window.addEventListener('touchstart', (e)=>{
+            if(!e.touches || !e.touches.length) return;
+            lastX = e.touches[0].clientX; active = true;
+        }, {passive:true});
+        window.addEventListener('touchmove', (e)=>{
+            if(!active || !e.touches || !e.touches.length) return;
+            const dx = Math.abs(e.touches[0].clientX - lastX);
+            if (dx > 4) {
+                // lock horizontal by resetting scrollLeft
+                if (root.scrollLeft !== 0) root.scrollLeft = 0;
+                // prevent browser from attempting horizontal pan
+                if (e.cancelable) e.preventDefault();
+            }
+        }, {passive:false});
+        window.addEventListener('touchend', ()=>{ active = false; }, {passive:true});
+    })();
+    </script>
 
     
     
