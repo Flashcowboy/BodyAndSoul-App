@@ -544,46 +544,47 @@ document.addEventListener('DOMContentLoaded', () => {
     (function applyPanelExplanation(){
         const panelEl = document.querySelector('.panel-text');
         if(!panelEl) return;
-        // Derive base name from audio source (strip path, extension, trailing _de/_en)
-        const src = audioSrc || audioPlayer?.src || '';
-        if(!src) return;
-        try {
-            const clean = decodeURIComponent(src.split('?')[0].split('#')[0]);
-            let file = clean.substring(clean.lastIndexOf('/')+1);
-            file = file.replace(/\.(m4a|mp3|wav|aif|aiff)$/i,'');
-            file = file.replace(/_(de|en)$/i,'');
-            if(!file) return;
-            const explanationKey = `${file}-text`;
-            const i18n = window.__i18n;
-            // If translations already loaded and key exists: set it.
-            if(i18n && i18n.dict && i18n.dict[explanationKey]){
+        // Prefer explicit base query parameter if present (&base=...)
+        const explicitBase = (urlParams.get('base') || '').trim();
+        let baseForKey = '';
+        if (explicitBase) {
+            // sanitize: keep alphanumerics, underscore, hyphen only
+            baseForKey = explicitBase.replace(/[^a-z0-9_\-]/gi,'');
+        }
+        if (!baseForKey) {
+            // Derive base name from audio source (strip path, extension, trailing _de/_en)
+            const src = audioSrc || audioPlayer?.src || '';
+            if(!src) return;
+            try {
+                const clean = decodeURIComponent(src.split('?')[0].split('#')[0]);
+                let file = clean.substring(clean.lastIndexOf('/')+1);
+                file = file.replace(/\.(m4a|mp3|wav|aif|aiff)$/i,'');
+                file = file.replace(/_(de|en)$/i,'');
+                baseForKey = file;
+            } catch(_) { /* ignore */ }
+        }
+        if(!baseForKey) return;
+        const explanationKey = `${baseForKey}-text`;
+        const applyIfAvailable = () => {
+            const dict = (window.__i18n && window.__i18n.dict) || {};
+            if(dict[explanationKey]){
                 panelEl.setAttribute('data-i18n', explanationKey);
-                panelEl.innerHTML = i18n.dict[explanationKey];
-            } else {
-                // Defer: wait briefly for translations or language change event
-                let attempts = 0;
-                const maxAttempts = 20; // ~2s if 100ms interval
-                const interval = setInterval(()=>{
-                    attempts++;
-                    const dict = (window.__i18n && window.__i18n.dict) || {};
-                    if(dict[explanationKey]){
-                        panelEl.setAttribute('data-i18n', explanationKey);
-                        panelEl.innerHTML = dict[explanationKey];
-                        clearInterval(interval);
-                    } else if(attempts >= maxAttempts){
-                        clearInterval(interval); // keep generic text
-                    }
-                },100);
+                panelEl.innerHTML = dict[explanationKey];
+                return true;
             }
-            // Re-apply on custom language change (if app dispatches 'languageChanged')
-            window.addEventListener('languageChanged', ()=>{
-                const dict = (window.__i18n && window.__i18n.dict) || {};
-                if(dict[explanationKey]){
-                    panelEl.setAttribute('data-i18n', explanationKey);
-                    panelEl.innerHTML = dict[explanationKey];
+            return false;
+        };
+        if(!applyIfAvailable()){
+            let attempts = 0;
+            const maxAttempts = 20; // ~2s if 100ms interval
+            const interval = setInterval(()=>{
+                attempts++;
+                if(applyIfAvailable() || attempts >= maxAttempts){
+                    clearInterval(interval);
                 }
-            });
-        } catch(_) { /* ignore */ }
+            },100);
+        }
+        window.addEventListener('languageChanged', applyIfAvailable);
     })();
     // Initialize favorite icon state for the loaded track
     refreshFavoriteIcon();
@@ -673,12 +674,42 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        // iOS standalone (PWA) sometimes requires an initial user gesture to "unlock" media.
+        // We'll perform a hidden play->pause once on first touchend/click to satisfy the gesture requirement.
+        let iosUnlocked = false;
+        const attemptIOSUnlock = () => {
+            if (iosUnlocked) return;
+            iosUnlocked = true;
+            try {
+                const p = audioPlayer.play();
+                if (p && typeof p.then === 'function') {
+                    p.then(() => { audioPlayer.pause(); }).catch(() => { iosUnlocked = false; });
+                }
+            } catch(_) { iosUnlocked = false; }
+        };
+        window.addEventListener('touchend', attemptIOSUnlock, { once: true, passive: true });
+        window.addEventListener('click', attemptIOSUnlock, { once: true, passive: true });
+
         if (playPauseBtn) {
             playPauseBtn.addEventListener('click', () => {
                 userInitiatedPlayAt = Date.now();
                 if (audioPlayer.paused) {
                     const p = audioPlayer.play();
-                    if (p && typeof p.catch === 'function') p.catch((err) => console.warn('audioPlayer.play() blocked:', err));
+                    if (p && typeof p.catch === 'function') p.catch((err) => {
+                        console.warn('audioPlayer.play() blocked:', {
+                            name: err && err.name,
+                            message: err && err.message,
+                            code: err && err.code,
+                            stack: err && err.stack,
+                            context: {
+                                standalone: window.matchMedia('(display-mode: standalone)').matches,
+                                autoplayPolicy: 'iOS may require fresh gesture',
+                                readyState: audioPlayer.readyState,
+                                paused: audioPlayer.paused,
+                                src: audioPlayer.currentSrc
+                            }
+                        });
+                    });
                 } else {
                     audioPlayer.pause();
                 }

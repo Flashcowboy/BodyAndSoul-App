@@ -262,7 +262,8 @@
                 const audioSubFolder = getAudioSubFolder(baseName, card);
                 const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${baseName}.m4a`;
 
-                let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}&courseId=${encodeURIComponent(courseId)}`;
+                // Pass the explicit base name to player so explanation text can use it directly
+                let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}&courseId=${encodeURIComponent(courseId)}&base=${encodeURIComponent(baseName)}`;
                 if (freshTitleKey) playerUrl += `&titleKey=${encodeURIComponent(freshTitleKey)}`;
                 if (trackProgress) {
                     playerUrl += '&trackProgress=true';
@@ -296,7 +297,7 @@
             const audioFilePath = `${pathToRoot}assets/audio/subcategories/${audioSubFolder}${lang}/${audioBaseName}.m4a`;
             const courseId = card.id.substring(0, card.id.lastIndexOf('_'));
 
-            let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}&courseId=${encodeURIComponent(courseId)}`;
+            let playerUrl = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioFilePath)}&title=${encodeURIComponent(freshTrackTitle)}&courseId=${encodeURIComponent(courseId)}&base=${encodeURIComponent(audioBaseName)}`;
             if (pageIsChallenge) playerUrl += '&challenge=true';
             try { console.debug('[Tiles] Delegated navigate to player:', playerUrl); } catch(_){ }
             window.location.href = playerUrl;
