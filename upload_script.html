@@ -55,21 +55,37 @@
                         throw new Error('JSON data is not a valid array or is empty.');
                     }
 
-                    statusDiv.textContent = `Found ${audioData.length} tracks. Uploading to Firestore...`;
+                    statusDiv.textContent = `Found ${audioData.length} tracks. Preparing batch...`;
 
-                    // 2. Create a batch write operation
-                    const batch = db.batch();
                     const collectionRef = db.collection('audio_files');
+                    let newCount = 0;
+                    let updatedCount = 0;
 
-                    audioData.forEach(track => {
-                        const docRef = collectionRef.doc(); // Let Firestore generate a new ID
-                        batch.set(docRef, track);
-                    });
+                    // We'll process sequentially to know if doc existed (batch alone can't tell before commit)
+                    for (const rawTrack of audioData) {
+                        if (!rawTrack || !rawTrack.path) continue;
+                        const base = String(rawTrack.path).replace(/\.m4a$/i,'');
+                        const docRef = collectionRef.doc(base);
+                        const snapshot = await docRef.get();
+                        const isNew = !snapshot.exists;
+                        const nowFields = {
+                            base,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                        if (isNew) {
+                            nowFields.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                        }
+                        const track = { ...rawTrack, ...nowFields };
+                        try {
+                            await docRef.set(track, { merge: true });
+                            if (isNew) newCount++; else updatedCount++;
+                            statusDiv.textContent = `Uploading... New: ${newCount} | Updated: ${updatedCount}`;
+                        } catch (e) {
+                            console.error('Doc write failed for', base, e);
+                        }
+                    }
 
-                    // 3. Commit the batch
-                    await batch.commit();
-
-                    statusDiv.textContent = `Successfully uploaded ${audioData.length} documents to the 'audio_files' collection!`;
+                    statusDiv.textContent = `Done. New: ${newCount}, Updated: ${updatedCount}`;
                     statusDiv.style.color = 'green';
                     uploadBtn.textContent = 'Upload Complete';
 

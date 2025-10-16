@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Abo für Autogenes Training. Kaufabwicklung durch Digistore24 GmbH." />
+<!-- Optional: Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root{
+        --accent1:#fcfdbc;
+        --muted:#ffffff;
+        --shadow: 0 6px 22px rgba(20,30,40,0.2);
+    }
+    body{
+
+        margin:0;
+        width:100%;
+        max-width:720px;
+        margin:0 auto;
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        background: linear-gradient(180deg,#3f506b 0%, #4b657e 100%);
+        /* gleiche Zentrierung wie .panel (Breite durch max-width geregelt) */
+        -moz-osx-font-smoothing:grayscale;
+        line-height:1.45;
+        background-image: url('../../assets/images/backgrounds/abo-buy_01.png');
+        background-repeat: no-repeat;
+        background-position: center top;
+        background-size: cover;
+        background-attachment: fixed;
+        }
+
+        h1,h2{margin:0 0 10px 0}
+        p{
+        margin:0 0 12px 0;
+        font-size:14px;
+        }
+
+    /* ---------- Design 1: Ruhe & Natur ---------- */
+    .hero{
+        display:flex;
+        gap:20px;
+        align-items:center;
+        padding:18px;
+        width:80%;
+        max-width:520px;
+        margin:0 auto; /* hero mittig als Block */
+        text-align:center;
+        flex-direction: column; /* Inhalte untereinander für echte Zentrierung */
+        justify-content: center;
+    }
+    .hero-left{
+        flex:1;
+        color:#f9f7f7;
+    }
+    .hero-right{
+        width:220px;
+        min-width:160px;
+        text-align:center;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-direction:column;
+        margin: 12px auto 10px;
+    }
+    /* Prevent auto margins from affecting the hero layout */
+    .hero .hero-right{ margin:0; }
+    .hero-right img{ max-width:100%; height:auto; display:block; }
+    .lead{
+        font-size:18px;
+        color:#f4f1ac;
+        margin-top:8px;
+    }
+    .cta{
+        display:inline-block;
+        border:0;
+        padding:10px 14px;
+        border-radius:10px;
+        background: linear-gradient(90deg,var(--accent1), #4f9b7a);
+        color:#fff;
+        font-weight:700;
+        cursor:pointer;
+        text-decoration:none;
+    }
+
+    /* ---------- Design 2: Modern & Klar ---------- */
+    .split{
+        display:flex;
+        gap:20px;
+        align-items:center;
+        margin-top:30px;
+        justify-content:center; /* Panels mittig ausrichten */
+        flex-wrap:wrap; /* sinnvolles Umbruchverhalten auf großen Viewports */
+    }
+    .panel{
+        flex:0 1 320px; /* als Block mit definierter max-Breite */
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto; /* Panel-Box selbst zentriert */
+        background:#fff;
+        border-radius:12px;
+        padding:18px;
+        box-shadow: var(--shadow);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
+    .panel.left{
+        background: linear-gradient(180deg,#ffffff,#f7fbfb);
+    }
+    .price-list{
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+        margin-top:12px;
+        align-items:center;
+    }
+    .price-row{
+        display:flex;
+        align-items:center;
+      justify-content:flex-start; /* rechts kein Kaufen-Button mehr */
+        padding:12px;
+        border-radius:10px;
+        border:1px solid #eef4f2;
+        width:100%;
+        max-width:520px;
+    }
+    .price-row .left{ display:flex; gap:12px; align-items:flex-start; }
+    .price-row input[type="radio"]{ flex:0 0 auto; margin-top:3px; }
+    .price-row .label{
+        font-size: 22px;
+        font-weight:600;
+        color: #fdedca;
+    }
+    .price_save_label{
+  color: #fdedca;
+    }
+    .price-row .meta{font-size:13px;color:var(--muted)}
+    .cta-alt{
+        background:#0b2a26;
+        color:#fff;
+        padding:10px 12px;
+        border-radius:10px;
+        text-decoration:none;
+        font-weight:700;
+    }
+    /* zentrale Kauf-Buttons breiter (bis Preislistenbreite) */
+    .buy-submit{ text-align:center; }
+  .buy-submit .cta{
+    display:block;
+    width:100%;
+    max-width:720px; /* mehr Breite (Seitenbreite) */
+    margin:0 auto;
+    padding:16px 22px; /* höhere Präsenz */
+    font-size:18px;    /* größere Typo */
+  }
+
+  /* Glass-Look für Kaufbutton */
+  .cta.btn-glass{
+    position: relative;
+    background: linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08));
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(255,255,255,0.45);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.40) inset,
+      0 -1px 0 rgba(255,255,255,0.20) inset,
+      0 8px 24px rgba(0,0,0,0.25);
+    color:#fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.25);
+    border-radius: 12px;
+  }
+  .cta.btn-glass::before{
+    content: "";
+    position: absolute;
+    left: 6px; right: 6px; top: 6px;
+    height: 48%;
+    border-radius: inherit;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(255,255,255,0.14) 60%, rgba(255,255,255,0));
+    pointer-events: none;
+  }
+  .cta.btn-glass:hover{
+    border-color: rgba(255,255,255,0.55);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.45) inset,
+      0 -1px 0 rgba(255,255,255,0.24) inset,
+      0 10px 28px rgba(0,0,0,0.3);
+  }
+  .cta.btn-glass:active{
+    transform: translateY(1px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.35) inset,
+      0 -1px 0 rgba(255,255,255,0.18) inset,
+      0 6px 18px rgba(0,0,0,0.25);
+  }
+
+    /* modal */
+    .modal{
+        position:fixed;
+        inset:0;
+        display:none;
+        align-items:center;
+        justify-content:center;
+        background:rgba(8,12,12,0.45);
+        z-index:50;
+    }
+    .modal .box{
+        width:min(720px, 92%);
+        background:#fff;
+        border-radius:12px;
+        padding:18px;
+        box-shadow: 0 20px 50px rgba(10,20,20,0.3);
+    }
+    .close-btn{float:right; cursor:pointer; border:none; background:none; font-size:18px}
+
+    /* misc */
+    /* (footer styles removed: no footer element on this page) */
+
+    /* responsive */
+    @media (max-width:880px){
+    .hero{flex-direction:column; align-items:center; text-align:center}
+    .split{flex-direction:column}
+    }
+
+    /* ---------- Glassmorphism Cards ---------- */
+    .glass-card-gold {
+      /* Grund-Layer mit Glassmorphismus */
+      position: relative;
+      background: linear-gradient(135deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.10) 60%, rgba(255,255,255,0.05) 100%),
+                  linear-gradient(135deg, rgba(245, 208, 115, 0.40) 0%, rgba(230, 184, 63, 0.32) 50%, rgba(184, 134, 11, 0.28) 100%);
+      backdrop-filter: blur(16px) saturate(120%);
+      -webkit-backdrop-filter: blur(16px) saturate(120%);
+      border-radius: 20px;
+      padding: 15px;
+      /* width: 100%; */
+      max-width: 1220px;
+      /* Randbetonung: feine helle Kante + weicher Schimmer außen */
+      border: 1px solid rgba(243, 209, 107, 0.837);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.7) inset, /* inner highlight top */
+        0 -1px 0 rgba(255,255,255,0.7) inset, /* inner highlight bottom */
+        0 8px 26px rgba(100, 85, 20, 0.7);   /* outer soft shadow (warm) */
+      margin: 0 auto;
+      text-align: left; /* Inhalt bleibt links für Listenlesbarkeit */
+
+    }
+
+    .glass-card {
+      /* Grund-Layer mit Glassmorphismus */
+      position: relative;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.10) 60%, rgba(255,255,255,0.06) 100%),
+            linear-gradient(135deg, rgba(80, 50, 150, 0.22) 0%, rgba(227, 220, 238, 0.18) 100%);
+      backdrop-filter: blur(16px) saturate(120%);
+      -webkit-backdrop-filter: blur(16px) saturate(120%);
+      border-radius: 20px;
+      padding: 15px;
+      /* width: 100%; */
+      max-width: 720px;
+      /* Randbetonung: feine helle Kante + weicher Schimmer außen */
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.7) inset, /* inner highlight top */
+        0 -1px 0 rgba(255,255,255,0.7) inset, /* inner highlight bottom */
+        0 8px 26px rgba(5, 15, 25, 0.7);     /* outer soft shadow */
+      margin: 0 auto;
+      text-align: left; /* Inhalt bleibt links für Listenlesbarkeit */
+    }
+
+    /* Pseudo-Elemente für goldene Glanzkanten */
+    .glass-card-gold::before,
+    .glass-card-gold::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: inherit;
+      transition: opacity 160ms ease;
+    }
+    .glass-card-gold::before {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 46px;
+      background: linear-gradient(to bottom, rgba(255,245,200,0.70), rgba(255,235,160,0.22) 60%, rgba(255,255,255,0));
+      opacity: 0.95;
+    }
+    .glass-card-gold::after {
+      top: 10px;
+      left: 10px;
+      width: 40%;
+      height: 40%;
+      background: radial-gradient( circle at top left,
+            rgba(255,245,200,0.60), rgba(253, 216, 120, 0.35) 45%, rgba(255,255,255,0) 70% );
+      filter: blur(1px);
+      opacity: 0.65;
+    }
+    .glass-card-gold:hover::before { opacity: 1; }
+    .glass-card-gold:hover::after  { opacity: 0.78; }
+
+    /* Glare/Highlight-Kanten als Pseudo-Elemente */
+    .glass-card::before,
+    .glass-card::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: inherit;
+      transition: opacity 160ms ease;
+    }
+    /* Oberer Kanten-Glanz */
+    .glass-card::before {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 46px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.65), rgba(255,255,255,0.15) 60%, rgba(255,255,255,0));
+      opacity: 0.9;
+    }
+    /* Diagonaler Glare-Fleck */
+    .glass-card::after {
+      top: 10px;
+      left: 10px;
+      width: 40%;
+      height: 40%;
+      background: radial-gradient( circle at top left,
+            rgba(255,255,255,0.55), rgba(255,255,255,0.25) 45%, rgba(255,255,255,0) 70% );
+      filter: blur(1px);
+      opacity: 0.6;
+    }
+
+    /* Hover: leicht mehr Glanz, ohne zu stark zu werden */
+    .glass-card:hover::before { opacity: 1; }
+    .glass-card:hover::after  { opacity: 0.75; }
+    .features-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+    }
+
+    .features-list li {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 8px; /* engerer Abstand zwischen Punkten */
+            display: flex;
+            align-items: center;
+            line-height: 1.25; /* kompaktere Zeilenhöhe */
+        }
+
+    .features-list li:last-child {
+            margin-bottom: 0;
+        }
+
+    /* Standard-P-Abstände entfernen, damit die Zeilen nicht größer werden */
+    .features-list li p {
+            margin: 0;
+            line-height: 1.25;
+            color: rgb(80, 3, 3);
+        }
+
+    /* Styling für die Icon-Platzhalter */
+    .features-list li [class^="icon-"] {
+            color: var(--color-check-gold);
+            margin-right: 25px;
+            font-size: 14px;
+            /* Wenn Sie Font Awesome nutzen, entfernen Sie diese Text-Eigenschaften */
+            line-height: 0.2; 
+        }
+
+</style>
+</head>
+<body>
+  <!-- <div class="wrap"> -->
+
+    <!-- ========== DESIGN 1 ========== -->
+  <div class="hero-right" aria-hidden="true">
+          <!-- Logo -->
+          <img src="../../assets/images/logo_192.png" alt="Logo" width="100px" height="100px"/>
+        </div>
+          
+      <div class="hero">
+        <div class="hero-left">
+         <!--  <span class="badge">Autogenes Training</span> -->
+          <h1 id="d1-title" data-i18n="buy_page_headline"><!-- Entspannt. Zielgerichtet. Nachhaltig. --></h1>
+    <!--       <p class="lead" data-i18n="buy_page_headtext">Monatliches Abo oder Halbjahres-Abo. Die Inhalte unterstützen Selbstregulation, Stressreduktion und mentale Stabilität. --></p>       
+        </div>
+        <div class="glass-card-gold">
+            <ul class="features-list">
+                <li><i class="icon-star">★</i><p data-i18n="list-item_01"></p><!-- Alle Bonusinhalte --></li>
+                <li><i class="icon-bolt">★</i><p data-i18n="list-item_02"></p><!-- Regelmäßige neue Inhalte --></li>
+                <li><i class="icon-book">★</i><p data-i18n="list-item_03"></p><!-- Alle Übungen ohne Limit --></li>
+                <li><i class="icon-shield">★</i><p data-i18n="list-item_04"></p><!-- Zugang zu allen Kursen --></li>
+            </ul>
+        </div>
+        
+            <!-- Preise auch innerhalb der Glass-Card: gleiche Form wie im Panel -->
+            <div class="price-list" style="margin-top:14px" aria-hidden="false">
+              <div class="price-row" role="article">
+                <div class="left">
+                  <input type="radio" id="plan_monat_gc" name="plan" value="monat" data-link="https://www.checkout-ds24.com/product/639653" />
+                  <label for="plan_monat_gc">
+                    <div class="label" data-i18n="abo_monthly_price"><!-- 11,99 € / Monat --></div>
+                    <div class="meta" style="font-size: 10px" data-i18n="abo_monthly_text"><!-- Automatische Verlängerung monatlich. Monatliche Kündigung möglich. --></div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="price-row" role="article">
+                <div class="left">
+                  <input type="radio" checked id="plan_halbjahr_gc" name="plan" value="halbjahr" data-link="https://www.checkout-ds24.com/product/639653" />
+                  <label for="plan_halbjahr_gc">
+                    <div class="label" data-i18n="abo_halfyear_price"><!-- 46,99 € / Halbjahr --></div>
+                    <div class="price_save_label" data-i18n="abo_halfyear_price_save"><!-- 46,99 € / Halbjahr --></div>
+                    <div class="meta" style="font-size:10px" data-i18n="abo_halfyear_text"><!-- Läuft 6 Monate, verlängert sich automatisch. Kündigung vor Ablauf empfohlen. --></div>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <p style="font-size:14px;color:var(--accent1)" data-i18n="buy_process_text"></p>
+                <img src="../../assets/images/digistore-logo.png" alt="Sichere Kaufabwicklung durch Digistore24" width="100" height="20" style="margin-top:6px;"/>
+            </div>
+              <div class="buy-submit" style="margin-top:12px; text-align:center;">
+          <button class="cta btn-glass purchaseBtn">Jetzt kaufen</button>
+                </div>
+        
+        </div>
+            <details style="margin-top:10px">
+                <summary style="cursor:pointer; font-size:18px; color: aqua;" data-i18n="cancellation_title"><!-- Kündigung & Widerruf --></summary>
+                <p style="font-size:14px;color:var(--muted)" data-i18n="cancellation_text"><!-- Die Kündigung kann über das Digistore24-Kundenkonto erfolgen. Widerrufsrecht und Einzelheiten werden im Bestellprozess und in den Digistore24-AGBs erläutert. --></p>
+          </details>
+        
+        <div><a href="../categories.html">Zurück zur App</a></div>
+
+
+
+
+
+        <div class="panel right" aria-hidden="false">
+          <h3>Fragen vor dem Kauf?</h3>
+          <p>Wenn du unsicher bist, wähle zunächst das Monatsabo. Du kannst jederzeit kündigen. Beide Abos gewähren vollständigen Zugriff auf die verfügbaren Inhalte.</p>
+
+          <p style="margin-top:12px"><strong>Rechtliche Hinweise</strong></p>
+          <ul style="color:var(--muted);font-size:14px">
+            <li>Die Abrechnung erfolgt über Digistore24.</li>
+            <li>Die Preise enthalten die gesetzliche Mehrwertsteuer.</li>
+            <li>Kündigungen sind vor Ablauf der jeweiligen Laufzeit möglich.</li>
+          </ul>
+
+          <div style="margin-top:16px">
+            <button class="cta" onclick="openModal()">Mehr Details zur Abwicklung</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- modal -->
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="box">
+        <button class="close-btn" onclick="closeModal()" aria-label="Schließen">✕</button>
+        <h3 id="modal-title">Kaufabwicklung & wichtige Hinweise</h3>
+        <p>Die Kaufabwicklung wird durch die <strong>Digistore24 GmbH</strong> vorgenommen. Digistore24 übernimmt die Zahlungsabwicklung, Rechnungserstellung und Kundendatenverwaltung. Vorteil: sichere Transaktionen und standardisierte Aboverwaltung.</p>
+        <p><strong>Monatliches Abo</strong>: 9,99 € / Monat. Verlängerung automatisch jeden Monat. Monatliche Kündigung möglich.</p>
+        <p><strong>Halbjahres-Abo</strong>: 49,99 € / Halbjahr. Laufzeit 6 Monate, automatische Verlängerung nach Ablauf. Bitte kündigen Sie rechtzeitig vor Ablauf, falls keine Verlängerung gewünscht ist.</p>
+        <p style="font-size:13px;color:var(--muted)">Hinweis: Im Bestellprozess werden Ihnen die konkreten Vertragsdetails, Widerrufsrecht und Kontaktinformationen von Digistore24 angezeigt.</p>
+      </div>
+    </div>
+
+        </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../../firebase-config.js"></script>
+    <script src="../../main.js"></script>
+
+
+<script>
+    // Extra guard: prevent unintended horizontal page shift while interacting with player
+    (function(){
+        const root = document.scrollingElement || document.documentElement;
+        let lastX = 0, active = false;
+        window.addEventListener('touchstart', (e)=>{
+            if(!e.touches || !e.touches.length) return;
+            lastX = e.touches[0].clientX; active = true;
+        }, {passive:true});
+        window.addEventListener('touchmove', (e)=>{
+            if(!active || !e.touches || !e.touches.length) return;
+            const dx = Math.abs(e.touches[0].clientX - lastX);
+            if (dx > 4) {
+                // lock horizontal by resetting scrollLeft
+                if (root.scrollLeft !== 0) root.scrollLeft = 0;
+                // prevent browser from attempting horizontal pan
+                if (e.cancelable) e.preventDefault();
+            }
+        }, {passive:false});
+        window.addEventListener('touchend', ()=>{ active = false; }, {passive:true});
+    })();
+    </script>
+
+
+<script>
+  // Öffnet den Modal
+  function openModal(){ document.getElementById('modal').style.display='flex'; }
+  function closeModal(){ document.getElementById('modal').style.display='none'; }
+
+  // Beispiel-Funktion: leitet zum Digistore24-Link weiter.
+  // Ersetze die data-link Werte durch deine echten Digistore24-URLs.
+  function openPurchase(url, plan){
+    if(!url || url.includes('REPLACE_WITH_DIGISTORE24_LINK')){
+      // Deutlich sichtbarer Hinweis, damit du die Links im Template nicht vergisst
+      alert('Bitte ersetze die Platzhalter-Links durch deine Digistore24-Produktlinks.\n\nGeplanter Kauf: ' + plan);
+      return;
+    }
+    // Optional: hier Tracking / Analytics vor dem Weiterleiten
+    window.location.href = url;
+  }
+
+  // Schließe Modal bei Escape
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeModal();
+  });
+
+  // Klick außerhalb schließt Modal
+  document.getElementById('modal').addEventListener('click', function(e){
+    if(e.target === this) closeModal();
+  });
+
+  // Zentraler Kauf-Button: nutzt die Radio-Auswahl
+  (function(){
+    const buttons = document.querySelectorAll('.purchaseBtn, #purchaseBtn');
+    if(!buttons.length) return;
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function(){
+        const checked = document.querySelector('input[name="plan"]:checked');
+        if(!checked){
+          alert('Bitte wähle ein Abo aus.');
+          return;
+        }
+        const plan = checked.value;
+        const link = checked.dataset.link;
+        openPurchase(link, plan);
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

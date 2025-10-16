@@ -202,7 +202,7 @@ footer {
 .result-card-title {
     color: white;
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight:normal;
 }
 
 .result-card-play-icon {

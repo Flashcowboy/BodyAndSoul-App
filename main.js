@@ -38,6 +38,9 @@ async function loadTranslations(lang) {
             if (key && translations[key]) element.innerHTML = translations[key];
             if (placeholderKey && translations[placeholderKey]) element.placeholder = translations[placeholderKey];
         });
+    // Notify dynamic components (player explanation, for-you cards, etc.)
+    try { window.dispatchEvent(new Event('languageChanged')); } catch(_) {}
+    try { window.dispatchEvent(new Event('lang-changed')); } catch(_) {}
     } catch (error) {
         console.error('Translation Error:', error);
     }
@@ -1089,14 +1092,138 @@ document.addEventListener('DOMContentLoaded', () => {
     if (path.endsWith('categories.html')) {
         const forYouResultsContainer = document.getElementById('for-you-results');
         const moodButtons = document.querySelectorAll('.mood-button');
+        // ---------------- PAYWALL SETUP (Bonus / Premium Gating) ----------------
+        (function initPaywall(){
+            const BONUS_SELECTOR = '#Cat_card5Title'; // Bonus-Inhalte Karte
+            const bonusCard = document.querySelector(BONUS_SELECTOR);
+            if(!bonusCard) return;
+            // Prevent default inline navigation handler
+            bonusCard.onclick = null;
+            bonusCard.addEventListener('click', async (e)=> {
+                e.preventDefault();
+                const allowed = await ensureSubscriptionAccess();
+                if(allowed){
+                    window.location.href = 'subcategories/subcat05_bonus.html';
+                }
+            });
+
+
+            // =================================================================================================
+            //               --- Abonnement Logic (digistore24) ---
+            // =================================================================================================
+
+            // Lazy create overlay node on first need
+            function createPaywall(){
+                if(document.getElementById('paywall-overlay')) return;
+                const wrap = document.createElement('div');
+                wrap.id = 'paywall-overlay';
+                wrap.style.position = 'fixed';
+                wrap.style.inset = '0';
+                wrap.style.background = 'rgba(0,0,0,0.72)';
+                wrap.style.display = 'flex';
+                wrap.style.alignItems = 'center';
+                wrap.style.justifyContent = 'center';
+                wrap.style.zIndex = '9999';
+                wrap.innerHTML = `
+                  <div style="max-width:480px;width:90%;background:#ffffff;border-radius:18px;padding:28px 26px;font-family:inherit;position:relative;box-shadow:0 10px 28px rgba(0,0,0,0.35);">
+                    <button id="paywall-close" aria-label="close" style="position:absolute;top:8px;right:10px;background:transparent;border:none;font-size:20px;line-height:1;cursor:pointer;color:#555">×</button>
+                    <h2 data-i18n="paywall_headline" style="margin:0 0 10px 0;font-size:22px;line-height:1.25;text-align:center;">Freischalten erforderlich</h2>
+                    <p data-i18n="paywall_intro" style="font-size:14px;line-height:1.5;margin:0 0 18px 0;text-align:center;">Diese Inhalte sind nur für Abonnenten verfügbar.</p>
+                    <ul style="list-style:none;padding:0;margin:0 0 18px 0;font-size:14px;line-height:1.45;color:#222;">
+                      <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point1">Exklusive Bonus-Audios</span></li>
+                      <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point2">Regelmäßige neue Inhalte</span></li>
+                      <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point3">Alle Grund- & Aufbauübungen ohne Limit</span></li>
+                    </ul>
+                    <div style="text-align:center;margin-bottom:16px;">
+                      <span data-i18n="paywall_price_hint" style="font-size:13px;color:#555;">Ab nur XX,XX € / Monat</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                      <button id="paywall-checkout" data-i18n="paywall_cta" style="background:#3b5bdb;color:#fff;border:none;padding:14px 18px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;">Jetzt freischalten</button>
+                      <button id="paywall-login" data-i18n="paywall_login" style="background:#eceff4;color:#222;border:none;padding:12px 16px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">Ich habe schon ein Abo</button>
+                    </div>
+                    <p data-i18n="paywall_privacy" style="margin:14px 0 0 0;font-size:11px;line-height:1.4;color:#666;text-align:center;">Sicherer externer Zahlungsanbieter.</p>
+                  </div>`;
+                document.body.appendChild(wrap);
+                loadTranslations(localStorage.getItem('lang')||'de');
+                wrap.querySelector('#paywall-close').addEventListener('click', ()=> wrap.remove());
+                wrap.addEventListener('click', (ev)=> { if(ev.target === wrap) wrap.remove(); });
+                const checkoutBtn = wrap.querySelector('#paywall-checkout');
+                const loginBtn = wrap.querySelector('#paywall-login');
+                if(checkoutBtn) checkoutBtn.addEventListener('click', startCheckoutFlow);
+                if(loginBtn) loginBtn.addEventListener('click', refreshSubscriptionAndRetry);
+            }
+
+            async function startCheckoutFlow(){
+                const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
+                if(!user){
+                    window.location.href = '../login.html';
+                    return;
+                }
+                // Replace PRODUCT_ID with actual Digistore24 product id
+                //const baseUrl = 'https://www.digistore24.com/product/PRODUCT_ID';
+                const baseUrl = 'https://www.checkout-ds24.com/product/639653';
+                const url = `${baseUrl}?email=${encodeURIComponent(user.email)}&custom_uid=${encodeURIComponent(user.uid)}`;
+                window.open(url, '_blank');
+            }
+
+            async function refreshSubscriptionAndRetry(){
+                try {
+                    // Force reload of user profile and re-check
+                    const allowed = await checkSubscriptionStatus(true);
+                    if(allowed){
+                        const ov = document.getElementById('paywall-overlay');
+                        if(ov) ov.remove();
+                        window.location.href = 'subcategories/subcat05_bonus.html';
+                    }
+                } catch(_) {}
+            }
+
+            async function checkSubscriptionStatus(forceReload){
+                const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
+                if(!user) return false;
+                if(!window.db) return false;
+                try {
+                    const doc = await window.db.collection('User_Profiles').doc(user.uid).get();
+                    const data = doc.exists ? doc.data() : {};
+                    const sub = data.subscription || {};
+                    if(sub.active === true){
+                        // optional expiry check if field exists
+                        if(sub.expiresAt && sub.expiresAt.toDate){
+                            if(sub.expiresAt.toDate() < new Date()) return false;
+                        }
+                        return true;
+                    }
+                } catch(e){ console.warn('Subscription check failed', e); }
+                return false;
+            }
+
+            async function ensureSubscriptionAccess(){
+                const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
+                if(!user){
+                    createPaywall();
+                    return false;
+                }
+                const ok = await checkSubscriptionStatus();
+                if(ok) return true;
+                createPaywall();
+                return false;
+            }
+
+            // Expose for debugging if needed
+            try { window.ensureSubscriptionAccess = ensureSubscriptionAccess; } catch(_) {}
+        })();
 
         function addResultCardListeners() {
             document.querySelectorAll('#for-you-results .result-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     const audioPath = e.currentTarget.dataset.audioPath;
-                    const title = e.currentTarget.dataset.title;
-                    if (audioPath && title) {
-                        window.location.href = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioPath)}&title=${encodeURIComponent(title)}`;
+                    const base = e.currentTarget.dataset.base;
+                    const titleKey = e.currentTarget.dataset.titleKey;
+                    const plainTitle = (e.currentTarget.dataset.title || base || '').replace(/<[^>]*>/g,'');
+                    if (audioPath && base) {
+                        let url = `${pathToRoot}structure/player.html?audio=${encodeURIComponent(audioPath)}&title=${encodeURIComponent(plainTitle)}&base=${encodeURIComponent(base)}`;
+                        if (titleKey) url += `&titleKey=${encodeURIComponent(titleKey)}`;
+                        window.location.href = url;
                     }
                 });
             });
@@ -1108,27 +1235,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const section = document.createElement('div');
             section.className = 'for-you-section';
             const header = document.createElement('h4');
-            header.setAttribute('data-i18n', 'forYouSuggestions');
-            header.textContent = 'Deine Vorschläge';
+            // Dynamic headline via i18n key moodResultHeadline
+            header.setAttribute('data-i18n', 'moodResultHeadline');
+            // Fallback text until translations applied
+            header.textContent = 'Vorschläge';
             section.appendChild(header);
 
             tracks.forEach(track => {
                 const lang = localStorage.getItem('lang') || 'de';
-                const title = track[`title_${lang}`] || track.title_de || 'Unbenannter Track';
-                const filename_from_db = track.path;
-                let audioPath = '';
-                if (filename_from_db) {
-                    const filename_base = filename_from_db.split('.')[0];
-                    audioPath = `${pathToRoot}assets/audio/subcategories/${lang}/${filename_base}.m4a`;
-                }
-                if (!audioPath) return;
+                const filename_from_db = track.path || '';
+                const baseName = filename_from_db.split('.')[0];
+                if (!baseName) return;
+                const audioPath = `${pathToRoot}assets/audio/subcategories/${lang}/${baseName}.m4a`;
+                const titleKey = baseName;
+                const dict = (window.__i18n && window.__i18n.lang === lang) ? (window.__i18n.dict || {}) : {};
+                const localized = dict[titleKey] || baseName;
                 const card = document.createElement('div');
                 card.className = 'result-card';
                 card.dataset.audioPath = audioPath;
-                card.dataset.title = title;
+                card.dataset.base = baseName;
+                card.dataset.titleKey = titleKey;
+                card.dataset.title = localized;
                 const titleSpan = document.createElement('span');
                 titleSpan.className = 'result-card-title';
-                titleSpan.textContent = title;
+                titleSpan.setAttribute('data-i18n', titleKey);
+                titleSpan.textContent = localized;
                 const playImg = document.createElement('img');
                 playImg.className = 'result-card-play-icon';
                 playImg.src = `${pathToRoot}assets/images/icons/play_icon_white.png`;

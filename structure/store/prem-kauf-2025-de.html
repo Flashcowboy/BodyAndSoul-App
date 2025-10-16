@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="BODY & SOUL">
+    <title>Premium Funktionen freigegeben</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+        :root {
+            --color-primary-text: #ffffff;
+            --color-secondary-text: #bdbdbe;
+            --color-check-gold: #ffc700;
+            --color-button-start: #00c7e2;
+            --color-button-end: #39e26e;
+        }
+        body {
+        
+            background-color: #f2f4f7;
+            /* Hintergrundbild direkt auf den Body anwenden */
+            /* background-image: url('../assets/images/splash_screen_bg.png'); */
+            /* background-image: url('../../assets/images/backgrounds/lake_mountain.png'); */
+            background-image: url('../../assets/images/backgrounds/bg_digistore24_dankeseite_blank.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: var(--color-primary-text);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Startet den Inhalt oben, da Header + Statusbar oben sind */
+
+        }
+
+        /* Prevent horizontal dragging causing lateral page shift */
+        html, body { overscroll-behavior-x: none; touch-action: pan-y; }
+
+        /* --- Haupt-Container für alle Inhalte --- */
+        .thank-you-container {
+            width: 90%;
+            max-width: 400px; /* Für mobile Ansicht optimiert */
+            padding: 0px 25px 30px 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* --- 1. Header-Bereich --- */
+        .header-section {
+            margin-bottom: 10px;
+            text-align: center; /* Center align */
+        }
+
+        .header-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .header-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .header-section p {
+            font-size: 14px;
+            color: var(--color-secondary-text);
+        }
+
+        /* --- 2. Bestätigungssymbol Platzhalter --- */
+        .confirmation-check-placeholder {
+            width: 250px;
+            height: 150px;
+            /* Hier kommt Ihr Haken-Bild rein */
+            background: url('../../assets/images/checked_image.png') center / contain no-repeat;
+            margin-bottom: 10px;
+            /* Zusätzlicher Styling-Kreis (optional, wenn das Bild ihn nicht enthält) */
+            /* background: radial-gradient(circle, rgba(16, 5, 41, 0.4) 0%, rgba(31, 10, 80, 0) 70%); */
+            border-radius: 50%;
+        }
+
+        /* --- 3. Hauptinhalt & Panel --- */
+        .main-content {
+            width: 100%;
+            /* Stellt sicher, dass das Panel zentriert unter der Nachricht steht */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-primary-text);
+        }
+
+        .main-content h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+        .main-content a {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-primary-text);
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        /* Glassmorphismus-Kachel (Das Panel) */
+        .glass-card {
+            /* WICHTIG: Der Glassmorphismus-Effekt */
+            background: rgba(255, 255, 255, 0.1); /* Helle, leicht transparente Basis */
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            
+            /* Leichter dunkler Verlauf, wie im Originalbild */
+            background: linear-gradient(135deg, rgba(80, 50, 150, 0.3) 0%, rgba(30, 10, 60, 0.3) 100%);
+            border-radius: 20px;
+            padding: 15px;
+            width: 80%;
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Dünne, helle Kontur */
+            margin-bottom: 40px;
+            text-align: left; /* Text in der Liste linksbündig */
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .features-list li {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 8px; /* engerer Abstand zwischen Punkten */
+            display: flex;
+            align-items: center;
+            line-height: 1.25; /* kompaktere Zeilenhöhe */
+        }
+
+        .features-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Standard-P-Abstände entfernen, damit die Zeilen nicht größer werden */
+        .features-list li p {
+            margin: 0;
+            line-height: 1.25;
+        }
+
+        /* Styling für die Icon-Platzhalter */
+        .features-list li [class^="icon-"] {
+            color: var(--color-check-gold);
+            margin-right: 25px;
+            font-size: 12px;
+            /* Wenn Sie Font Awesome nutzen, entfernen Sie diese Text-Eigenschaften */
+            line-height: 0.2; 
+        }
+
+
+        /* --- 4. Button --- */
+        .cta-button {
+            text-decoration: none;
+            width: 90%;
+            max-width: 350px;
+            padding: 5px 0;
+            border-radius: 30px;
+            font-size: 20px;
+            font-weight: 100;
+            color: #000000;
+            background: linear-gradient(90deg, var(--color-button-start) 0%, var(--color-button-end) 100%);
+            box-shadow: 0 4px 15px rgba(0, 199, 226, 0.5);
+            transition: transform 0.2s;
+        }
+
+    /* --- 5. Digistore24 Hinweis-Sektion (Neu) --- */
+
+        .ds24-hinweis-section {
+            width: 100%;
+            margin-top: 5px;
+            padding-bottom: 20px;
+        }
+
+        .ds24-hinweis-section p {
+            font-size: 14px;
+            color: var(--color-secondary-text);
+            margin-bottom: 8px;
+        }
+
+        .digistore-badge {
+            /* Die Klasse für das Badge selbst bleibt gleich */
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 4px 10px;
+            font-size: 12px;
+            color: var(--color-secondary-text);
+        }
+
+        .digistore-badge i {
+            margin-right: 5px;
+        }
+      
+    </style>
+</head>
+<body>
+
+    <header>
+    </header>
+
+    <main class="main-content">
+        <div class="header-section">
+            <h1 data-i18n="thankyou_title"><!-- Titel --></h1>
+            <p data-i18n="thankyou_text"><!-- Sub Title Text --></p>
+        </div>
+        <!-- Bestätigungssymbol Platzhalter -->
+        <div class="thank-you-container">
+            <div class="confirmation-check-placeholder">
+        </div>
+
+        <h2>Exclusive Premium-Funktionen freigeschaltet!</h2>
+        
+        <div class="glass-card">
+            <ul class="features-list">
+                <li><i class="icon-star">★</i><p data-i18n="list-item_01"></p><!-- Alle Bonusinhalte --></li>
+                <li><i class="icon-bolt">★</i><p data-i18n="list-item_02"></p><!-- Regelmäßige neue Inhalte --></li>
+                <li><i class="icon-book">★</i><p data-i18n="list-item_03"></p><!-- Alle Übungen ohne Limit --></li>
+                <li><i class="icon-shield">★</i><p data-i18n="list-item_04"></p><!-- Zugang zu allen Kursen --></li>
+            </ul>
+        </div>
+
+        <a href="../../index.html" class="cta-button" data-i18n="thankyou_button"></a>
+
+        <div class="ds24-hinweis-section">
+            <p>Die Abbuchung erfolgt über Digistore24 GmbH</p>
+            <div class="digistore-badge">
+                <i class="icon-lock">🔒</i> digistore24
+            </div>
+        </div>
+    </main>
+
+
+
+
+
+    <!-- Background music selection modal removed (premixed-only). -->
+
+ <!-- <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../../firebase-config.js"></script>
+    <script src="../../main.js"></script>
+
+    <script>
+    // Extra guard: prevent unintended horizontal page shift while interacting with player
+    (function(){
+        const root = document.scrollingElement || document.documentElement;
+        let lastX = 0, active = false;
+        window.addEventListener('touchstart', (e)=>{
+            if(!e.touches || !e.touches.length) return;
+            lastX = e.touches[0].clientX; active = true;
+        }, {passive:true});
+        window.addEventListener('touchmove', (e)=>{
+            if(!active || !e.touches || !e.touches.length) return;
+            const dx = Math.abs(e.touches[0].clientX - lastX);
+            if (dx > 4) {
+                // lock horizontal by resetting scrollLeft
+                if (root.scrollLeft !== 0) root.scrollLeft = 0;
+                // prevent browser from attempting horizontal pan
+                if (e.cancelable) e.preventDefault();
+            }
+        }, {passive:false});
+        window.addEventListener('touchend', ()=>{ active = false; }, {passive:true});
+    })();
+    </script>
+
+    
+    
+</body>
+</html>

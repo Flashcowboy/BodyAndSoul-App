@@ -90,6 +90,30 @@
             left: 0;
         }
 
+         .challenge-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.3f);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .challenge-button .challenge-icon {
+            height: 18px;
+            width: 18px;
+            object-fit: contain;
+            /* Ensure the icon participates in the flex layout and doesn't overlap the label */
+            position: static;
+        }
+
         .favorite-icon {
             position: absolute;
             top: 10px;
@@ -120,12 +144,20 @@
             
         <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
         <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = '../anxiety/subcat_generalanxiety.html'" style="background-color:  #d96901;">
+            <div class="challenge-button" data-challenge-href="subcategories/subcat03_anxiety.html?challenge=true">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <span data-i18n="challengeButtonLabel_07">07-Tage Kurs</span>
+            </div>
             <div class="card-text">
                 <span data-i18n="GenAnxiety_cardTitle"></span>
             </div>
         </div>
 
         <div class="subcategory-card" id="subcat03_02" onclick="window.location.href = '../anxiety/subcat_socialanxiety.html'" style="background-color: #d92c01;">
+            <div class="challenge-button" data-challenge-href="subcategories/subcat03_anxiety.html?challenge=true">
+                <img class="challenge-icon" src="../../assets/images/icons/calendar.png" alt="Challenge">
+                <span data-i18n="challengeButtonLabel_07">07-Tage Kurs</span>
+            </div>
             <div class="card-text">
                 <span data-i18n="SocialAnxiety_cardTitle"></span>
             </div>
