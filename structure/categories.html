@@ -166,7 +166,7 @@
             </div> -->
         </div>
 
-        <div class="category-card" id="Cat_card5Title" onclick="window.location.href = 'subcategories/subcat05_bonus.html';">
+    <div class="category-card" id="Cat_card5Title" data-require-subscription="true" data-allow-href="subcategories/subcat05_bonus.html">
             <img src="../assets/images/categories/bonus.png" alt="Bonus-Inhalte">
             <div class="card-text">
                 <h2 data-i18n="card5Title">Bonus-Inhalte</h2>
@@ -196,6 +196,19 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 <script src="../firebase-config.js"></script>
     <script src="../main.js"></script>
+    <script>
+        // Bind paywall check for Bonus tile
+        (function(){
+            const el = document.getElementById('Cat_card5Title');
+            if (!el) return;
+            el.addEventListener('click', async function(e){
+                e.preventDefault();
+                const href = this.getAttribute('data-allow-href') || 'subcategories/subcat05_bonus.html';
+                const ok = await (window.ensureSubscriptionAccess ? window.ensureSubscriptionAccess({}) : Promise.resolve(false));
+                if (ok) window.location.href = href;
+            });
+        })();
+    </script>
 
     
 

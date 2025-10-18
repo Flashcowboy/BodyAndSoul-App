@@ -11,10 +11,10 @@
     <style>
         :root {
             --color-primary-text: #ffffff;
-            --color-secondary-text: #bdbdbe;
+            --color-secondary-text: #ffffff;
             --color-check-gold: #ffc700;
-            --color-button-start: #00c7e2;
-            --color-button-end: #39e26e;
+            --color-button-start: #036572;
+            --color-button-end: #033a78;
         }
         body {
         
@@ -22,8 +22,7 @@
             /* Hintergrundbild direkt auf den Body anwenden */
             /* background-image: url('../assets/images/splash_screen_bg.png'); */
             /* background-image: url('../../assets/images/backgrounds/lake_mountain.png'); */
-            background-image: url('../../assets/images/backgrounds/bg_digistore24_dankeseite_blank.png');
-            background-size: cover;
+            background-image: url('../../assets/images/backgrounds/abo-buy_01.png');            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             color: var(--color-primary-text);
@@ -54,9 +53,10 @@
         }
 
         .header-section h1 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
+            color: #490808;
         }
         .header-section h3 {
             font-size: 18px;
@@ -80,8 +80,61 @@
             border-radius: 50%;
         }
 
+    .cta{
+        display:inline-block;
+        border:0;
+        padding:10px 14px;
+        border-radius:10px;
+        background: linear-gradient(90deg,var(--accent1), #4f9b7a);
+        color:#fff;
+        font-weight:700;
+        cursor:pointer;
+        text-decoration:none;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.7);
+        margin-top: 20px;
+    }
+
+  /* Glass-Look für Kaufbutton */
+  .cta.btn-glass{
+    position: relative;
+    background: linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08));
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(255,255,255,0.45);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.40) inset,
+      0 -1px 0 rgba(255,255,255,0.20) inset,
+      0 8px 24px rgba(0,0,0,0.25);
+    color:#fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    border-radius: 12px;
+  }
+  .cta.btn-glass::before{
+    content: "";
+    position: absolute;
+    left: 6px; right: 6px; top: 6px;
+    height: 48%;
+    border-radius: inherit;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(255,255,255,0.14) 60%, rgba(255,255,255,0));
+    pointer-events: none;
+  }
+  .cta.btn-glass:hover{
+    border-color: rgba(255,255,255,0.55);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.45) inset,
+      0 -1px 0 rgba(255,255,255,0.24) inset,
+      0 10px 28px rgba(0,0,0,0.3);
+  }
+  .cta.btn-glass:active{
+    transform: translateY(1px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.35) inset,
+      0 -1px 0 rgba(255,255,255,0.18) inset,
+      0 6px 18px rgba(0,0,0,0.25);
+  }
+
         /* --- 3. Hauptinhalt & Panel --- */
-        .main-content {
+    .main-content {
             width: 100%;
             /* Stellt sicher, dass das Panel zentriert unter der Nachricht steht */
             display: flex;
@@ -90,24 +143,72 @@
             font-size: 20px;
             font-weight: 600;
             color: var(--color-primary-text);
-        }
+    }
 
-        .main-content h2 {
+    .main-content h2 {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 30px;
             line-height: 1.2;
-        }
-        .main-content a {
+    }
+    .main-content a {
             font-size: 14px;
             font-weight: 600;
             color: var(--color-primary-text);
             margin-bottom: 30px;
             line-height: 1.2;
-        }
+    }
 
         /* Glassmorphismus-Kachel (Das Panel) */
-        .glass-card {
+    .glass-card-gold {
+            /* Grund-Layer mit Glassmorphismus */
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.10) 60%, rgba(255,255,255,0.05) 100%),
+                        linear-gradient(135deg, rgba(245, 208, 115, 0.40) 0%, rgba(230, 184, 63, 0.32) 50%, rgba(184, 134, 11, 0.28) 100%);
+            backdrop-filter: blur(16px) saturate(120%);
+            -webkit-backdrop-filter: blur(16px) saturate(120%);
+            border-radius: 20px;
+            padding: 15px;
+            /* width: 100%; */
+            max-width: 1220px;
+            /* Randbetonung: feine helle Kante + weicher Schimmer außen */
+            border: 1px solid rgba(243, 209, 107, 0.837);
+            box-shadow:
+                0 1px 0 rgba(255,255,255,0.7) inset, /* inner highlight top */
+                0 -1px 0 rgba(255,255,255,0.7) inset, /* inner highlight bottom */
+                0 8px 26px rgba(100, 85, 20, 0.7);   /* outer soft shadow (warm) */
+            margin: 30px 0px 30px 0px;
+            text-align: left; /* Inhalt bleibt links für Listenlesbarkeit */
+            /* text-shadow: 0 1px 1px rgba(0,0,0,0.7); */
+    }
+        /* Pseudo-Elemente für goldene Glanzkanten */
+            .glass-card-gold::before,
+    .glass-card-gold::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+            border-radius: inherit;
+            transition: opacity 160ms ease;
+}
+    .glass-card-gold::before {
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 46px;
+            background: linear-gradient(to bottom, rgba(255,245,200,0.70), rgba(255,235,160,0.22) 60%, rgba(255,255,255,0));
+            opacity: 0.95;
+    }
+    .glass-card-gold::after {
+            top: 10px;
+            left: 10px;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient( circle at top left,
+                    rgba(255,245,200,0.60), rgba(253, 216, 120, 0.35) 45%, rgba(255,255,255,0) 70% );
+            filter: blur(1px);
+            opacity: 0.65;
+    }
+    .glass-card {
             /* WICHTIG: Der Glassmorphismus-Effekt */
             background: rgba(255, 255, 255, 0.1); /* Helle, leicht transparente Basis */
             backdrop-filter: blur(15px); 
@@ -121,73 +222,77 @@
             border: 1px solid rgba(255, 255, 255, 0.1); /* Dünne, helle Kontur */
             margin-bottom: 40px;
             text-align: left; /* Text in der Liste linksbündig */
-        }
+    }
 
-        .features-list {
+    .features-list {
             list-style: none;
             margin: 0;
             padding: 0;
-        }
+            
+    }
 
-        .features-list li {
+    .features-list li {
             font-size: 18px;
             font-weight: 400;
             margin-bottom: 8px; /* engerer Abstand zwischen Punkten */
             display: flex;
             align-items: center;
             line-height: 1.25; /* kompaktere Zeilenhöhe */
-        }
+    }
 
-        .features-list li:last-child {
+    .features-list li:last-child {
             margin-bottom: 0;
-        }
+    }
 
-        /* Standard-P-Abstände entfernen, damit die Zeilen nicht größer werden */
-        .features-list li p {
+    /* Standard-P-Abstände entfernen, damit die Zeilen nicht größer werden */
+    .features-list li p {
             margin: 0;
             line-height: 1.25;
-        }
+            color: rgb(80, 3, 3);
+    }
 
-        /* Styling für die Icon-Platzhalter */
-        .features-list li [class^="icon-"] {
+    /* Styling für die Icon-Platzhalter */
+    .features-list li [class^="icon-"] {
             color: var(--color-check-gold);
             margin-right: 25px;
             font-size: 12px;
             /* Wenn Sie Font Awesome nutzen, entfernen Sie diese Text-Eigenschaften */
             line-height: 0.2; 
-        }
+    }
 
 
-        /* --- 4. Button --- */
-        .cta-button {
+    /* --- 4. Button --- */
+    .cta-button {
             text-decoration: none;
-            width: 90%;
-            max-width: 350px;
+            width: 70%;
+            max-width: 150px;
             padding: 5px 0;
-            border-radius: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
             font-size: 20px;
             font-weight: 100;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
             color: #000000;
             background: linear-gradient(90deg, var(--color-button-start) 0%, var(--color-button-end) 100%);
-            box-shadow: 0 4px 15px rgba(0, 199, 226, 0.5);
-            transition: transform 0.2s;
-        }
+            box-shadow: 0 4px 15px rgba(1, 15, 16, 0.5);
+            /* transition: transform 0.2s; */
+    }
 
     /* --- 5. Digistore24 Hinweis-Sektion (Neu) --- */
 
-        .ds24-hinweis-section {
+    .ds24-hinweis-section {
             width: 100%;
             margin-top: 5px;
             padding-bottom: 20px;
-        }
+    }
 
-        .ds24-hinweis-section p {
+    .ds24-hinweis-section p {
             font-size: 14px;
             color: var(--color-secondary-text);
             margin-bottom: 8px;
-        }
+    }
 
-        .digistore-badge {
+    .digistore-badge {
             /* Die Klasse für das Badge selbst bleibt gleich */
             display: inline-flex;
             align-items: center;
@@ -196,11 +301,11 @@
             padding: 4px 10px;
             font-size: 12px;
             color: var(--color-secondary-text);
-        }
+    }
 
-        .digistore-badge i {
+    .digistore-badge i {
             margin-right: 5px;
-        }
+    }
       
     </style>
 </head>
@@ -221,7 +326,7 @@
 
         <h2>Exclusive Premium-Funktionen freigeschaltet!</h2>
         
-        <div class="glass-card">
+        <div class="glass-card-gold">
             <ul class="features-list">
                 <li><i class="icon-star">★</i><p data-i18n="list-item_01"></p><!-- Alle Bonusinhalte --></li>
                 <li><i class="icon-bolt">★</i><p data-i18n="list-item_02"></p><!-- Regelmäßige neue Inhalte --></li>
@@ -229,14 +334,15 @@
                 <li><i class="icon-shield">★</i><p data-i18n="list-item_04"></p><!-- Zugang zu allen Kursen --></li>
             </ul>
         </div>
-
-        <a href="../../index.html" class="cta-button" data-i18n="thankyou_button"></a>
-
+        
         <div class="ds24-hinweis-section">
             <p>Die Abbuchung erfolgt über Digistore24 GmbH</p>
-            <div class="digistore-badge">
-                <i class="icon-lock">🔒</i> digistore24
+            <div>
+                <img src="../../assets/images/digistore-logo.png" alt="Sichere Kaufabwicklung durch Digistore24" width="90" height="15" style="margin-top:6px;"/>
             </div>
+        </div>
+        <div class="cta-button">   
+            <a href="../../index.html" data-i18n="thankyou_button"></a>
         </div>
     </main>
 

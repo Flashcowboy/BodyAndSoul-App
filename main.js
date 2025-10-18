@@ -49,6 +49,115 @@ async function loadTranslations(lang) {
 // 1.3. Background Music Configuration (removed)
 // Runtime background-music selection and mixing have been removed. Premixed files will be used instead.
 
+// 1.4. Subscription helper (global)
+/**
+ * Returns true if the current user has an active subscription (and not expired), else false.
+ * Safe to call on any page. Does not show UI or redirect by itself.
+ */
+async function hasActiveSubscription() {
+    try {
+        const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
+        if (!user || !window.db) return false;
+        const doc = await window.db.collection('User_Profiles').doc(user.uid).get();
+        if (!doc.exists) return false;
+        const data = doc.data() || {};
+        const sub = data.subscription || {};
+        if (sub.active === true) {
+            if (sub.expiresAt && typeof sub.expiresAt.toDate === 'function') {
+                return sub.expiresAt.toDate() >= new Date();
+            }
+            return true;
+        }
+    } catch(_) {}
+    return false;
+}
+try { window.hasActiveSubscription = hasActiveSubscription; } catch(_) {}
+
+// 1.5. Paywall UI + access helpers (global)
+function createPaywallOverlay() {
+        if (document.getElementById('paywall-overlay')) return document.getElementById('paywall-overlay');
+        const wrap = document.createElement('div');
+        wrap.id = 'paywall-overlay';
+        wrap.style.position = 'fixed';
+        wrap.style.inset = '0';
+        wrap.style.background = 'rgba(0,0,0,0.72)';
+        wrap.style.display = 'flex';
+        wrap.style.alignItems = 'center';
+        wrap.style.justifyContent = 'center';
+        wrap.style.zIndex = '9999';
+        wrap.innerHTML = `
+            <div style="max-width:480px;width:90%;background:#ffffff;border-radius:18px;padding:28px 26px;font-family:inherit;position:relative;box-shadow:0 10px 28px rgba(0,0,0,0.35);">
+                <button id="paywall-close" aria-label="close" style="position:absolute;top:8px;right:10px;background:transparent;border:none;font-size:20px;line-height:1;cursor:pointer;color:#555">×</button>
+                <h2 data-i18n="paywall_headline" style="margin:0 0 10px 0;font-size:22px;line-height:1.25;text-align:center;">Freischalten erforderlich</h2>
+                <p data-i18n="paywall_intro" style="font-size:14px;line-height:1.5;margin:0 0 18px 0;text-align:center;">Dieser Bereich ist exklusiv für Abonnenten verfügbar.</p>
+                <ul style="list-style:none;padding:0;margin:0 0 18px 0;font-size:14px;line-height:1.45;color:#222;">
+                    <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point1">Exklusive Bonus-Audios</span></li>
+                    <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point2">Regelmäßige neue Inhalte</span></li>
+                    <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point3">Alle Grund- & Aufbauübungen ohne Limit</span></li>
+                </ul>
+                <div style="text-align:center;margin-bottom:16px;">
+                    <span data-i18n="paywall_price_hint" style="font-size:13px;color:#555;">Ab nur XX,XX € / Monat</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <button id="paywall-checkout" data-i18n="paywall_cta" style="background:#3b5bdb;color:#fff;border:none;padding:14px 18px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;">Jetzt freischalten</button>
+                    <button id="paywall-login" data-i18n="paywall_login" style="background:#eceff4;color:#222;border:none;padding:12px 16px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">Ich habe schon ein Abo</button>
+                </div>
+                <p data-i18n="paywall_privacy" style="margin:14px 0 0 0;font-size:11px;line-height:1.4;color:#666;text-align:center;">Zahlung über sicheren externen Anbieter.</p>
+            </div>`;
+        document.body.appendChild(wrap);
+        // apply i18n for newly added nodes
+        try { loadTranslations(localStorage.getItem('lang') || 'de'); } catch(_) {}
+        wrap.querySelector('#paywall-close')?.addEventListener('click', ()=> wrap.remove());
+        wrap.addEventListener('click', (ev)=> { if(ev.target === wrap) wrap.remove(); });
+        const checkoutBtn = wrap.querySelector('#paywall-checkout');
+        const loginBtn = wrap.querySelector('#paywall-login');
+        if (checkoutBtn) checkoutBtn.addEventListener('click', startCheckoutFlow);
+        if (loginBtn) loginBtn.addEventListener('click', refreshSubscriptionAndRetry);
+        return wrap;
+}
+
+function startCheckoutFlow(){
+        const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
+        if(!user){
+                window.location.href = `${pathToRoot}login.html`;
+                return;
+        }
+        const baseUrl = 'https://www.checkout-ds24.com/product/639653';
+        const url = `${baseUrl}?email=${encodeURIComponent(user.email)}&custom_uid=${encodeURIComponent(user.uid)}`;
+        window.open(url, '_blank');
+}
+
+async function refreshSubscriptionAndRetry(){
+        try {
+                const ok = await hasActiveSubscription();
+                if (ok) document.getElementById('paywall-overlay')?.remove();
+        } catch(_) {}
+}
+
+async function ensureSubscriptionAccess(opts){
+    // opts: { onAllowed?: fn, onBlocked?: fn, redirectTo?: string }
+    const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
+    const buyUrl = (opts && opts.redirectTo) || `${pathToRoot}structure/store/abo-buy-2025-uiiuZZTtg8io.html`;
+    if(!user){
+        if (opts && typeof opts.onBlocked === 'function') opts.onBlocked();
+        try { window.location.href = buyUrl; } catch(_) {}
+        return false;
+    }
+    const ok = await hasActiveSubscription();
+    if (ok) {
+        if (opts && typeof opts.onAllowed === 'function') opts.onAllowed();
+        return true;
+    }
+    if (opts && typeof opts.onBlocked === 'function') opts.onBlocked();
+    try { window.location.href = buyUrl; } catch(_) {}
+    return false;
+}
+try {
+        window.createPaywallOverlay = createPaywallOverlay;
+        window.ensureSubscriptionAccess = ensureSubscriptionAccess;
+        window.startCheckoutFlow = startCheckoutFlow;
+} catch(_) {}
+
 
 // =================================================================================================
 // 2. FIREBASE AUTHENTICATION & ROUTING
@@ -79,6 +188,7 @@ if (auth) {
 // =================================================================================================
 // 3. CORE APPLICATION LOGIC (DOM-Ready)
 // =================================================================================================
+    
 document.addEventListener('DOMContentLoaded', () => {
     // Register Service Worker
     if ('serviceWorker' in navigator) {
@@ -105,6 +215,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const path = window.location.pathname;
+
+    // 3.1.a Global auto-binding: guard elements that require subscription
+    (function autoBindSubscriptionGuards(){
+        const bindOne = (el) => {
+            if (el.__paywallBound) return;
+            el.__paywallBound = true;
+            el.addEventListener('click', async (e) => {
+                // If a nested element handled it already, ignore
+                if (e.defaultPrevented) return;
+                const allowHref = el.getAttribute('data-allow-href') || '';
+                const ok = await (window.ensureSubscriptionAccess ? window.ensureSubscriptionAccess({}) : Promise.resolve(false));
+                if (ok) {
+                    if (allowHref) window.location.href = allowHref;
+                } else {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, { capture: true });
+        };
+        document.querySelectorAll('[data-require-subscription]')
+            .forEach(bindOne);
+        // Observe late-added nodes (e.g., content injection)
+        const mo = new MutationObserver((muts) => {
+            for (const m of muts) {
+                m.addedNodes && m.addedNodes.forEach(node => {
+                    if (!(node instanceof Element)) return;
+                    if (node.matches && node.matches('[data-require-subscription]')) bindOne(node);
+                    node.querySelectorAll && node.querySelectorAll('[data-require-subscription]').forEach(bindOne);
+                });
+            }
+        });
+        try { mo.observe(document.body, { childList: true, subtree: true }); } catch(_) {}
+    })();
 
 
     // =================================================================================================
@@ -595,7 +738,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let sessionMarkedAsComplete = false;
 
 
-
         async function markSessionComplete() {
             const user = auth.currentUser;
             if (!user || !db) return;
@@ -725,8 +867,8 @@ document.addEventListener('DOMContentLoaded', () => {
         audioPlayer.addEventListener('pause', () => {
             playPauseBtn.src = `${pathToRoot}assets/images/icons/play_icon_black.png`;
         });
-    audioPlayer.addEventListener('playing', () => {});
-    audioPlayer.addEventListener('ended', () => {});
+        audioPlayer.addEventListener('playing', () => {});
+        audioPlayer.addEventListener('ended', () => {});
         if(rewindBtn) rewindBtn.addEventListener('click', () => { audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 15); });
         if(forwardBtn) forwardBtn.addEventListener('click', () => { audioPlayer.currentTime += 15; });
         audioPlayer.addEventListener('timeupdate', () => {
@@ -1092,126 +1234,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (path.endsWith('categories.html')) {
         const forYouResultsContainer = document.getElementById('for-you-results');
         const moodButtons = document.querySelectorAll('.mood-button');
-        // ---------------- PAYWALL SETUP (Bonus / Premium Gating) ----------------
-        (function initPaywall(){
-            const BONUS_SELECTOR = '#Cat_card5Title'; // Bonus-Inhalte Karte
-            const bonusCard = document.querySelector(BONUS_SELECTOR);
-            if(!bonusCard) return;
-            // Prevent default inline navigation handler
-            bonusCard.onclick = null;
-            bonusCard.addEventListener('click', async (e)=> {
-                e.preventDefault();
-                const allowed = await ensureSubscriptionAccess();
-                if(allowed){
-                    window.location.href = 'subcategories/subcat05_bonus.html';
-                }
-            });
-
-
-            // =================================================================================================
-            //               --- Abonnement Logic (digistore24) ---
-            // =================================================================================================
-
-            // Lazy create overlay node on first need
-            function createPaywall(){
-                if(document.getElementById('paywall-overlay')) return;
-                const wrap = document.createElement('div');
-                wrap.id = 'paywall-overlay';
-                wrap.style.position = 'fixed';
-                wrap.style.inset = '0';
-                wrap.style.background = 'rgba(0,0,0,0.72)';
-                wrap.style.display = 'flex';
-                wrap.style.alignItems = 'center';
-                wrap.style.justifyContent = 'center';
-                wrap.style.zIndex = '9999';
-                wrap.innerHTML = `
-                  <div style="max-width:480px;width:90%;background:#ffffff;border-radius:18px;padding:28px 26px;font-family:inherit;position:relative;box-shadow:0 10px 28px rgba(0,0,0,0.35);">
-                    <button id="paywall-close" aria-label="close" style="position:absolute;top:8px;right:10px;background:transparent;border:none;font-size:20px;line-height:1;cursor:pointer;color:#555">×</button>
-                    <h2 data-i18n="paywall_headline" style="margin:0 0 10px 0;font-size:22px;line-height:1.25;text-align:center;">Freischalten erforderlich</h2>
-                    <p data-i18n="paywall_intro" style="font-size:14px;line-height:1.5;margin:0 0 18px 0;text-align:center;">Diese Inhalte sind nur für Abonnenten verfügbar.</p>
-                    <ul style="list-style:none;padding:0;margin:0 0 18px 0;font-size:14px;line-height:1.45;color:#222;">
-                      <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point1">Exklusive Bonus-Audios</span></li>
-                      <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point2">Regelmäßige neue Inhalte</span></li>
-                      <li style="display:flex;gap:8px;margin-bottom:6px;">✅ <span data-i18n="paywall_point3">Alle Grund- & Aufbauübungen ohne Limit</span></li>
-                    </ul>
-                    <div style="text-align:center;margin-bottom:16px;">
-                      <span data-i18n="paywall_price_hint" style="font-size:13px;color:#555;">Ab nur XX,XX € / Monat</span>
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:10px;">
-                      <button id="paywall-checkout" data-i18n="paywall_cta" style="background:#3b5bdb;color:#fff;border:none;padding:14px 18px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;">Jetzt freischalten</button>
-                      <button id="paywall-login" data-i18n="paywall_login" style="background:#eceff4;color:#222;border:none;padding:12px 16px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">Ich habe schon ein Abo</button>
-                    </div>
-                    <p data-i18n="paywall_privacy" style="margin:14px 0 0 0;font-size:11px;line-height:1.4;color:#666;text-align:center;">Sicherer externer Zahlungsanbieter.</p>
-                  </div>`;
-                document.body.appendChild(wrap);
-                loadTranslations(localStorage.getItem('lang')||'de');
-                wrap.querySelector('#paywall-close').addEventListener('click', ()=> wrap.remove());
-                wrap.addEventListener('click', (ev)=> { if(ev.target === wrap) wrap.remove(); });
-                const checkoutBtn = wrap.querySelector('#paywall-checkout');
-                const loginBtn = wrap.querySelector('#paywall-login');
-                if(checkoutBtn) checkoutBtn.addEventListener('click', startCheckoutFlow);
-                if(loginBtn) loginBtn.addEventListener('click', refreshSubscriptionAndRetry);
-            }
-
-            async function startCheckoutFlow(){
-                const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
-                if(!user){
-                    window.location.href = '../login.html';
-                    return;
-                }
-                // Replace PRODUCT_ID with actual Digistore24 product id
-                //const baseUrl = 'https://www.digistore24.com/product/PRODUCT_ID';
-                const baseUrl = 'https://www.checkout-ds24.com/product/639653';
-                const url = `${baseUrl}?email=${encodeURIComponent(user.email)}&custom_uid=${encodeURIComponent(user.uid)}`;
-                window.open(url, '_blank');
-            }
-
-            async function refreshSubscriptionAndRetry(){
-                try {
-                    // Force reload of user profile and re-check
-                    const allowed = await checkSubscriptionStatus(true);
-                    if(allowed){
-                        const ov = document.getElementById('paywall-overlay');
-                        if(ov) ov.remove();
-                        window.location.href = 'subcategories/subcat05_bonus.html';
-                    }
-                } catch(_) {}
-            }
-
-            async function checkSubscriptionStatus(forceReload){
-                const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
-                if(!user) return false;
-                if(!window.db) return false;
-                try {
-                    const doc = await window.db.collection('User_Profiles').doc(user.uid).get();
-                    const data = doc.exists ? doc.data() : {};
-                    const sub = data.subscription || {};
-                    if(sub.active === true){
-                        // optional expiry check if field exists
-                        if(sub.expiresAt && sub.expiresAt.toDate){
-                            if(sub.expiresAt.toDate() < new Date()) return false;
-                        }
-                        return true;
-                    }
-                } catch(e){ console.warn('Subscription check failed', e); }
-                return false;
-            }
-
-            async function ensureSubscriptionAccess(){
-                const user = (window.auth && window.auth.currentUser) ? window.auth.currentUser : null;
-                if(!user){
-                    createPaywall();
-                    return false;
-                }
-                const ok = await checkSubscriptionStatus();
-                if(ok) return true;
-                createPaywall();
-                return false;
-            }
-
-            // Expose for debugging if needed
-            try { window.ensureSubscriptionAccess = ensureSubscriptionAccess; } catch(_) {}
-        })();
 
         function addResultCardListeners() {
             document.querySelectorAll('#for-you-results .result-card').forEach(card => {

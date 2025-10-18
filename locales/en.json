@@ -416,17 +416,22 @@
   
   "buy_page_headline": "Your BODY & SOUL Premium Access",
   "buy_page_headtext": "Monthly or Half-year subscription. The content supports self-regulation, stress reduction, and mental stability.",
-  "buy_process_text": "<p>The purchase process is handled by the secure external provider Digistore24.</p>",
+  "buy_process_text": "<p>The purchase process is handled by the secure external provider Digistore24 GmbH.</p>",
   "cancellation_title": "Cancellation & Revocation",
   "cancellation_text": "The cancellation can be made via the Digistore24 customer account. Right of withdrawal and details are explained in the ordering process and in the Digistore24 terms and conditions.",
   "abo_monthly_text": "Automatically renews monthly. Can be canceled monthly.",
   "abo_halfyear_text": "<p>Runs for 6 months and renews automatically, unless canceled beforehand.</p>",
-  "abo_kaufabwicklung": "Payment is processed by the secure external provider Digistore24.",
-  "abo_halfyear_discount": "Save 10%",
+  "abo_halfyear_price_save": "<p>7,83 €/Month</p>",
+  "abo_kaufabwicklung": "Payment is processed by the secure external provider Digistore24 GmbH.",
+  "abo_halfyear_discount": "★★ Save 29% ★★",
   "abo_halfyear_price": "<strong>46.99 € / half-year</strong>",
   "abo_monthly_price": "<strong>10.99 € / month</strong>",
-  "abo_monthly_button": "Buy",
-  "abo_halfyear_button": "Buy"
+  "abo_buy_button": "Buy Now",
+  "back_to_app": "Back to the App",
+  "abo_more_details": "More Purchase Process Details",
+  "abo_modal_title": "Purchase Process & Important Information",
+  "abo_modal_text": "<p>The purchase process is handled by <strong>Digistore24 GmbH</strong>. Digistore24 manages payment processing, invoice generation, and customer data administration. Benefit: secure transactions and standardized subscription management.</p></br><p><strong>Monthly Subscription</strong>: €10.99 / month. Automatically renewed every month. Can be canceled monthly.</p></br><p><strong>Half-Year Subscription</strong>: €46.99 / half-year. Duration: 6 months, automatically renewed after expiration. Please cancel before the end of the term if you do not wish to renew.</p><p style=\"font-size:13px;color:var(--muted)\">Note: During the ordering process, you will be shown detailed contract information, your right of withdrawal, and the contact details of Digistore24.</p></p>"
+
 
 
   
@@ -434,4 +439,15 @@
 
 
 
+  ,
+  "__paywall_comment": "Paywall / Subscription",
+  "paywall_headline": "Unlock required",
+  "paywall_intro": "This area is available to subscribers only.",
+  "paywall_point1": "Exclusive bonus audios",
+  "paywall_point2": "Regular new content",
+  "paywall_point3": "All exercises without limits",
+  "paywall_price_hint": "From only XX.XX € / month",
+  "paywall_cta": "Unlock now",
+  "paywall_login": "I already have a subscription",
+  "paywall_privacy": "Payment via secure external provider (Digistore24)"
 }

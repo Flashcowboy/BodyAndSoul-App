@@ -176,6 +176,45 @@
     //                                  Depression Subcategory Page
     // **********************************************************************************************-->
 
+    <script>
+        // Early gate: if user is not subscribed, redirect to purchase page.
+        // Runs as soon as possible; relies on firebase config loaded later. Will re-check after auth ready.
+        (function() {
+            const toBuy = () => { window.location.replace('../store/abo-buy-2025-uiiuZZTtg8io.html'); };
+            // Quick unauthenticated fallback – let logged-out users go to categories instead of erroring
+            document.addEventListener('DOMContentLoaded', () => {
+                // If Firebase already present and user lacks sub, we'll redirect after auth initializes below.
+                // Otherwise, keep rendering minimal UI; a later check will handle redirect.
+            });
+            // After main.js initializes Firebase, verify access
+            window.addEventListener('load', () => {
+                const tryCheck = async () => {
+                    try {
+                        if (!window.auth || !window.db) return; // main.js not ready yet
+                        if (!window.auth.currentUser) { toBuy(); return; }
+                        // Prefer shared helper when available
+                        if (typeof window.hasActiveSubscription === 'function') {
+                            const ok = await window.hasActiveSubscription();
+                            if (!ok) { toBuy(); }
+                            return;
+                        }
+                        // Fallback inline check
+                        const doc = await window.db.collection('User_Profiles').doc(window.auth.currentUser.uid).get();
+                        const data = doc.exists ? (doc.data() || {}) : {};
+                        const sub = data.subscription || {};
+                        if (!(sub.active === true) || (sub.expiresAt && sub.expiresAt.toDate && sub.expiresAt.toDate() < new Date())) {
+                            toBuy();
+                        }
+                    } catch(_) { /* ignore */ }
+                };
+                // Try immediately, then again shortly in case auth is still initializing
+                tryCheck();
+                setTimeout(tryCheck, 400);
+                setTimeout(tryCheck, 1200);
+            });
+        })();
+    </script>
+
     <header>
         <!--<h1 data-i18n="subcat04_Header">Ziele erreichen</h1>-->
         <div class="subcategory-headercard" id="Cat_card5Title">

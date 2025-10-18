@@ -390,8 +390,8 @@
   "thankyou_digistore": "<p>Die Zahlung wurde über Digistore24 abgewickelt. Du erhältst in Kürze eine Bestätigungsmail von Digistore24.</p>",
   "thankyou_button": "<p>Zurück Zur App</p>",
   "list-item_01": "Exklusive Bonus-Inhalte",
-  "list-item_02": "Regelmäßige neue Übungen und Kurse",
-  "list-item_03": "Übungen mit alternativer Hintergrundmusik",
+  "list-item_02": "Regelmäßig neue Übungen und Kurse",
+  "list-item_03": "Inhalte offline verfügbar",
   "list-item_04": "Priorisierter Support",
 
   "__c_moods_1": "****************************************************************************************",
@@ -400,19 +400,22 @@
   
   "buy_page_headline": "Dein BODY & SOUL Premium Zugang",
   "buy_page_headtext": "Monatliches Abo oder Halbjahres-Abo. Die Inhalte unterstützen Selbstregulation, Stressreduktion und mentale Stabilität.",
-  "buy_process_text": "<p>Die Zahlung erfolgt über den sicheren externen Anbieter Digistore24.</p>",
+  "buy_process_text": "<p>Die Zahlung erfolgt über den sicheren externen Anbieter Digistore24 GmbH.</p>",
   "cancellation_title": "Kündigung & Widerruf",
   "cancellation_text": "Die Kündigung kann über das Digistore24-Kundenkonto erfolgen. Widerrufsrecht und Einzelheiten werden im Bestellprozess und in den Digistore24-AGBs erläutert.",
   "abo_monthly_text": "<p>Automatische Verlängerung monatlich. Monatliche Kündigung möglich.</p>",
   "abo_halfyear_text": "<p>Läuft 6 Monate, verlängert sich automatisch, wenn das Abonnement nicht vorher gekündigt wird.</p>",
   "abo_halfyear_price_save": "<p>7,83 €/Monat</p>",
-  "abo_save_percentage": "<p>Du sparst 29%</p>",
-  "abo_kaufabwicklung": "Die Zahlung erfolgt über den sicheren externen Anbieter Digistore24.",
-  "abo_halfyear_discount": "Spare 10%",
+  "abo_kaufabwicklung": "Die Zahlung erfolgt über den sicheren externen Anbieter Digistore24 GmbH.",
+  "abo_halfyear_discount": "★★ Spare 29% ★★",
   "abo_halfyear_price": "<strong>46,99 € / Halbjahr</strong>",
   "abo_monthly_price": "<strong>10,99 € / Monat</strong>",
-  "abo_monthly_button": "Kaufen",
-  "abo_halfyear_button": "Kaufen"
+  "abo_buy_button": "Jetzt Kaufen",
+  "back_to_app": "Zurück zur App",
+  "abo_more_details": "Mehr Details zur Abwicklung",
+  "abo_modal_title": "Kaufabwicklung & wichtige Hinweise",
+  "abo_modal_text": "<p>Die Kaufabwicklung wird durch die <strong>Digistore24 GmbH</strong> vorgenommen. Digistore24 übernimmt die Zahlungsabwicklung, Rechnungserstellung und Kundendatenverwaltung. Vorteil: sichere Transaktionen und standardisierte Aboverwaltung.</p></br><p><strong>Monatliches Abo</strong>: 10,99 € / Monat. Verlängerung automatisch jeden Monat. Monatliche Kündigung möglich.</p></br><p><strong>Halbjahres-Abo</strong>: 46,99 € / Halbjahr. Laufzeit 6 Monate, automatische Verlängerung nach Ablauf. Bitte kündigen Sie rechtzeitig vor Ablauf, falls keine Verlängerung gewünscht ist.</p><p style=\"font-size:13px;color:var(--muted)\">Hinweis: Im Bestellprozess werden Ihnen die konkreten Vertragsdetails, Widerrufsrecht und Kontaktinformationen von Digistore24 angezeigt.</p>"
+
 
 
 

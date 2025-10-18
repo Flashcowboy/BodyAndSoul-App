@@ -455,6 +455,28 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="../../firebase-config.js"></script>
     <script src="../../main.js"></script>
+    <script>
+        // Mark Visualisierung und folgende Kacheln als premium-pflichtig
+        (function(){
+            // Top-Level Kurskacheln
+            ['subcat02_04','subcat02_05','subcat02_06','subcat02_07'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.setAttribute('data-require-subscription','true');
+                }
+            });
+            // Audiokacheln ab basics_04_* und alle folgenden
+            const isPremiumBase = (base) => /^basics_(0?4|0?5|0?6|0?7)_/.test(base || '');
+            document.querySelectorAll('.subcategory-audiocard').forEach(card => {
+                const base = card.getAttribute('data-audio-base-name') || '';
+                if (isPremiumBase(base)) {
+                    // Optional: Ziel-URL falls notwendig
+                    // Wir blocken nur das Öffnen; Player-URL wird sonst in Tiles/Main gesetzt
+                    card.setAttribute('data-require-subscription','true');
+                }
+            });
+        })();
+    </script>
     <script src="../../challenge.js"></script>
     <script>
         // Back button behavior: history back with fallback

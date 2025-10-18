@@ -6,7 +6,8 @@
 <meta name="description" content="Abo für Autogenes Training. Kaufabwicklung durch Digistore24 GmbH." />
 <!-- Optional: Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+<link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#5a7d9a">
 <style>
     :root{
         --accent1:#fcfdbc;
@@ -33,7 +34,7 @@
 
         h1,h2{margin:0 0 10px 0}
         p{
-        margin:0 0 12px 0;
+        margin:0 0 2px 0;
         font-size:14px;
         }
 
@@ -42,7 +43,7 @@
         display:flex;
         gap:20px;
         align-items:center;
-        padding:18px;
+        padding:5px;
         width:80%;
         max-width:520px;
         margin:0 auto; /* hero mittig als Block */
@@ -52,7 +53,8 @@
     }
     .hero-left{
         flex:1;
-        color:#f9f7f7;
+        color:#400303;
+        text-shadow: 0 2px 3px rgba(0,0,0,0.5);
     }
     .hero-right{
         width:220px;
@@ -64,6 +66,7 @@
         flex-direction:column;
         margin: 12px auto 10px;
     }
+
     /* Prevent auto margins from affecting the hero layout */
     .hero .hero-right{ margin:0; }
     .hero-right img{ max-width:100%; height:auto; display:block; }
@@ -72,6 +75,7 @@
         color:#f4f1ac;
         margin-top:8px;
     }
+
     .cta{
         display:inline-block;
         border:0;
@@ -82,6 +86,7 @@
         font-weight:700;
         cursor:pointer;
         text-decoration:none;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.7);
     }
 
     /* ---------- Design 2: Modern & Klar ---------- */
@@ -120,7 +125,7 @@
     .price-row{
         display:flex;
         align-items:center;
-      justify-content:flex-start; /* rechts kein Kaufen-Button mehr */
+        justify-content:flex-start; /* rechts kein Kaufen-Button mehr */
         padding:12px;
         border-radius:10px;
         border:1px solid #eef4f2;
@@ -132,10 +137,11 @@
     .price-row .label{
         font-size: 22px;
         font-weight:600;
+        text-shadow: 0 2px 5px rgba(0,0,0,0.7);
         color: #fdedca;
     }
     .price_save_label{
-  color: #fdedca;
+        color: #fdedca;
     }
     .price-row .meta{font-size:13px;color:var(--muted)}
     .cta-alt{
@@ -147,7 +153,7 @@
         font-weight:700;
     }
     /* zentrale Kauf-Buttons breiter (bis Preislistenbreite) */
-    .buy-submit{ text-align:center; }
+    .buy-submit{ text-align:center; width: 200px;}
   .buy-submit .cta{
     display:block;
     width:100%;
@@ -169,7 +175,7 @@
       0 -1px 0 rgba(255,255,255,0.20) inset,
       0 8px 24px rgba(0,0,0,0.25);
     color:#fff;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.25);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
     border-radius: 12px;
   }
   .cta.btn-glass::before{
@@ -244,6 +250,7 @@
         0 8px 26px rgba(100, 85, 20, 0.7);   /* outer soft shadow (warm) */
       margin: 0 auto;
       text-align: left; /* Inhalt bleibt links für Listenlesbarkeit */
+      /* text-shadow: 0 1px 1px rgba(0,0,0,0.7); */
 
     }
 
@@ -339,7 +346,7 @@
 
     .features-list li {
             font-size: 18px;
-            font-weight: 400;
+            font-weight: 700;
             margin-bottom: 8px; /* engerer Abstand zwischen Punkten */
             display: flex;
             align-items: center;
@@ -359,23 +366,27 @@
 
     /* Styling für die Icon-Platzhalter */
     .features-list li [class^="icon-"] {
-            color: var(--color-check-gold);
+            color: #ffc700;
             margin-right: 25px;
-            font-size: 14px;
+            font-size: 15px;
             /* Wenn Sie Font Awesome nutzen, entfernen Sie diese Text-Eigenschaften */
             line-height: 0.2; 
         }
+    .meta {
+      font-size: 10px;
+      color: var(--muted);
+    }
 
 </style>
 </head>
 <body>
   <!-- <div class="wrap"> -->
 
-    <!-- ========== DESIGN 1 ========== -->
-  <div class="hero-right" aria-hidden="true">
-          <!-- Logo -->
+    <!-- ========== Logo ========== -->
+        <!-- <div class="hero-right" aria-hidden="true">
+          
           <img src="../../assets/images/logo_192.png" alt="Logo" width="100px" height="100px"/>
-        </div>
+        </div> -->
           
       <div class="hero">
         <div class="hero-left">
@@ -386,9 +397,9 @@
         <div class="glass-card-gold">
             <ul class="features-list">
                 <li><i class="icon-star">★</i><p data-i18n="list-item_01"></p><!-- Alle Bonusinhalte --></li>
-                <li><i class="icon-bolt">★</i><p data-i18n="list-item_02"></p><!-- Regelmäßige neue Inhalte --></li>
-                <li><i class="icon-book">★</i><p data-i18n="list-item_03"></p><!-- Alle Übungen ohne Limit --></li>
-                <li><i class="icon-shield">★</i><p data-i18n="list-item_04"></p><!-- Zugang zu allen Kursen --></li>
+                <li><i class="icon-star">★</i><p data-i18n="list-item_02"></p><!-- Regelmäßige neue Inhalte --></li>
+                <li><i class="icon-star">★</i><p data-i18n="list-item_03"></p><!-- Inhalte offline verfügbar --></li>
+                <li><i class="icon-star">★</i><p data-i18n="list-item_04"></p><!-- Priorisierter Support --></li>
             </ul>
         </div>
         
@@ -399,7 +410,7 @@
                   <input type="radio" id="plan_monat_gc" name="plan" value="monat" data-link="https://www.checkout-ds24.com/product/639653" />
                   <label for="plan_monat_gc">
                     <div class="label" data-i18n="abo_monthly_price"><!-- 11,99 € / Monat --></div>
-                    <div class="meta" style="font-size: 10px" data-i18n="abo_monthly_text"><!-- Automatische Verlängerung monatlich. Monatliche Kündigung möglich. --></div>
+                    <div class="meta" data-i18n="abo_monthly_text"><!-- Automatische Verlängerung monatlich. Monatliche Kündigung möglich. --></div>
                   </label>
                 </div>
               </div>
@@ -409,59 +420,46 @@
                   <input type="radio" checked id="plan_halbjahr_gc" name="plan" value="halbjahr" data-link="https://www.checkout-ds24.com/product/639653" />
                   <label for="plan_halbjahr_gc">
                     <div class="label" data-i18n="abo_halfyear_price"><!-- 46,99 € / Halbjahr --></div>
-                    <div class="price_save_label" data-i18n="abo_halfyear_price_save"><!-- 46,99 € / Halbjahr --></div>
-                    <div class="meta" style="font-size:10px" data-i18n="abo_halfyear_text"><!-- Läuft 6 Monate, verlängert sich automatisch. Kündigung vor Ablauf empfohlen. --></div>
+                    <div class="price_save_label" data-i18n="abo_halfyear_discount"><!--  Spare 29%--></div>
+                    <div class="price_save_label" data-i18n="abo_halfyear_price_save"><!--  7,83 €--></div>
+                    <div class="meta" data-i18n="abo_halfyear_text"><!-- Läuft 6 Monate, verlängert sich automatisch. Kündigung vor Ablauf empfohlen. --></div>
                   </label>
                 </div>
               </div>
+
+            <!--   Submit Button -->
+                <div class="buy-submit" style="margin-top:12px; text-align:center;">
+                    <button class="cta btn-glass purchaseBtn" data-i18n="abo_buy_button"><!-- Jetzt kaufen --></button>
+                </div>
               <div>
                 <p style="font-size:14px;color:var(--accent1)" data-i18n="buy_process_text"></p>
-                <img src="../../assets/images/digistore-logo.png" alt="Sichere Kaufabwicklung durch Digistore24" width="100" height="20" style="margin-top:6px;"/>
+                <img src="../../assets/images/digistore-logo.png" alt="Sichere Kaufabwicklung durch Digistore24" width="80 height="10" style="margin-top:6px;"/>
             </div>
-              <div class="buy-submit" style="margin-top:12px; text-align:center;">
-          <button class="cta btn-glass purchaseBtn">Jetzt kaufen</button>
-                </div>
+            
         
         </div>
-            <details style="margin-top:10px">
-                <summary style="cursor:pointer; font-size:18px; color: aqua;" data-i18n="cancellation_title"><!-- Kündigung & Widerruf --></summary>
+            <details>
+                <summary style="cursor:pointer; font-size:18px; color: rgb(123, 188, 248);" data-i18n="cancellation_title"><!-- Kündigung & Widerruf --></summary>
                 <p style="font-size:14px;color:var(--muted)" data-i18n="cancellation_text"><!-- Die Kündigung kann über das Digistore24-Kundenkonto erfolgen. Widerrufsrecht und Einzelheiten werden im Bestellprozess und in den Digistore24-AGBs erläutert. --></p>
           </details>
-        
-        <div><a href="../categories.html">Zurück zur App</a></div>
-
-
-
-
-
-        <div class="panel right" aria-hidden="false">
-          <h3>Fragen vor dem Kauf?</h3>
-          <p>Wenn du unsicher bist, wähle zunächst das Monatsabo. Du kannst jederzeit kündigen. Beide Abos gewähren vollständigen Zugriff auf die verfügbaren Inhalte.</p>
-
-          <p style="margin-top:12px"><strong>Rechtliche Hinweise</strong></p>
-          <ul style="color:var(--muted);font-size:14px">
-            <li>Die Abrechnung erfolgt über Digistore24.</li>
-            <li>Die Preise enthalten die gesetzliche Mehrwertsteuer.</li>
-            <li>Kündigungen sind vor Ablauf der jeweiligen Laufzeit möglich.</li>
-          </ul>
-
-          <div style="margin-top:16px">
-            <button class="cta" onclick="openModal()">Mehr Details zur Abwicklung</button>
+          <div>
+            <button class="cta" onclick="openModal()" data-i18n="abo_more_details"><!-- Mehr Details zur Abwicklung --></button>
           </div>
-        </div>
-      </div>
-    </section>
+        <div ><a href="../categories.html" style="color:white" data-i18n="back_to_app">Zurück zur App</a></div>
+
+
 
     <!-- modal -->
     <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="box">
         <button class="close-btn" onclick="closeModal()" aria-label="Schließen">✕</button>
-        <h3 id="modal-title">Kaufabwicklung & wichtige Hinweise</h3>
-        <p>Die Kaufabwicklung wird durch die <strong>Digistore24 GmbH</strong> vorgenommen. Digistore24 übernimmt die Zahlungsabwicklung, Rechnungserstellung und Kundendatenverwaltung. Vorteil: sichere Transaktionen und standardisierte Aboverwaltung.</p>
-        <p><strong>Monatliches Abo</strong>: 9,99 € / Monat. Verlängerung automatisch jeden Monat. Monatliche Kündigung möglich.</p>
-        <p><strong>Halbjahres-Abo</strong>: 49,99 € / Halbjahr. Laufzeit 6 Monate, automatische Verlängerung nach Ablauf. Bitte kündigen Sie rechtzeitig vor Ablauf, falls keine Verlängerung gewünscht ist.</p>
+        <h3 id="abo_modal-title" data-i18n="modal_title"><!-- Kaufabwicklung & wichtige Hinweise --></h3>
+        <span data-i18n="abo_modal_text"><!-- <p>Die Kaufabwicklung wird durch die <strong>Digistore24 GmbH</strong> vorgenommen. Digistore24 übernimmt die Zahlungsabwicklung, Rechnungserstellung und Kundendatenverwaltung. Vorteil: sichere Transaktionen und standardisierte Aboverwaltung.</p>
+        <p><strong>Monatliches Abo</strong>: 10,99 € / Monat. Verlängerung automatisch jeden Monat. Monatliche Kündigung möglich.</p>
+        <p><strong>Halbjahres-Abo</strong>: 46,99 € / Halbjahr. Laufzeit 6 Monate, automatische Verlängerung nach Ablauf. Bitte kündigen Sie rechtzeitig vor Ablauf, falls keine Verlängerung gewünscht ist.</p>
         <p style="font-size:13px;color:var(--muted)">Hinweis: Im Bestellprozess werden Ihnen die konkreten Vertragsdetails, Widerrufsrecht und Kontaktinformationen von Digistore24 angezeigt.</p>
-      </div>
+        -->    </span>  
+        </div>
     </div>
 
         </div>
