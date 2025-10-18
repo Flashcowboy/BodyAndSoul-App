@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitleCategories">Kategorien</title>
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+         body {
+            /* The layout rules are now global, but the page-specific background image needs to be kept */
+            background-image: url('../assets/images/backgrounds/bg_mountains_blue.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        main {
+            /* The global rule already has overflow-y, but this page has specific padding */
+            padding: 25px 10px;
+        }
+
+        .category-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 150px;
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.2);
+            color: rgb(242, 237, 237);
+            font-size: 12px;
+            font-weight: regular;
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <header>
+        <h3 data-i18n="Courses_Header">Dein 14-Tage-Kurs</h3>
+    </header>
+
+    <main>
+    
+        <div class="category-card" id="Cat_card2Title" data-href="#"></div>
+            <img src="../assets/images/categories/cat_02.png" alt="Dein Kurs">
+            <div class="card-text">
+                <h2 data-i18n="courseTitle">Grundübungen</h2>
+            </div>
+        </div>
+
+        <div class="category-card" id="Cat_card3Title" data-href="#">
+            <img src="../assets/images/categories/cat_03.png" alt="Dein Kurs">
+            <div class="card-text">
+                <h2 data-i18n="courseTitle">Fortgeschrittene Techniken</h2>
+            </div>
+        </div>
+
+    </main>
+
+     <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
+
+    <!-- Hier wird die Logik der App eingefügt -->
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+<script src="../firebase-config.js"></script>
+    <script src="../main.js"></script>
+
+    
+
+
+</body>
+</html>

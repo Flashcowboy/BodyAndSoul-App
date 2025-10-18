@@ -1,0 +1,60 @@
+mutation PopulateDatabase @auth(level: USER) {
+  course_insertMany(data: [
+    {
+      author: "Sample Author 1",
+      createdAt: "2024-01-01T00:00:00Z",
+      description: "Sample Description 1",
+      durationMinutes: 60,
+      imageUrl: "http://example.com/image1.jpg",
+      level: "Beginner",
+      tags: ["tag1", "tag2"],
+      title: "Sample Course 1"
+    },
+    {
+      author: "Sample Author 2",
+      createdAt: "2024-02-01T00:00:00Z",
+      description: "Sample Description 2",
+      durationMinutes: 90,
+      imageUrl: "http://example.com/image2.jpg",
+      level: "Intermediate",
+      tags: ["tag3", "tag4"],
+      title: "Sample Course 2"
+    }
+  ])
+  session_insertMany(data: [
+    {
+      courseId: "550e8400-e29b-41d4-a716-446655440000",
+      audioUrl: "http://example.com/audio1.mp3",
+      createdAt: "2024-01-01T00:00:00Z",
+      description: "Sample Session 1",
+      durationSeconds: 3600,
+      orderIndex: 1,
+      title: "Sample Session 1"
+    },
+    {
+      courseId: "550e8400-e29b-41d4-a716-446655440001",
+      audioUrl: "http://example.com/audio2.mp3",
+      createdAt: "2024-02-01T00:00:00Z",
+      description: "Sample Session 2",
+      durationSeconds: 5400,
+      orderIndex: 1,
+      title: "Sample Session 2"
+    }
+  ])
+  user_insertMany(data: [
+    {
+      createdAt: "2024-01-01T00:00:00Z",
+      displayName: "Sample User 1",
+      email: "user1@example.com",
+      lastLoginAt: "2024-01-01T00:00:00Z",
+      photoUrl: "http://example.com/photo1.jpg"
+    },
+    {
+      createdAt: "2024-02-01T00:00:00Z",
+      displayName: "Sample User 2",
+      email: "user2@example.com",
+      lastLoginAt: "2024-02-01T00:00:00Z",
+      photoUrl: "http://example.com/photo2.jpg"
+    }
+  ])
+}

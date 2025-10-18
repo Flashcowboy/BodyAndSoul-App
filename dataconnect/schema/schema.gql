@@ -1,0 +1,43 @@
+type User @table {
+  displayName: String!
+  createdAt: Timestamp!
+  email: String
+  photoUrl: String
+  lastLoginAt: Timestamp
+}
+
+type Course @table {
+  title: String!
+  description: String!
+  durationMinutes: Int!
+  level: String!
+  createdAt: Timestamp!
+  imageUrl: String
+  author: String
+  tags: [String]
+}
+
+type Session @table {
+  course: Course
+  title: String!
+  audioUrl: String!
+  orderIndex: Int!
+  durationSeconds: Int!
+  createdAt: Timestamp!
+  description: String
+}
+
+type UserCourseProgress @table(key: ["user", "course"]) {
+  user: User!
+  course: Course!
+  lastAccessedAt: Timestamp!
+  completed: Boolean!
+  lastSessionPlayedId: UUID
+}
+
+type UserSessionCompletion @table(key: ["user", "session"]) {
+  user: User!
+  session: Session!
+  completedAt: Timestamp!
+  notes: String
+}

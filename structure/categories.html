@@ -7,28 +7,26 @@
     <link rel="stylesheet" href="../styles.css">
 
     <style>
-         body {
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            height: 100vh;
-            background-color: #f8f9fb;
+        
+
+        body {
+            background-color: #f2f4f7;
             /* Hintergrundbild direkt auf den Body anwenden */
-            background-image: url('../assets/images/backgrounds/bg_mountains_blue.png');
+            background-image: url('../assets/images/splash_screen_bg.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-                header {
+        header {
             text-align: center;
-            padding: 5px 0;
+            padding: 20px 0;
+            background-color: rgba(81, 77, 52, 0.0);
         }
 
+
         main {
-            flex-grow: 1;
-            overflow-y: auto;
+            /* The global rule already has overflow-y, but this page has specific padding */
             padding: 25px 10px;
         }
 
@@ -43,7 +41,8 @@
             height: 150px;
         }
 
-        .category-card img {
+    /* Only target the background image inside the card, not nested icons */
+    .category-card > img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -59,12 +58,45 @@
             width: 100%;
             padding: 15px;
             box-sizing: border-box;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.4);
             color: rgb(242, 237, 237);
             font-size: 12px;
             font-weight: regular;
         }
 
+        .for-you-section {
+            background-color: #fff;
+            border-radius: 12px;
+            background-image: url('../assets/images/backgrounds/bg_grassleaves_blue.png');
+            background-size: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .challenge-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .challenge-button .challenge-icon {
+            height: 18px;
+            width: 18px;
+            object-fit: contain;
+            /* Ensure the icon participates in the flex layout and doesn't overlap the label */
+            position: static;
+        }
     </style>
 </head>
 <body>
@@ -75,82 +107,86 @@
     </header>
 
     <main>
-         <div class="category-card" id="Cat_card1Title" onclick="window.location.href = 'subcategories/subcat01_whatisat.html';">
+        <div><a href="store/abo-buy-2025-uiiuZZTtg8io.html">Abo kaufen</a></div>
+        <div class="for-you-section">
+            <p data-i18n="forYouTitle">...</p> <!-- Willkommenstext -->
+            <div class="mood-buttons">
+                <button class="mood-button" data-tag="gestresst" data-i18n="moodStress">Gestresst</button>
+                <button class="mood-button" data-tag="fokussiert" data-i18n="moodFocus">Fokussiert</button>
+                <button class="mood-button" data-tag="müde" data-i18n="moodTired">Müde</button>
+                <button class="mood-button" data-tag="unruhig" data-i18n="moodRestless">Unruhig</button>
+                <button class="mood-button" data-tag="überfordert" data-i18n="moodOverstrained">Überfordert</button>
+                <button class="mood-button" data-tag="traurig" data-i18n="moodSad">Traurig</button>
+                <button class="mood-button" data-tag="aggressiv" data-i18n="moodAggressiv">Agressiv</button>
+                <button class="mood-button" data-tag="schmerz" data-i18n="moodPain">Schmerz</button>
+                <button class="mood-button" data-tag="ängstlich" data-i18n="moodScared">Ängstlich</button>
+            </div>
+        </div>
+
+        <!-- Container for the results, which will be dynamically populated -->
+        <div id="for-you-results"></div>
+
+         <div class="category-card" id="Cat_card1Title" data-href="subcategories/subcat01_whatisat.html">
             <img src="../assets/images/categories/cat_01.png" alt="Allgemeine Entspannung">
             <div class="card-text">
                 <h2 data-i18n="card1Title">Allgemeine Entspannung</h2>
             </div>
         </div>
 
-        <div class="category-card" id="Cat_card2Title" onclick="window.location.href = 'subcategories/subcat02_basics.html';">
+        <div class="category-card" id="Cat_card2Title" data-href="subcategories/subcat02_basics.html">
             <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+            <div class="challenge-button" data-challenge-href="subcategories/subcat03_anxiety.html?challenge=true">
+                <img class="challenge-icon" src="../assets/images/icons/calendar.png" alt="Challenge">
+                <span data-i18n="challengeButtonLabel_21">21-Tage Challenge</span>
+            </div>
             <div class="card-text">
                 <h2 data-i18n="card2Title">Grundübungen</h2>
             </div>
         </div>
 
-        <div class="category-card" id="Cat_card3Title" onclick="window.location.href = 'subcategories/subcat03_sleep.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Erholsamer Schlaf">
+        <div class="category-card" id="Cat_card3Title" onclick="window.location.href = 'subcategories/subcat03_anxiety.html';">
+            <img src="../assets/images/categories/cat_11.png" alt="Ängste besiegen">
             <div class="card-text">
-                <h2 data-i18n="card3Title">Für einen erholsamen Schlaf</h2>
+                <h2 data-i18n="card3Title">Angstbewältigung</h2>
             </div>
+            <!-- <div class="challenge-button" data-challenge-href="subcategories/subcat03_anxiety.html?challenge=true">
+                <img class="challenge-icon" src="../assets/images/icons/calendar.png" alt="Challenge">
+                <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
+            </div> -->
         </div>
 
-        <div class="category-card" id="Cat_card4Title" onclick="window.location.href = 'subcategories/subcat04_success.html';">
-            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
+        <div class="category-card" id="Cat_card4Title" onclick="window.location.href = 'subcategories/subcat04_depression.html';">
+            <img src="../assets/images/categories/cat_04.png" alt="Depressionen bekämpfen">
             <div class="card-text">
-                <h2 data-i18n="card4Title">Erfolg</h2>
+                <h2 data-i18n="card4Title">Depressionen bekämpfen</h2>
             </div>
+            <!-- <div class="challenge-button" data-challenge-href="../subcategories/subcat04_goals.html?challenge=true">
+                <img class="challenge-icon" src="../assets/images/icons/calendar.png" alt="Challenge">
+                <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
+            </div> -->
         </div>
 
-        <div class="category-card" id="Cat_card5Title" onclick="window.location.href = 'subcategories/subcat05_weightloss.html';">
-            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
+    <div class="category-card" id="Cat_card5Title" data-require-subscription="true" data-allow-href="subcategories/subcat05_bonus.html">
+            <img src="../assets/images/categories/bonus.png" alt="Bonus-Inhalte">
             <div class="card-text">
-                <h2 data-i18n="card5Title">Abnehmen</h2>
+                <h2 data-i18n="card5Title">Bonus-Inhalte</h2>
             </div>
+            <!-- <div class="challenge-button" data-challenge-href="../subcategories/subcat04_goals.html?challenge=true">
+                <img class="challenge-icon" src="../assets/images/icons/calendar.png" alt="Challenge">
+                <span data-i18n="challengeButtonLabel">14-Tage Challenge</span>
+            </div> -->
         </div>
 
-        <div class="category-card" id="Cat_card6Title" onclick="window.location.href = 'subcategories/subcat06_emotions.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
-            <div class="card-text">
-                <h2 data-i18n="card6Title">Emotionale Stabilität</h2>
-            </div>
-        </div>
-        <div class="category-card" id="Cat_card7Title" onclick="window.location.href = 'subcategories/subcat07_health.html';">
-            <img src="../assets/images/categories/cat_01.png" alt="Was ist Autogenes Training?">
-            <div class="card-text">
-                <h2 data-i18n="card7Title">Für ein gesundes Leben</h2>
-            </div>
-        </div>
-
-        <div class="category-card" id="Cat_card8Title" onclick="window.location.href = 'subcategories/subcat08_relaxed.html';">
-            <img src="../assets/images/categories/cat_02.png" alt="Grundübungen">
-            <div class="card-text">
-                <h2 data-i18n="card8Title">Entspannt und ausgeglichen</h2>
-            </div>
-        </div>
-
-        <div class="category-card" id="Cat_card9Title" onclick="window.location.href = 'subcategories/subcat09_habits.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
-            <div class="card-text">
-                <h2 data-i18n="card9Title">Gewohnheiten ändern</h2>
-            </div>
-        </div>
-
-        <div class="category-card" id="Cat_card10Title" onclick="window.location.href = 'subcategories/subcat10_smokeless.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
-            <div class="card-text">
-                <h2 data-i18n="card10Title">Nichtraucher werden</h2>
-            </div>
-        </div>
-
-        <div class="category-card" id="Cat_card11Title" onclick="window.location.href = 'subcategories/subcat10_smokeless.html';">
-            <img src="../assets/images/categories/cat_03.png" alt="Fortgeschrittene Übungen">
-            <div class="card-text">
-                <h2 data-i18n="card11Title">Selbstvertrauen</h2>
-            </div>
-        </div>
+   
     </main>
+
+     <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
 
     <!-- Hier wird die Logik der App eingefügt -->
 <!-- Firebase SDKs -->
@@ -158,21 +194,22 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-<script src="../main.js"></script>
+<script src="../firebase-config.js"></script>
+    <script src="../main.js"></script>
+    <script>
+        // Bind paywall check for Bonus tile
+        (function(){
+            const el = document.getElementById('Cat_card5Title');
+            if (!el) return;
+            el.addEventListener('click', async function(e){
+                e.preventDefault();
+                const href = this.getAttribute('data-allow-href') || 'subcategories/subcat05_bonus.html';
+                const ok = await (window.ensureSubscriptionAccess ? window.ensureSubscriptionAccess({}) : Promise.resolve(false));
+                if (ok) window.location.href = href;
+            });
+        })();
+    </script>
 
-    <footer>
-        <!-- Navigations-Icons sind nicht übersetzbar, daher kein data-i18n -->
-        <div class="nav-item">
-            <img src="../assets/images/icons/home.png" alt="Home" onclick="location.href='categories.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../assets/images//icons/yoga.png" alt="yoga pose style" onclick="location.href='profile.html'">
-        </div>
-        <div class="nav-item">
-            <img src="../assets/images//icons/gear.png" alt="Settings" onclick="location.href='settings.html'">
-        </div>
-
-    </footer>
     
 
 

@@ -1,0 +1,527 @@
+[
+  {
+    "description_de": "Allgemeine Entspannung mit Ausleitung",
+    "description_en": "Common relaxation.",
+    "path": "basics_01_01.m4a",
+    "tags": ["gestresst","aggressiv","traurig","überfordert","ängstlich", "unruhig","fokussiert", "schmerz"],
+    "title_de": "Allgemeine Entspannung<br>Übung mit Ausleitung",
+    "title_en": "Letting go of Stress"
+  },
+  {
+    "description_de": "Allgemeine Entspannung zum Einschlafen",
+    "description_en": "Common relaxation for falling asleep.",
+    "path": "basics_01_02.m4a",
+    "tags": ["gestresst","aggressiv","traurig","überfordert","ängstlich", "unruhig", "fokussiert", "müde", "schmerz"],
+    "title_de": "Allgemeine Entspannung<br>Übung mit Ausleitung",
+    "title_en": "Letting go of Stress"
+  },
+  {
+    "description_de": "15 min geführte Atem-Übung mit Ausleitung",
+    "description_en": "A 15-minute breathing exercise.",
+    "path": "basics_02_01.m4a",
+    "tags": ["gestresst","ängstlich","überfordert", "unruhig", "schmerz"],
+    "title_de": "Atemübung",
+    "title_en": "Breathing Exercise"
+  },
+  {
+    "description_de": "15 min geführte Atem-Übung zum Einschlafen",
+    "description_en": "A 15-minute breathing exercise.",
+    "path": "basics_02_02.m4a",
+    "tags": ["gestresst","ängstlich","überfordert", "unruhig","müde", "schmerz"],
+    "title_de": "Atemübung",
+    "title_en": "Breathing Exercise"
+  },
+  {
+    "description_de": "Grundübung - Herz-Übung mit Ausleitung",
+    "description_en": "A 15-minute heart-focused relaxation exercise.",
+    "path": "basics_03_01.m4a",
+    "tags": ["traurig","depressiv", "unruhig"],
+    "title_de": "Herz-Übung<br>Übung mit Ausleitung",
+    "title_en": "Heart Exercise<br>Exercise with Conclusion"
+  },
+{
+    "description_de": "Grundübung - Herz-Übung zum Einschlafen",
+    "description_en": "A 15-minute heart-focused relaxation exercise.",
+    "path": "basics_03_02.m4a",
+    "tags": ["traurig","depressiv","müde", "unruhig"],
+    "title_de": "Herz-Übung<br>Übung mit Ausleitung",
+    "title_en": "Heart Exercise<br>Exercise with Conclusion"
+  },
+
+
+
+
+  {
+    "description_de": "Grundübung - Visualisierungs-Übung mit Ausleitung",
+    "description_en": "A 15-minute visualization exercise.",
+    "path": "basics_04_01.m4a",
+    "tags": ["gestresst","überfordert","ängstlich", "unruhig"],
+    "title_de": "Visualisierungs-Übung<br>Übung mit Ausleitung",
+    "title_en": "Visualization Exercise<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Grundübung - Visualisierungs-Übung zum Einschlafen",
+    "description_en": "A 15-minute visualization exercise.",
+    "path": "basics_04_02.m4a",
+    "tags": ["gestresst","überfordert","ängstlich","müde", "unruhig"],
+    "title_de": "Visualisierungs-Übung<br>Übung mit Ausleitung",
+    "title_en": "Visualization Exercise<br>Exercise for Falling Asleep"
+  },
+  
+  
+  {
+    "description_de": "15 min geführte Schwere-Übung mit Ausleitung",
+    "description_en": "A 15-minute heaviness relaxation exercise.",
+    "path": "basics_05_01.m4a",
+    "tags": ["traurig","depressiv"],
+    "title_de": "Schwereübung<br>Übung zum Einschlafen",
+    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
+    "description_en": "A 15-minute heaviness relaxation exercise.",
+    "path": "basics_05_02.m4a",
+    "tags": ["müde","traurig","depressiv"],
+    "title_de": "Schwereübung<br>Übung zum Einschlafen",
+    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
+  },
+
+
+
+  {
+    "description_de": "15 min geführte Schwere-Übung mit Ausleitung",
+    "description_en": "A 15-minute heaviness relaxation exercise.",
+    "path": "basics_06_01.m4a",
+    "tags": ["überfordert","ängstlich","gestresst", "unruhig"],
+    "title_de": "Schwereübung<br>Übung mit Ausleitung",
+    "title_en": "Heaviness Exercise<br>Exercise with Conclusion"
+  },
+
+{
+    "description_de": "15 min geführte Schwere-Übung zum Einschlafen",
+    "description_en": "A 15-minute heaviness relaxation exercise.",
+    "path": "basics_06_02.m4a",
+    "tags": ["überfordert","ängstlich","gestresst","müde", "unruhig"],
+    "title_de": "Schwereübung<br>Übung mit Ausleitung",
+    "title_en": "Heaviness Exercise<br>Exercise for Falling Asleep"
+  },
+
+
+  {
+    "description_de": "15 min geführte Sonnengeflecht-Übung mit Ausleitung",
+    "description_en": "A 15-minute solar plexus relaxation exercise.",
+    "path": "basics_07_01.m4a",
+    "tags": ["ängstlich","traurig", "unruhig"],
+    "title_de": "Sonnengeflecht-Übung<br>Übung mit Ausleitung",
+    "title_en": "Solar Plexus Exercise<br>Exercise with Conclusion"
+  },
+  {
+    "description_de": "15 min geführte Sonnengeflecht-Übung zum Einschlafen",
+    "description_en": "A 15-minute solar plexus relaxation exercise.",
+    "path": "basics_07_02.m4a",
+    "tags": ["ängstlich","traurig","müde", "unruhig"],
+    "title_de": "Sonnengeflecht-Übung<br>Übung zum Einschlafen",
+    "title_en": "Solar Plexus Exercise<br>Exercise for Falling Asleep"
+  },
+  {
+    "description_de": "Alltägliche Sorgen bewältigen mit Ausleitung",
+    "description_en": "Coping with Everyday Worries.",
+    "path": "genanxiety_01_01.m4a",
+    "tags": ["gestresst","überfordert","ängstlich"],
+    "title_de": "Alltägliche Sorgen bewältigen<br>Übung mit Ausleitung",
+    "title_en": "Coping with Everyday Worries<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Alltägliche Sorgen bewältigen zum Einschlafen",
+    "description_en": "Coping with Everyday Worries.",
+    "path": "genanxiety_01_02.m4a",
+    "tags": ["gestresst","überfordert","ängstlich","müde"],
+    "title_de": "Alltägliche Sorgen bewältigen<br>Übung zum Einschlafen",
+    "title_en": "Coping with Everyday Worries<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Ruhe im Alltag finden mit Ausleitung",
+    "description_en": "Finding Calm in Everyday Life.",
+    "path": "genanxiety_02_01.m4a",
+    "tags": ["gestresst","schmerz","überfordert", "unruhig"],
+    "title_de": "Ruhe im Alltag finden<br>Übung mit Ausleitung",
+    "title_en": "Finding Calm in Everyday Life<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Ruhe im Alltag finden zum Einschlafen",
+    "description_en": "Finding Calm in Everyday Life.",
+    "path": "genanxiety_02_02.m4a",
+    "tags": ["gestresst","müde","überfordert","müde", "unruhig"],
+    "title_de": "Ruhe im Alltag finden<br>Übung zum Einschlafen",
+    "title_en": "Finding Calm in Everyday Life<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Mit den Sorgen umgehen mit Ausleitung",
+    "description_en": "Coping with Worries.",
+    "path": "genanxiety_03_01.m4a",
+    "tags": ["ängstlich","überfordert","traurig"],
+    "title_de": "Mit den Sorgen umgehen<br>Übung mit Ausleitung",
+    "title_en": "Coping with Worries<br>Exercise with Conclusion"
+  },
+
+{
+    "description_de": "Mit den Sorgen umgehen zum Einschlafen",
+    "description_en": "Coping with Worries.",
+    "path": "genanxiety_03_02.m4a",
+    "tags": ["ängstlich","überfordert","traurig","müde", "schmerz"],
+    "title_de": "Mit den Sorgen umgehen<br>Übung zum Einschlafen",
+    "title_en": "Coping with Worries<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Balance im Alltag finden mit Ausleitung",
+    "description_en": "Finding Balance in Everyday Life.",
+    "path": "genanxiety_04_01.m4a",
+    "tags": ["gestresst","überfordert","depressiv"],
+    "title_de": "Balance im Alltag finden<br>Übung mit Ausleitung",
+    "title_en": "Finding Balance in Everyday Life<br>Exercise with Conclusion"
+  },
+  {
+    "description_de": "Balance im Alltag finden zum Einschlafen",
+    "description_en": "Finding Balance in Everyday Life.",
+    "path": "genanxiety_04_02.m4a",
+    "tags": ["gestresst","überfordert","depressiv","müde"],
+    "title_de": "Balance im Alltag finden<br>Übung zum Einschlafen",
+    "title_en": "Finding Balance in Everyday Life<br>Exercise for Falling Asleep"
+  },
+  {
+    "description_de": "Intensive Angst bewältigen mit Ausleitung",
+    "description_en": "Coping with Intense Anxiety.",
+    "path": "genanxiety_05_01.m4a",
+    "tags": ["ängstlich","überfordert", "schmerz"],
+    "title_de": "Intensive Angst bewältigen<br>Übung mit Ausleitung",
+    "title_en": "Coping with Intense Anxiety<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Intensive Angst bewältigen zum Einschlafen",
+    "description_en": "Coping with Intense Anxiety.",
+    "path": "genanxiety_05_02.m4a",
+    "tags": ["ängstlich","überfordert","müde"],
+    "title_de": "Intensive Angst bewältigen<br>Übung zum Einschlafen",
+    "title_en": "Coping with Intense Anxiety<br>Exercise for Falling Asleep"
+  },
+
+
+  {
+    "description_de": "Tiefenentspannung gegen Angst mit Ausleitung",
+    "description_en": "Finding Deep Relaxation Against Anxiety.",
+    "path": "genanxiety_06_01.m4a",
+    "tags": ["ängstlich","gestresst"],
+    "title_de": "Tiefenentspannung gegen Angst<br>Übung mit Ausleitung",
+    "title_en": "Deep Relaxation Against Anxiety<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Tiefenentspannung gegen Angst zum Einschlafen",
+    "description_en": "Finding Deep Relaxation Against Anxiety.",
+    "path": "genanxiety_06_02.m4a",
+    "tags": ["ängstlich","gestresst","müde"],
+    "title_de": "Tiefenentspannung gegen Angst<br>Übung zum Einschlafen",
+    "title_en": "Deep Relaxation Against Anxiety<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Selbstbewusst im Alltag mit Ausleitung",
+    "description_en": "Finding Confidence in Everyday Life.",
+    "path": "socialanxiety_01_01.m4a",
+    "tags": ["ängstlich","überfordert","traurig"],
+    "title_de": "Selbstbewusst im Alltag<br>Übung mit Ausleitung",
+    "title_en": "Confidence in Everyday Life<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Selbstbewusst im Alltag zum Einschlafen",
+    "description_en": "Finding Confidence in Everyday Life.",
+    "path": "socialanxiety_01_02.m4a",
+    "tags": ["ängstlich","überfordert","traurig","müde"],
+    "title_de": "Selbstbewusst im Alltag<br>Übung zum Einschlafen",
+    "title_en": "Confidence in Everyday Life<br>Exercise for Falling Asleep"
+  },
+  {
+    "description_de": "Ruhe in sozialen Situationen finden mit Ausleitung",
+    "description_en": "Finding Calm in Social Situations.",
+    "path": "socialanxiety_02_01.m4a",
+    "tags": ["ängstlich","gestresst","überfordert"],
+    "title_de": "Ruhe in sozialen Situationen finden<br>Übung mit Ausleitung",
+    "title_en": "Calm in Social Situations<br>Exercise with Conclusion"
+  },
+
+{
+    "description_de": "Ruhe in sozialen Situationen finden zum Einschlafen",
+    "description_en": "Finding Calm in Social Situations.",
+    "path": "socialanxiety_02_02.m4a",
+    "tags": ["ängstlich","gestresst","überfordert","müde"],
+    "title_de": "Ruhe in sozialen Situationen finden<br>Übung zum Einschlafen",
+    "title_en": "Calm in Social Situations<br>Exercise for Falling Asleep"
+  },
+
+
+  {
+    "description_de": "Selbstbewusst vor Gruppen sprechen mit Ausleitung",
+    "description_en": "Confidence in Speaking Before Groups.",
+    "path": "socialanxiety_03_01.m4a",
+    "tags": ["ängstlich","gestresst"],
+    "title_de": "Selbstbewusst vor Gruppen sprechen<br>Übung mit Ausleitung",
+    "title_en": "Confidence in Speaking Before Groups<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Selbstbewusst vor Gruppen sprechen zum Einschlafen",
+    "description_en": "Confidence in Speaking Before Groups.",
+    "path": "socialanxiety_03_02.m4a",
+    "tags": ["ängstlich","gestresst","müde"],
+    "title_de": "Selbstbewusst vor Gruppen sprechen<br>Übung zum Einschlafen",
+    "title_en": "Confidence in Speaking Before Groups<br>Exercise for Falling Asleep"
+  },
+
+
+  {
+    "description_de": "Angstfreie Präsentationen mit Ausleitung",
+    "description_en": "Confident Presentations.",
+    "path": "socialanxiety_04_01.m4a",
+    "tags": ["ängstlich","gestresst","überfordert"],
+    "title_de": "Angstfreie Präsentationen<br>Übung mit Ausleitung",
+    "title_en": "Confident Presentations<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Angstfreie Präsentationen zum Einschlafen",
+    "description_en": "Confident Presentations.",
+    "path": "socialanxiety_04_02.m4a",
+    "tags": ["ängstlich","gestresst","überfordert","müde"],
+    "title_de": "Angstfreie Präsentationen<br>Übung zum Einschlafen",
+    "title_en": "Confident Presentations<br>Exercise for Falling Asleep"
+  },
+  {
+    "description_de": "Leichtigkeit im Alltag finden mit Ausleitung",
+    "description_en": "Finding Ease in Everyday Life.",
+    "path": "depression_01_01.m4a",
+    "tags": ["traurig","depressiv"],
+    "title_de": "Leichtigkeit im Alltag finden<br>Übung mit Ausleitung",
+    "title_en": "Ease in Everyday Life<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Leichtigkeit im Alltag finden zum Einschlafen",
+    "description_en": "Finding Ease in Everyday Life.",
+    "path": "depression_01_02.m4a",
+    "tags": ["traurig","depressiv","müde"],
+    "title_de": "Leichtigkeit im Alltag finden<br>Übung zum Einschlafen",
+    "title_en": "Ease in Everyday Life<br>Exercise for Falling Asleep"
+  },
+
+  
+  {
+    "description_de": "Kleine Schritte zur Lebensfreude mit Ausleitung",
+    "description_en": "Small Steps Towards Joy in Life.",
+    "path": "depression_02_01.m4a",
+    "tags": ["traurig","depressiv","hoffnungslos"],
+    "title_de": "Kleine Schritte zur Lebensfreude<br>Übung mit Ausleitung",
+    "title_en": "Small Steps Towards Joy<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Kleine Schritte zur Lebensfreude zum Einschlafen",
+    "description_en": "Small Steps Towards Joy in Life.",
+    "path": "depression_02_02.m4a",
+    "tags": ["traurig","depressiv","hoffnungslos","müde"],
+    "title_de": "Kleine Schritte zur Lebensfreude<br>Übung zum Einschlafen",
+    "title_en": "Small Steps Towards Joy<br>Exercise for Falling Asleep"
+  },
+
+
+  {
+    "description_de": "Motivation zurückgewinnen mit Ausleitung",
+    "description_en": "Regaining Motivation.",
+    "path": "depression_03_01.m4a",
+    "tags": ["depressiv","antriebslos"],
+    "title_de": "Motivation zurückgewinnen<br>Übung mit Ausleitung",
+    "title_en": "Regaining Motivation<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Motivation zurückgewinnen zum Einschlafen",
+    "description_en": "Regaining Motivation.",
+    "path": "depression_03_02.m4a",
+    "tags": ["müde","depressiv","antriebslos","müde"],
+    "title_de": "Motivation zurückgewinnen<br>Übung zum Einschlafen",
+    "title_en": "Regaining Motivation<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Alltag wieder gestalten mit Ausleitung",
+    "description_en": "Redesigning Everyday Life.",
+    "path": "depression_04_01.m4a",
+    "tags": ["überfordert","depressiv","traurig"],
+    "title_de": "Alltag wieder gestalten<br>Übung mit Ausleitung",
+    "title_en": "Redesigning Everyday Life<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Alltag wieder gestalten zum Einschlafen",
+    "description_en": "Redesigning Everyday Life.",
+    "path": "depression_04_02.m4a",
+    "tags": ["überfordert","depressiv","traurig","müde"],
+    "title_de": "Alltag wieder gestalten<br>Übung zum Einschlafen",
+    "title_en": "Redesigning Everyday Life<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Stärkung der inneren Resilienz mit Ausleitung",
+    "description_en": "Building Inner Resilience.",
+    "path": "depression_05_01.m4a",
+    "tags": ["depressiv","traurig","ängstlich"],
+    "title_de": "Stärkung der inneren Resilienz<br>Übung mit Ausleitung",
+    "title_en": "Building Inner Resilience<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Stärkung der inneren Resilienz zum Einschlafen",
+    "description_en": "Building Inner Resilience.",
+    "path": "depression_05_02.m4a",
+    "tags": ["depressiv","traurig","ängstlich","müde"],
+    "title_de": "Stärkung der inneren Resilienz<br>Übung zum Einschlafen",
+    "title_en": "Building Inner Resilience<br>Exercise for Falling Asleep"
+  },
+
+
+  {
+    "description_de": "Schritte aus der Dunkelheit mit Ausleitung",
+    "description_en": "Steps Out of Darkness.",
+    "path": "depression_06_01.m4a",
+    "tags": ["depressiv","traurig","hoffnungslos"],
+    "title_de": "Schritte aus der Dunkelheit<br>Übung mit Ausleitung",
+    "title_en": "Steps Out of Darkness<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Schritte aus der Dunkelheit zum Einschlafen",
+    "description_en": "Steps Out of Darkness.",
+    "path": "depression_06_02.m4a",
+    "tags": ["depressiv","traurig","hoffnungslos","müde"],
+    "title_de": "Schritte aus der Dunkelheit<br>Übung zum Einschlafen",
+    "title_en": "Steps Out of Darkness<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Achtsamkeit beim Essen mit Ausleitung",
+    "description_en": "Mindfulness in Eating.",
+    "path": "depression_07_01.m4a",
+    "tags": ["überfordert","gestresst","traurig"],
+    "title_de": "Achtsamkeit beim Essen<br>Übung mit Ausleitung",
+    "title_en": "Mindfulness in Eating<br>Exercise with Conclusion"
+  },
+
+{
+    "description_de": "Achtsamkeit beim Essen zum Einschlafen",
+    "description_en": "Mindfulness in Eating.",
+    "path": "depression_07_02.m4a",
+    "tags": ["überfordert","gestresst","traurig","müde"],
+    "title_de": "Achtsamkeit beim Essen<br>Übung zum Einschlafen",
+    "title_en": "Mindfulness in Eating<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Gesunde Beziehung zum Essen aufbauen mit Ausleitung",
+    "description_en": "Building a Healthy Relationship with Food.",
+    "path": "depression_08_01.m4a",
+    "tags": ["überfordert","ängstlich","traurig"],
+    "title_de": "Gesunde Beziehung zum Essen<br>Übung mit Ausleitung",
+    "title_en": "Healthy Relationship with Food<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Gesunde Beziehung zum Essen aufbauen zum Einschlafen",
+    "description_en": "Building a Healthy Relationship with Food.",
+    "path": "depression_08_02.m4a",
+    "tags": ["überfordert","ängstlich","traurig","müde"],
+    "title_de": "Gesunde Beziehung zum Essen<br>Übung zum Einschlafen",
+    "title_en": "Healthy Relationship with Food<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Energie tanken mit Ausleitung",
+    "description_en": "Recharging Energy.",
+    "path": "depression_09_01.m4a",
+    "tags": ["depressiv","antriebslos"],
+    "title_de": "Energie tanken<br>Übung mit Ausleitung",
+    "title_en": "Recharging Energy<br>Exercise with Conclusion"
+  },
+  {
+    "description_de": "Energie tanken zum Einschlafen",
+    "description_en": "Recharging Energy.",
+    "path": "depression_09_02.m4a",
+    "tags": ["müde","depressiv","antriebslos","müde"],
+    "title_de": "Energie tanken<br>Übung zum Einschlafen",
+    "title_en": "Recharging Energy<br>Exercise for Falling Asleep"
+  },
+  {
+    "description_de": "Kraft für den Alltag finden mit Ausleitung",
+    "description_en": "Finding Strength for Everyday Life.",
+    "path": "depression_10_01.m4a",
+    "tags": ["überfordert","depressiv","traurig"],
+    "title_de": "Kraft für den Alltag finden<br>Übung mit Ausleitung",
+    "title_en": "Strength for Everyday Life<br>Exercise with Conclusion"
+  },
+
+
+  {
+    "description_de": "Kraft für den Alltag finden zum Einschlafen",
+    "description_en": "Finding Strength for Everyday Life.",
+    "path": "depression_10_02.m4a",
+    "tags": ["überfordert","depressiv","traurig","müde"],
+    "title_de": "Kraft für den Alltag finden<br>Übung zum Einschlafen",
+    "title_en": "Strength for Everyday Life<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Herzenswärme wiederentdecken mit Ausleitung",
+    "description_en": "Rediscovering Heart Warmth.",
+    "path": "depression_11_01.m4a",
+    "tags": ["traurig","depressiv","einsam"],
+    "title_de": "Herzenswärme wiederentdecken<br>Übung mit Ausleitung",
+    "title_en": "Rediscovering Heart Warmth<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Herzenswärme wiederentdecken zum Einschlafen",
+    "description_en": "Rediscovering Heart Warmth.",
+    "path": "depression_11_02.m4a",
+    "tags": ["traurig","depressiv","einsam","müde"],
+    "title_de": "Herzenswärme wiederentdecken<br>Übung zum Einschlafen",
+    "title_en": "Rediscovering Heart Warmth<br>Exercise for Falling Asleep"
+  },
+
+  {
+    "description_de": "Innere Ruhe finden mit Ausleitung",
+    "description_en": "Finding Inner Calm.",
+    "path": "depression_12_01.m4a",
+    "tags": ["gestresst","ängstlich","überfordert"],
+    "title_de": "Innere Ruhe finden<br>Übung mit Ausleitung",
+    "title_en": "Finding Inner Calm<br>Exercise with Conclusion"
+  },
+
+  {
+    "description_de": "Innere Ruhe finden zum Einschlafen",
+    "description_en": "Finding Inner Calm.",
+    "path": "depression_12_02.m4a",
+    "tags": ["gestresst","ängstlich","überfordert","müde"],
+    "title_de": "Innere Ruhe finden<br>Übung zum Einschlafen",
+    "title_en": "Finding Inner Calm<br>Exercise for Falling Asleep"
+  }
+
+
+]
+

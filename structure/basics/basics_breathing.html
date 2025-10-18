@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitleSubCategories">Grundübungen</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+        body {
+            background-image: url('../../assets/images/splash_screen_bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        main {
+            padding: 25px 10px;
+        }
+
+        .subcategory-card {
+            background-color: #fff;
+            background-image: url('../../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 150px;
+            z-index: 2; /* Ensure cards stay above timeline */
+        }
+
+        .subcategory-card img:not(.favorite-icon) {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .card-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            top: 60px; 
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.3);
+            color: rgb(242, 237, 237);
+            font-size: 16px;
+            pointer-events: none; /* Let the card handle the click */
+        }
+
+        .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 3; /* Above overlays */
+        }
+
+        /* --- Timeline Styles (Simplified) --- */
+        #course-timeline-container {
+            height: 0; /* Initial state: collapsed */
+            overflow: hidden;
+            transition: height 0.8s ease-in-out;
+            padding: 0 20px;
+            box-sizing: border-box;
+            margin-top: -20px; /* Pull up to overlap card margin */
+            pointer-events: none; /* Do not block clicks on tiles */
+        }
+
+        .timeline-wrapper {
+             padding: 20px 0;
+             position: relative; /* For positioning the absolute line */
+             pointer-events: none; /* transparent to clicks */
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: -10px; /* Start 10px above the wrapper to connect to card */
+            left: 29px; /* Center of the circle */
+            width: 4px;
+            bottom: 45px; /* Stop line at the center of the last circle */
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .timeline-node {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative; /* Needed to be on top of the line */
+            padding-left: 70px;
+            filter: drop-shadow(2px 3px 3px rgba(0,0,0,0.4));
+        }
+
+        .node-circle {
+            position: absolute;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            border: 2px solid #888;
+            z-index: 1; /* Ensure circle is above the line */
+        }
+
+        .timeline-node.completed .node-circle {
+            background-color: #015554; /* Match card color */
+            color: white;
+            border-color: #003d3c; /* Darker border */
+        }
+
+        .timeline-node.active .node-circle {
+            background-color: #007bff; /* Blue for active */
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .node-label {
+            font-size: 1.1em;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+            padding: 5px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h3 data-i18n="SubCat_basics02_Header"></h3>
+    </header>
+
+    <main>
+        <div class="subcategory-card" id="subcat_basics_02_01" data-audio-base-name="subcat_basics_02_01" style="background-color: #015554;">
+            <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+            <div class="card-text">
+                <span data-i18n="SubCat_Basics02_module1Title"></span>
+            </div>
+        </div>
+
+        <div class="subcategory-card" id="subcat_basics_02_02" data-audio-base-name="subcat_basics_02_02" style="background-color: #03acaa;">
+           <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+            <div class="card-text">
+                <span data-i18n="SubCat_Basics02_module2Title"></span>
+            </div>
+        </div>
+
+        <div id="course-timeline-container">
+             <div class="timeline-wrapper">
+                <!-- JS will inject the line and nodes here -->
+            </div>
+        </div>
+    </main>
+
+   <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../../firebase-config.js"></script>
+    <script src="../../main.js"></script>
+    <script src="../../course.js"></script>
+    <script src="../../challenge.js"></script>
+    <!-- Timeline handled by challenge.js when ?challenge=true -->
+
+ </body>
+ </html>

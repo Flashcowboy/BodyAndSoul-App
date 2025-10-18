@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /User_Profiles/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Temporarily allow public write access for data upload. 
+    // IMPORTANT: Change this back to "allow write: if request.auth != null;" after uploading.
+    match /audio_files/{docId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

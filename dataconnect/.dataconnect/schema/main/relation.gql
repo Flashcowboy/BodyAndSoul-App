@@ -1,0 +1,761 @@
+extend type Course {
+  """
+  ✨ List `Session` objects in a one-to-many relationship (where `Session`.`course` is this object).
+  """
+  sessions_on_course(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Session_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Session_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Session_Having
+  ): [Session!]! @fdc_generated(from: "Session.course", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `UserCourseProgress` objects in a one-to-many relationship (where `UserCourseProgress`.`course` is this object).
+  """
+  userCourseProgresses_on_course(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserCourseProgress_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserCourseProgress_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserCourseProgress_Having
+  ): [UserCourseProgress!]! @fdc_generated(from: "UserCourseProgress.course", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `User` objects using `UserCourseProgress` as the join table (a `UserCourseProgress` object exists where its `course` is this and its `user` is that).
+  """
+  users_via_UserCourseProgress(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserCourseProgress_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserCourseProgress_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserCourseProgress_Having
+  ): [User!]! @fdc_generated(from: "UserCourseProgress", purpose: QUERY_MULTIPLE_MANY_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "Course", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `Course` table.
+  """
+  _count: Int! @fdc_generated(from: "Course", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Course` table where the `author` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  author_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Course.author", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Course` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Course.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Course` table where the `description` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  description_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Course.description", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Course` table where the `durationMinutes` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  durationMinutes_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Course.durationMinutes", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Course` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Course.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Course` table where the `imageUrl` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  imageUrl_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Course.imageUrl", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Course` table where the `level` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  level_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Course.level", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Course` table where the `title` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  title_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Course.title", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `durationMinutes` field in the `Course` table.
+  """
+  durationMinutes_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "Course.durationMinutes", purpose: QUERY_SUM)
+  """
+  ✨ Average the `durationMinutes` field in the `Course` table.
+  """
+  durationMinutes_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Course.durationMinutes", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `createdAt` field in the `Course` table.
+  """
+  createdAt_min: Timestamp @fdc_generated(from: "Course.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `durationMinutes` field in the `Course` table.
+  """
+  durationMinutes_min: Int @fdc_generated(from: "Course.durationMinutes", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `Course` table.
+  """
+  createdAt_max: Timestamp @fdc_generated(from: "Course.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `durationMinutes` field in the `Course` table.
+  """
+  durationMinutes_max: Int @fdc_generated(from: "Course.durationMinutes", purpose: QUERY_MAX)
+}
+extend type Session {
+  """
+  ✨ List `UserSessionCompletion` objects in a one-to-many relationship (where `UserSessionCompletion`.`session` is this object).
+  """
+  userSessionCompletions_on_session(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserSessionCompletion_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserSessionCompletion_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserSessionCompletion_Having
+  ): [UserSessionCompletion!]! @fdc_generated(from: "UserSessionCompletion.session", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `User` objects using `UserSessionCompletion` as the join table (a `UserSessionCompletion` object exists where its `session` is this and its `user` is that).
+  """
+  users_via_UserSessionCompletion(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserSessionCompletion_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserSessionCompletion_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserSessionCompletion_Having
+  ): [User!]! @fdc_generated(from: "UserSessionCompletion", purpose: QUERY_MULTIPLE_MANY_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "Session", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `Session` table.
+  """
+  _count: Int! @fdc_generated(from: "Session", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Session` table where the `audioUrl` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  audioUrl_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Session.audioUrl", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Session` table where the `courseId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  courseId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Session.courseId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Session` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Session.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Session` table where the `description` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  description_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Session.description", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Session` table where the `durationSeconds` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  durationSeconds_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Session.durationSeconds", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Session` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Session.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Session` table where the `orderIndex` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  orderIndex_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Session.orderIndex", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Session` table where the `title` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  title_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Session.title", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `durationSeconds` field in the `Session` table.
+  """
+  durationSeconds_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "Session.durationSeconds", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `orderIndex` field in the `Session` table.
+  """
+  orderIndex_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "Session.orderIndex", purpose: QUERY_SUM)
+  """
+  ✨ Average the `durationSeconds` field in the `Session` table.
+  """
+  durationSeconds_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Session.durationSeconds", purpose: QUERY_AVG)
+  """
+  ✨ Average the `orderIndex` field in the `Session` table.
+  """
+  orderIndex_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Session.orderIndex", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `createdAt` field in the `Session` table.
+  """
+  createdAt_min: Timestamp @fdc_generated(from: "Session.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `durationSeconds` field in the `Session` table.
+  """
+  durationSeconds_min: Int @fdc_generated(from: "Session.durationSeconds", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `orderIndex` field in the `Session` table.
+  """
+  orderIndex_min: Int @fdc_generated(from: "Session.orderIndex", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `Session` table.
+  """
+  createdAt_max: Timestamp @fdc_generated(from: "Session.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `durationSeconds` field in the `Session` table.
+  """
+  durationSeconds_max: Int @fdc_generated(from: "Session.durationSeconds", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `orderIndex` field in the `Session` table.
+  """
+  orderIndex_max: Int @fdc_generated(from: "Session.orderIndex", purpose: QUERY_MAX)
+}
+extend type User {
+  """
+  ✨ List `UserCourseProgress` objects in a one-to-many relationship (where `UserCourseProgress`.`user` is this object).
+  """
+  userCourseProgresses_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserCourseProgress_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserCourseProgress_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserCourseProgress_Having
+  ): [UserCourseProgress!]! @fdc_generated(from: "UserCourseProgress.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `UserSessionCompletion` objects in a one-to-many relationship (where `UserSessionCompletion`.`user` is this object).
+  """
+  userSessionCompletions_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserSessionCompletion_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserSessionCompletion_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserSessionCompletion_Having
+  ): [UserSessionCompletion!]! @fdc_generated(from: "UserSessionCompletion.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `Course` objects using `UserCourseProgress` as the join table (a `UserCourseProgress` object exists where its `user` is this and its `course` is that).
+  """
+  courses_via_UserCourseProgress(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserCourseProgress_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserCourseProgress_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserCourseProgress_Having
+  ): [Course!]! @fdc_generated(from: "UserCourseProgress", purpose: QUERY_MULTIPLE_MANY_TO_MANY)
+  """
+  ✨ List `Session` objects using `UserSessionCompletion` as the join table (a `UserSessionCompletion` object exists where its `user` is this and its `session` is that).
+  """
+  sessions_via_UserSessionCompletion(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserSessionCompletion_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserSessionCompletion_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserSessionCompletion_Having
+  ): [Session!]! @fdc_generated(from: "UserSessionCompletion", purpose: QUERY_MULTIPLE_MANY_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "User", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `User` table.
+  """
+  _count: Int! @fdc_generated(from: "User", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `displayName` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  displayName_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.displayName", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `email` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  email_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.email", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `lastLoginAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  lastLoginAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.lastLoginAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `photoUrl` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  photoUrl_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.photoUrl", purpose: QUERY_COUNT)
+  """
+  ✨ Minimum of the `createdAt` field in the `User` table.
+  """
+  createdAt_min: Timestamp @fdc_generated(from: "User.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `lastLoginAt` field in the `User` table.
+  """
+  lastLoginAt_min: Timestamp @fdc_generated(from: "User.lastLoginAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `User` table.
+  """
+  createdAt_max: Timestamp @fdc_generated(from: "User.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `lastLoginAt` field in the `User` table.
+  """
+  lastLoginAt_max: Timestamp @fdc_generated(from: "User.lastLoginAt", purpose: QUERY_MAX)
+}
+extend type UserCourseProgress {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "UserCourseProgress", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `UserCourseProgress` table.
+  """
+  _count: Int! @fdc_generated(from: "UserCourseProgress", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserCourseProgress` table where the `completed` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  completed_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserCourseProgress.completed", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserCourseProgress` table where the `courseId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  courseId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserCourseProgress.courseId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserCourseProgress` table where the `lastAccessedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  lastAccessedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserCourseProgress.lastAccessedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserCourseProgress` table where the `lastSessionPlayedId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  lastSessionPlayedId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserCourseProgress.lastSessionPlayedId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserCourseProgress` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserCourseProgress.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Minimum of the `lastAccessedAt` field in the `UserCourseProgress` table.
+  """
+  lastAccessedAt_min: Timestamp @fdc_generated(from: "UserCourseProgress.lastAccessedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `lastAccessedAt` field in the `UserCourseProgress` table.
+  """
+  lastAccessedAt_max: Timestamp @fdc_generated(from: "UserCourseProgress.lastAccessedAt", purpose: QUERY_MAX)
+}
+extend type UserSessionCompletion {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "UserSessionCompletion", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `UserSessionCompletion` table.
+  """
+  _count: Int! @fdc_generated(from: "UserSessionCompletion", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserSessionCompletion` table where the `completedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  completedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserSessionCompletion.completedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserSessionCompletion` table where the `notes` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  notes_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserSessionCompletion.notes", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserSessionCompletion` table where the `sessionId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  sessionId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserSessionCompletion.sessionId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserSessionCompletion` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserSessionCompletion.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Minimum of the `completedAt` field in the `UserSessionCompletion` table.
+  """
+  completedAt_min: Timestamp @fdc_generated(from: "UserSessionCompletion.completedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `completedAt` field in the `UserSessionCompletion` table.
+  """
+  completedAt_max: Timestamp @fdc_generated(from: "UserSessionCompletion.completedAt", purpose: QUERY_MAX)
+}

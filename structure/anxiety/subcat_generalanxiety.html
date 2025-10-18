@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitleSubCategories">Grundübungen</title>
+    <link rel="stylesheet" href="../../styles.css">
+   <!-- <link rel="manifest" href="../manifest.json"> -->
+    <style>
+     body {
+            
+            background-color: #f4f4f9;
+            background-image: url('../../assets/images/splash_screen_bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin: 0 auto 20px; /* center horizontally */
+            overflow: hidden;
+            position: relative;
+            top: 10px;
+            width: 95%;
+            height: 150px;
+            text-align: center;
+            padding: 5px 0px;
+        }
+
+        main {
+            /* The global rule already has overflow-y, but this page has specific padding */
+            padding: 10px 30px;
+        }
+
+        .description-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 200px;
+        }
+
+        .subcategory-card {
+            background-color: #fff;
+            background-image: url('../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 100px;
+        }
+
+        /* Only target the background image inside the card, not nested icons */
+        .subcategory-card > img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.0);
+            color: rgb(242, 237, 237);
+            font-size: 18px;
+            font-weight: regular;
+        }
+
+        .audiocard-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.0);
+            color: rgb(242, 237, 237);
+            font-size: 16px;
+            font-weight: regular;
+        }
+
+        .headercard-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.6);
+            color: rgb(242, 237, 237);
+            font-size: 18px;
+            font-weight: regular;
+        }
+
+        .subcategory-headercard img:not(.favorite-icon) {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .subcategory-audiocard {
+            background-color: #fff;
+            background-image: url('../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 90%;
+            height: 80px;
+        }
+
+        .playbtn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .playbtn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+   
+        
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="subcategory-headercard" id="Cat_card4Title">
+            <img src="../../assets/images/categories/cat_11.png" alt="Angstbewältigung">
+            <div class="headercard-text">
+                <h2 data-i18n="card3Title">Angstbewältigung</h2>
+            </div>
+        </div>
+    </header>
+
+     <main>
+        
+            <span id="genanxiety-text-content" data-i18n="GenAnxiety-Text" data-read-more data-max-chars="400"></span><br><br>
+            
+
+        <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
+        <div class="subcategory-card" id="subcat03_01"  style="background-color: #d96901;">
+            <div class="card-text" data-i18n="GenAnxiety_subcat1Title">
+            </div>
+        </div>
+                <!-- Unterkacheln, mit Ausleitung -->
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_01" data-audio-base-name="genanxiety_01_01" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="genanxiety_01_01"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <!-- Unterkacheln, zum Einschlafen -->        
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_02" data-audio-base-name="genanxiety_01_02" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="genanxiety_01_02">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+                <!-- Unterkacheln, mit Ausleitung -->
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_03" data-audio-base-name="genanxiety_02_01" style="background-color: #076da8;">
+                    <div class="audiocard-text" data-i18n="genanxiety_02_01"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <!-- Unterkacheln, zum Einschlafen -->         
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_04" data-audio-base-name="genanxiety_02_02" style="background-color: #076da8;">
+                    <div class="audiocard-text" data-i18n="genanxiety_02_02">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+        <div class="subcategory-card" id="subcat03_02"  style="background-color: #d96901;">
+            <div class="card-text" data-i18n="GenAnxiety_subcat2Title">         
+            </div>
+        </div>
+                <!-- Unterkacheln, mit Ausleitung -->
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_01" data-audio-base-name="genanxiety_03_01" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="genanxiety_03_01"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <!-- Unterkacheln, zum Einschlafen -->        
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_02" data-audio-base-name="genanxiety_03_02" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="genanxiety_03_02">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+                <!-- Unterkacheln, mit Ausleitung -->
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_03" data-audio-base-name="genanxiety_04_01" style="background-color: #076da8;">
+                    <div class="audiocard-text" data-i18n="genanxiety_04_01"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <!-- Unterkacheln, zum Einschlafen -->         
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_04" data-audio-base-name="genanxiety_04_02" style="background-color: #076da8;">
+                    <div class="audiocard-text" data-i18n="genanxiety_04_02">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+        <div class="subcategory-card" id="subcat03_03"  style="background-color: #d96901;">
+            <div class="card-text" data-i18n="GenAnxiety_subcat3Title">         
+            </div>
+        </div>
+                <!-- Unterkacheln, mit Ausleitung -->
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_01" data-audio-base-name="genanxiety_05_01" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="genanxiety_05_01"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <!-- Unterkacheln, zum Einschlafen -->        
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_02" data-audio-base-name="genanxiety_05_02" style="background-color: #033c5e;">
+                    <div class="audiocard-text" data-i18n="genanxiety_05_02">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+                <!-- Unterkacheln, mit Ausleitung -->
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_03" data-audio-base-name="genanxiety_06_01" style="background-color: #076da8;">
+                    <div class="audiocard-text" data-i18n="genanxiety_06_01"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <!-- Unterkacheln, zum Einschlafen -->         
+                <div class="subcategory-audiocard" id="GenAnxiety_audiocard_04" data-audio-base-name="genanxiety_06_02" style="background-color: #076da8;">
+                    <div class="audiocard-text" data-i18n="genanxiety_06_02">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Angstbewältigung"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+        
+    </main>
+
+   <script>
+        fetch('../../structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../../firebase-config.js"></script>
+    <script src="../../main.js"></script>
+    <!-- Back is now handled globally via the footer back button -->
+    <script src="../../challenge.js"></script>
+    
+    <script>//Akkordeon-Funktion für Audioplayer-Karten
+            // Ensure accordion behavior is initialized after Tiles is available
+            document.addEventListener('DOMContentLoaded', () => {
+                const ensureTiles = () => {
+                    if (window.Tiles && typeof window.Tiles.initSubcategoryAudioAccordion === 'function') {
+                        window.Tiles.initSubcategoryAudioAccordion();
+                    } else {
+                        // If Tiles was not loaded via main.js, load it here
+                        const s = document.createElement('script');
+                        s.src = '../../tiles.js';
+                        s.onload = () => window.Tiles && window.Tiles.initSubcategoryAudioAccordion();
+                        document.head.appendChild(s);
+                    }
+                };
+                ensureTiles();
+            });
+        </script>
+    <script src="../../read-more.js"></script>
+   
+</body>
+</html>

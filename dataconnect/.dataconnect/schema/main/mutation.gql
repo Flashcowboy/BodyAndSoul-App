@@ -1,0 +1,542 @@
+extend type Mutation {
+  """
+  ✨ Insert a single `Course` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  course_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Course_Data!
+  ): Course_KeyOutput! @fdc_generated(from: "Course", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Session` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  session_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Session_Data!
+  ): Session_KeyOutput! @fdc_generated(from: "Session", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `User` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  user_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: User_Data!
+  ): User_KeyOutput! @fdc_generated(from: "User", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `UserCourseProgress` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userCourseProgress_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: UserCourseProgress_Data!
+  ): UserCourseProgress_KeyOutput! @fdc_generated(from: "UserCourseProgress", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `UserSessionCompletion` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userSessionCompletion_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: UserSessionCompletion_Data!
+  ): UserSessionCompletion_KeyOutput! @fdc_generated(from: "UserSessionCompletion", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert `Course` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  course_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Course_Data!]!
+  ): [Course_KeyOutput!]! @fdc_generated(from: "Course", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Session` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  session_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Session_Data!]!
+  ): [Session_KeyOutput!]! @fdc_generated(from: "Session", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `User` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  user_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [User_Data!]!
+  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `UserCourseProgress` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userCourseProgress_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [UserCourseProgress_Data!]!
+  ): [UserCourseProgress_KeyOutput!]! @fdc_generated(from: "UserCourseProgress", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `UserSessionCompletion` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userSessionCompletion_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [UserSessionCompletion_Data!]!
+  ): [UserSessionCompletion_KeyOutput!]! @fdc_generated(from: "UserSessionCompletion", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert or update a single `Course` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Course`.
+  """
+  course_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Course_Data!
+  ): Course_KeyOutput! @fdc_generated(from: "Course", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Session` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Session`.
+  """
+  session_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Session_Data!
+  ): Session_KeyOutput! @fdc_generated(from: "Session", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `User` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
+  """
+  user_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: User_Data!
+  ): User_KeyOutput! @fdc_generated(from: "User", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `UserCourseProgress` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserCourseProgress`.
+  """
+  userCourseProgress_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: UserCourseProgress_Data!
+  ): UserCourseProgress_KeyOutput! @fdc_generated(from: "UserCourseProgress", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `UserSessionCompletion` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserSessionCompletion`.
+  """
+  userSessionCompletion_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: UserSessionCompletion_Data!
+  ): UserSessionCompletion_KeyOutput! @fdc_generated(from: "UserSessionCompletion", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update `Course` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Course`.
+  """
+  course_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Course_Data!]!
+  ): [Course_KeyOutput!]! @fdc_generated(from: "Course", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Session` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Session`.
+  """
+  session_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Session_Data!]!
+  ): [Session_KeyOutput!]! @fdc_generated(from: "Session", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `User` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
+  """
+  user_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [User_Data!]!
+  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `UserCourseProgress` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserCourseProgress`.
+  """
+  userCourseProgress_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [UserCourseProgress_Data!]!
+  ): [UserCourseProgress_KeyOutput!]! @fdc_generated(from: "UserCourseProgress", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `UserSessionCompletion` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserSessionCompletion`.
+  """
+  userSessionCompletion_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [UserSessionCompletion_Data!]!
+  ): [UserSessionCompletion_KeyOutput!]! @fdc_generated(from: "UserSessionCompletion", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Update a single `Course` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Course` or `null` if not found.
+  """
+  course_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Course_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Course_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Course_Data!
+  ): Course_KeyOutput @fdc_generated(from: "Course", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Session` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Session` or `null` if not found.
+  """
+  session_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Session_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Session_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Session_Data!
+  ): Session_KeyOutput @fdc_generated(from: "Session", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `User` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `User` or `null` if not found.
+  """
+  user_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: User_Data!
+  ): User_KeyOutput @fdc_generated(from: "User", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `UserCourseProgress` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `UserCourseProgress` or `null` if not found.
+  """
+  userCourseProgress_update(
+    """
+    The key used to identify the object.
+    """
+    key: UserCourseProgress_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserCourseProgress_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: UserCourseProgress_Data!
+  ): UserCourseProgress_KeyOutput @fdc_generated(from: "UserCourseProgress", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `UserSessionCompletion` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `UserSessionCompletion` or `null` if not found.
+  """
+  userSessionCompletion_update(
+    """
+    The key used to identify the object.
+    """
+    key: UserSessionCompletion_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSessionCompletion_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: UserSessionCompletion_Data!
+  ): UserSessionCompletion_KeyOutput @fdc_generated(from: "UserSessionCompletion", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update `Course` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  course_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Course_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Course_Data!
+  ): Int! @fdc_generated(from: "Course", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Session` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  session_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Session_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Session_Data!
+  ): Int! @fdc_generated(from: "Session", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `User` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  user_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: User_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: User_Data!
+  ): Int! @fdc_generated(from: "User", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `UserCourseProgress` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  userCourseProgress_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: UserCourseProgress_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: UserCourseProgress_Data!
+  ): Int! @fdc_generated(from: "UserCourseProgress", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `UserSessionCompletion` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  userSessionCompletion_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: UserSessionCompletion_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: UserSessionCompletion_Data!
+  ): Int! @fdc_generated(from: "UserSessionCompletion", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Delete a single `Course` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  course_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Course_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Course_FirstRow
+  ): Course_KeyOutput @fdc_generated(from: "Course", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Session` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  session_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Session_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Session_FirstRow
+  ): Session_KeyOutput @fdc_generated(from: "Session", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `User` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  user_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+  ): User_KeyOutput @fdc_generated(from: "User", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `UserCourseProgress` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  userCourseProgress_delete(
+    """
+    The key used to identify the object.
+    """
+    key: UserCourseProgress_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserCourseProgress_FirstRow
+  ): UserCourseProgress_KeyOutput @fdc_generated(from: "UserCourseProgress", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `UserSessionCompletion` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  userSessionCompletion_delete(
+    """
+    The key used to identify the object.
+    """
+    key: UserSessionCompletion_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSessionCompletion_FirstRow
+  ): UserSessionCompletion_KeyOutput @fdc_generated(from: "UserSessionCompletion", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete `Course` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  course_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Course_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Course", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Session` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  session_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Session_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Session", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `User` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  user_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: User_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "User", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `UserCourseProgress` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  userCourseProgress_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: UserCourseProgress_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "UserCourseProgress", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `UserSessionCompletion` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  userSessionCompletion_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: UserSessionCompletion_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "UserSessionCompletion", purpose: DELETE_MULTIPLE)
+}

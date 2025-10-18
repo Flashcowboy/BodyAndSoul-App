@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Firestore Audio Data Uploader</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding-top: 50px; }
+        button { font-size: 1.2em; padding: 10px 20px; cursor: pointer; }
+        #status { margin-top: 20px; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+
+    <h1>Audio Data Uploader</h1>
+    <p>Click the button to upload data from <code>audio_data.json</code> to the 'audio_files' collection in Firestore.</p>
+    <button id="upload-btn">Upload Data</button>
+    <div id="status"></div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <!-- Your Firebase config -->
+    <script src="firebase-config.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const uploadBtn = document.getElementById('upload-btn');
+            const statusDiv = document.getElementById('status');
+
+            // Check if firebase is initialized
+            if (typeof firebase === 'undefined' || !firebase.apps.length) {
+                statusDiv.textContent = 'Error: Firebase config not loaded. Make sure firebase-config.js is correct.';
+                statusDiv.style.color = 'red';
+                uploadBtn.disabled = true;
+                return;
+            }
+
+            const db = firebase.firestore();
+
+            uploadBtn.addEventListener('click', async () => {
+                uploadBtn.disabled = true;
+                statusDiv.textContent = 'Starting upload...';
+                statusDiv.style.color = 'black';
+
+                try {
+                    // 1. Fetch the local JSON file
+                    const response = await fetch('audio_data.json');
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch audio_data.json (status: ${response.status})`);
+                    }
+                    const audioData = await response.json();
+
+                    if (!Array.isArray(audioData) || audioData.length === 0) {
+                        throw new Error('JSON data is not a valid array or is empty.');
+                    }
+
+                    statusDiv.textContent = `Found ${audioData.length} tracks. Preparing batch...`;
+
+                    const collectionRef = db.collection('audio_files');
+                    let newCount = 0;
+                    let updatedCount = 0;
+
+                    // We'll process sequentially to know if doc existed (batch alone can't tell before commit)
+                    for (const rawTrack of audioData) {
+                        if (!rawTrack || !rawTrack.path) continue;
+                        const base = String(rawTrack.path).replace(/\.m4a$/i,'');
+                        const docRef = collectionRef.doc(base);
+                        const snapshot = await docRef.get();
+                        const isNew = !snapshot.exists;
+                        const nowFields = {
+                            base,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                        if (isNew) {
+                            nowFields.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                        }
+                        const track = { ...rawTrack, ...nowFields };
+                        try {
+                            await docRef.set(track, { merge: true });
+                            if (isNew) newCount++; else updatedCount++;
+                            statusDiv.textContent = `Uploading... New: ${newCount} | Updated: ${updatedCount}`;
+                        } catch (e) {
+                            console.error('Doc write failed for', base, e);
+                        }
+                    }
+
+                    statusDiv.textContent = `Done. New: ${newCount}, Updated: ${updatedCount}`;
+                    statusDiv.style.color = 'green';
+                    uploadBtn.textContent = 'Upload Complete';
+
+                } catch (error) {
+                    console.error('Upload Error:', error);
+                    statusDiv.textContent = `Error during upload: ${error.message}`;
+                    statusDiv.style.color = 'red';
+                    uploadBtn.disabled = false; // Re-enable button on failure
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

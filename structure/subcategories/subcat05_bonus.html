@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitleSubCategories">Grundübungen</title>
+    <link rel="stylesheet" href="../../styles.css">
+   <!-- <link rel="manifest" href="../manifest.json"> -->
+    <style>
+        body {
+            
+            background-color: #f4f4f9;
+            background-image: url('../../assets/images/splash_screen_bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin: 0 auto 20px; /* center horizontally */
+            overflow: hidden;
+            position: relative;
+            top: 10px;
+            width: 95%;
+            height: 150px;
+            text-align: center;
+            padding: 5px 0px;
+        }
+
+        main {
+            /* The global rule already has overflow-y, but this page has specific padding */
+            padding: 10px 30px;
+        }
+
+        .description-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 200px;
+        }
+
+        .subcategory-card {
+            background-color: #fff;
+            background-image: url('../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 100px;
+        }
+
+        /* Only target the background image inside the card, not nested icons */
+        .subcategory-card > img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.0);
+            color: rgb(242, 237, 237);
+            font-size: 18px;
+            font-weight: regular;
+        }
+
+        .audiocard-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.0);
+            color: rgb(242, 237, 237);
+            font-size: 16px;
+            font-weight: regular;
+        }
+
+        .headercard-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.6);
+            color: rgb(242, 237, 237);
+            font-size: 18px;
+            font-weight: regular;
+        }
+
+        .subcategory-headercard img:not(.favorite-icon) {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .subcategory-audiocard {
+            background-color: #fff;
+            background-image: url('../../assets/images/backgrounds/bg_audioplayer_grey.png');
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 90%;
+            height: 80px;
+        }
+
+        .playbtn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .playbtn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            z-index: 1;
+        }
+        /* Back button next to description headline */
+        .desc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin: 10px 0 10px;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            line-height: 0;
+        }
+        .back-btn img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+        
+        
+    </style>
+</head>
+<body>
+
+    <!-- **********************************************************************************************
+    //                                  Depression Subcategory Page
+    // **********************************************************************************************-->
+
+    <script>
+        // Early gate: if user is not subscribed, redirect to purchase page.
+        // Runs as soon as possible; relies on firebase config loaded later. Will re-check after auth ready.
+        (function() {
+            const toBuy = () => { window.location.replace('../store/abo-buy-2025-uiiuZZTtg8io.html'); };
+            // Quick unauthenticated fallback – let logged-out users go to categories instead of erroring
+            document.addEventListener('DOMContentLoaded', () => {
+                // If Firebase already present and user lacks sub, we'll redirect after auth initializes below.
+                // Otherwise, keep rendering minimal UI; a later check will handle redirect.
+            });
+            // After main.js initializes Firebase, verify access
+            window.addEventListener('load', () => {
+                const tryCheck = async () => {
+                    try {
+                        if (!window.auth || !window.db) return; // main.js not ready yet
+                        if (!window.auth.currentUser) { toBuy(); return; }
+                        // Prefer shared helper when available
+                        if (typeof window.hasActiveSubscription === 'function') {
+                            const ok = await window.hasActiveSubscription();
+                            if (!ok) { toBuy(); }
+                            return;
+                        }
+                        // Fallback inline check
+                        const doc = await window.db.collection('User_Profiles').doc(window.auth.currentUser.uid).get();
+                        const data = doc.exists ? (doc.data() || {}) : {};
+                        const sub = data.subscription || {};
+                        if (!(sub.active === true) || (sub.expiresAt && sub.expiresAt.toDate && sub.expiresAt.toDate() < new Date())) {
+                            toBuy();
+                        }
+                    } catch(_) { /* ignore */ }
+                };
+                // Try immediately, then again shortly in case auth is still initializing
+                tryCheck();
+                setTimeout(tryCheck, 400);
+                setTimeout(tryCheck, 1200);
+            });
+        })();
+    </script>
+
+    <header>
+        <!--<h1 data-i18n="subcat04_Header">Ziele erreichen</h1>-->
+        <div class="subcategory-headercard" id="Cat_card5Title">
+            <img src="../../assets/images/categories/bonus.png" alt="Bonus-Inhalte">
+            <div class="card-text">
+                <h2 data-i18n="card5Title">Bonus-Inhalte</h2>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <span id="bonus-text-content" data-i18n="Bonus-Text" data-read-more data-max-chars="370"></span><br><br>
+        
+        <!-- <div class="desc-header">    
+            <button id="back-btn" class="back-btn" aria-label="Zurück" title="Zurück">
+                <img src="../../assets/images/icons/back_btn_blue.png" alt="Zurück">
+            </button>
+        </div> -->
+
+        <!-- <div class="subcategory-card" id="subcat03_01" onclick="window.location.href = 'exercises/subcat03_generalanxiety.html'" data-audio-base-name="subcat03_01" style="background-color: #a04902;"> -->
+        <div class="subcategory-card" id="subcat05_01"  style="background-color: #500101;">
+            <div class="card-text" data-i18n="bonus_subcat1Title">
+            </div>
+        </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  / Bonus: AT Grundübungen Komplett (mit Ausleitung)-->
+                <div class="subcategory-audiocard" id="Bonus_audiocard_01" data-audio-base-name="bonus_01_01" style="background-color: #a56c11;">
+                    <div class="audiocard-text" data-i18n="bonus_01_01"></div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <!-- Bonus: AT Grundübungen Komplett (zum Einschlafen)-->
+                <div class="subcategory-audiocard" id="Bonus_audiocard_02" data-audio-base-name="bonus_01_02" style="background-color: #a56c11;">
+                    <div class="audiocard-text" data-i18n="bonus_01_02">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+        <div class="subcategory-card" id="subcat05_02"  style="background-color:  #500101;">
+            <div class="card-text" data-i18n="bonus_subcat2Title">         
+            </div>
+        </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  / Bonus: Gewichtsreduktion (mit Ausleitung) -->
+                <div class="subcategory-audiocard" id="Bonus_audiocard_03" data-audio-base-name="bonus_02_01" style="background-color: #a56c11;">
+                    <div class="audiocard-text" data-i18n="bonus_02_01">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+                <!-- Unterkacheln, die zu Audioplayer führen  / Bonus: Gewichtsreduktion (zum Einschlafen) -->
+                <div class="subcategory-audiocard" id="Bonus_audiocard_04" data-audio-base-name="bonus_02_02" style="background-color: #a56c11;">
+                    <div class="audiocard-text" data-i18n="bonus_02_02">
+                    </div>
+                    <div class="playbtn"><img src="../../assets/images/icons/play_icon_white_small.png" alt="Play Exercise"></div>
+                    <img src="../../assets/images/icons/heart_inactive.png" class="favorite-icon" alt="Favorite">
+                </div>
+
+
+        
+    </main>
+
+   <script>
+        fetch('/structure/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            });
+    </script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="../../firebase-config.js"></script>
+    <script src="../../main.js"></script>
+    <script>
+        // Back button behavior: go to previous page, fallback to categories
+        (function(){
+            const btn = document.getElementById('back-btn');
+            if (!btn) return;
+            btn.addEventListener('click', function(e){
+                e.preventDefault();
+                if (window.history && window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '../categories.html';
+                }
+            });
+        })();
+    </script>
+     <script>//Akkordeon-Funktion für Audioplayer-Karten
+            // Ensure accordion behavior is initialized after Tiles is available
+            document.addEventListener('DOMContentLoaded', () => {
+                const ensureTiles = () => {
+                    if (window.Tiles && typeof window.Tiles.initSubcategoryAudioAccordion === 'function') {
+                        window.Tiles.initSubcategoryAudioAccordion();
+                    } else {
+                        // If Tiles was not loaded via main.js, load it here
+                        const s = document.createElement('script');
+                        s.src = '../../tiles.js';
+                        s.onload = () => window.Tiles && window.Tiles.initSubcategoryAudioAccordion();
+                        document.head.appendChild(s);
+                    }
+                };
+                ensureTiles();
+            });
+        </script>
+        <script src="../../read-more.js"></script>
+   
+</body>
+</html>
